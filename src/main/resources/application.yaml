@@ -6,6 +6,17 @@ spring:
     virtual:
       enabled: true
 
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
+  ai:
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+
 application:
   name: CipherQuest
   version: '@project.version@'
