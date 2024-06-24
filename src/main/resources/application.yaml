@@ -1,7 +1,15 @@
 spring:
   application:
     name: CipherQuest
-
+  ai:
+    ollama:
+      chat:
+        model: llama3
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
   threads:
     virtual:
       enabled: true
