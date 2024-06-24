@@ -5,5 +5,5 @@
 \ `.___.'\ | || \__/ | | | || \__., | |   \  `-'  \_ | \_/ |,| \__., `'.'.| |,
  `.____ .'[___] ;.__[___]|__]'.__.'[___]   `.___.\__|'.__.'_/ '.__.'[\__) )__/
              [__|
-${application.title} ${application.version}
+${application.name} ${application.version}
 Powered by Spring Boot ${spring-boot.version}
