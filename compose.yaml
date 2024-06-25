@@ -1,21 +1,23 @@
 services:
   postgres:
-    image: 'pgvector/pgvector:pg16'
+    image: pgvector/pgvector:pg16
     volumes:
       - postgres-data:/var/lib/postgresql/data/
     environment:
-#      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=postgres'
-      - 'POSTGRES_USER=postgres'
+      - POSTGRES_DB=vectordb
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpwd
     ports:
-      - '5433:5432'
-
+      - 5433:5432
+    labels:
+      org.springframework.boot.service-connection: postgres
   llm:
-    image: 'ollama/ollama'
+    image: ollama/ollama
     volumes:
-      - 'ollama:/root/.ollama'
+      - ollama:/root/.ollama
     ports:
-      - '11434'
+      - 11435:11434
+
 
 volumes:
   postgres-data:

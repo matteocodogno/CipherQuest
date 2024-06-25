@@ -3,8 +3,11 @@ spring:
     name: CipherQuest
   ai:
     ollama:
+      base-url: http://localhost:11434
       chat:
-        model: llama3
+        options:
+          model: llama3
+          keep-alive: 10m
     vectorstore:
       pgvector:
         index-type: HNSW
@@ -13,11 +16,6 @@ spring:
   threads:
     virtual:
       enabled: true
-
-  datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-    password: postgres
 
 application:
   name: '@project.name@'
