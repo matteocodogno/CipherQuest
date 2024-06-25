@@ -8,6 +8,11 @@ spring:
         options:
           model: llama3
           keep-alive: 10m
+          temperature: 0.8
+      embedding:
+        options:
+          model: llama3
+          keep-alive: 10m
     vectorstore:
       pgvector:
         index-type: HNSW
