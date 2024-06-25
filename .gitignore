@@ -33,4 +33,7 @@ build/
 .vscode/
 
 ### Docker ###
-.mnt/
+.mnt/postgres/data/**
+!.mnt/postgres/data/.gitkeep
+.mnt/ollama/**
+!.mnt/ollama/.gitkeep
