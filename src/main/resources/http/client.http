@@ -4,4 +4,8 @@ POST http://localhost:8080/chat/123
 
 Hello! Tell me an IT joke
 
-###
+### POST request to load documents on pgvector
+
+POST http://localhost:8080/rag/load
+
+

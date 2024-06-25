@@ -3,7 +3,7 @@ spring:
     name: CipherQuest
   ai:
     ollama:
-      base-url: http://localhost:11434
+      base-url: http://localhost:11435
       chat:
         options:
           model: llama3
@@ -13,6 +13,7 @@ spring:
         options:
           model: llama3
           keep-alive: 10m
+
     vectorstore:
       pgvector:
         index-type: HNSW
@@ -25,7 +26,6 @@ spring:
 application:
   name: '@project.name@'
   version: '@project.version@'
-
 
 info:
   app:
