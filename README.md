@@ -29,8 +29,9 @@ In order to install all the dependencies, you need to run the following command 
 ## Usage
 
 Tu run the project, execute the following command `./mvnw spring-boot:run`, it will start the application on port
-8080 and 'cause we have `spring-boot-docker-compose` dependency, it will also start a docker container with a
-postgres database and a large language models server (ollama).
+8080 and 'cause we have `spring-boot-docker-compose` dependency, it will also start a docker container with a postgres database and a large language models server (ollama).
+
+The first time you have to download `llama3` model, you can do it by running the following command `curl http://localhost:11435/api/pull -d '{ "name": "llama3" }'`.
 
 ## Features
 
