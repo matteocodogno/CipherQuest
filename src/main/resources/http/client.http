@@ -1,0 +1,7 @@
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Hello! Tell me an IT joke
+
+###
