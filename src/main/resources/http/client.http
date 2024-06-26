@@ -2,7 +2,7 @@
 
 POST http://localhost:8080/chat/123
 
-Hello! Tell me an IT joke
+Who is Welld?
 
 ### POST request to load documents on pgvector
 

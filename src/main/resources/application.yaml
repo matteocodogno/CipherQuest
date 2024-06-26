@@ -3,22 +3,20 @@ spring:
     name: CipherQuest
   ai:
     ollama:
-      base-url: http://localhost:11435
+      base-url: http://localhost:11434
       chat:
         options:
           model: llama3
           keep-alive: 10m
           temperature: 0.8
       embedding:
-        options:
-          model: llama3
-          keep-alive: 10m
+        enabled: false
 
     vectorstore:
       pgvector:
         index-type: HNSW
         distance-type: COSINE_DISTANCE
-        dimensions: 1536
+        dimensions: 384
   threads:
     virtual:
       enabled: true

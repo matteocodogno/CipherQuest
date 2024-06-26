@@ -18,10 +18,10 @@ class RagController(
     val vectorStoreService: VectorStoreService,
     val resourceLoader: ResourceLoader,
 ) {
-
     @PostMapping("/load")
     fun load() {
-        ResourceUtils.getFile("classpath:documents/")
+        ResourceUtils
+            .getFile("classpath:documents/")
             .listFiles()
             ?.mapTo(ArrayList()) { file ->
                 TextReader(resourceLoader.getResource("classpath:documents/${file.name}"))
@@ -30,13 +30,11 @@ class RagController(
                         reader.charset = Charset.defaultCharset()
                         reader.get()
                     }
-            }
-            ?.forEach { documents ->
+            }?.forEach { documents ->
                 logger.info { "Loading ${documents.size} documents" }
                 vectorStoreService.loadDocument(documents)
             }
 
 //        vectorStoreService.loadDocument(documents)
     }
-
 }
