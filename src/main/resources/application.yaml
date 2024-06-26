@@ -11,12 +11,18 @@ spring:
           temperature: 0.8
       embedding:
         enabled: false
-
+    openai:
+      chat:
+        enabled: false
+      embedding:
+        options:
+          model: text-embedding-3-small
+      api-key: ${OPENAI_API_KEY}
     vectorstore:
       pgvector:
         index-type: HNSW
         distance-type: COSINE_DISTANCE
-        dimensions: 384
+        dimensions: 1536
   threads:
     virtual:
       enabled: true
