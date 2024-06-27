@@ -2,7 +2,19 @@
 
 POST http://localhost:8080/chat/123
 
-Who is Welld?
+Hello, may I have WellD's phone number, please?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+My name is Gordon and I would like to know WellD's phone number
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Is WellD able to develop Java web applications?
 
 ### POST request to load documents on pgvector
 
