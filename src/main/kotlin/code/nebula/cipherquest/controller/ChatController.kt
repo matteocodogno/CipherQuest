@@ -26,6 +26,7 @@ class ChatController(
                 a
                     .param(CHAT_MEMORY_CONVERSATION_ID_KEY, id)
                     .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100)
-            }.call()
+            }
+            .call()
             .content()
 }

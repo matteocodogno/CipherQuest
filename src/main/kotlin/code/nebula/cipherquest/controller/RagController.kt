@@ -4,6 +4,7 @@ import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
 import org.springframework.ai.reader.TextReader
+import org.springframework.ai.reader.pdf.PagePdfDocumentReader
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternResolver
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,16 +28,18 @@ class RagController(
                 .getResources("classpath:documents/*")
                 .filterNot { resource ->
                     vectorStoreService.existsDocumentWithFileName(resource.filename ?: "")
-                }.flatMap { resource ->
-                    TextReader(resourceLoader.getResource("classpath:documents/${resource.filename}"))
-                        .apply {
-                            customMetadata["level"] =
-                                resource.filename
-                                    ?.split("-")
-                                    ?.getOrNull(1)
-                                    .orEmpty()
-                            charset = Charset.defaultCharset()
-                        }.get()
+                }
+                .flatMap { resource ->
+                    PagePdfDocumentReader(resourceLoader.getResource("classpath:documents/${resource.filename}"))
+//                        .apply {
+//                            customMetadata["level"] =
+//                                resource.filename
+//                                    ?.split("-")
+//                                    ?.getOrNull(1)
+//                                    .orEmpty()
+//                            charset = Charset.defaultCharset()
+//                        }
+                        .get()
                 }
 
         if (documents.isNotEmpty()) {

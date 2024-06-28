@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ChatMemoryConfiguration {
     @Bean
-    fun chatMemory(): InMemoryChatMemory = InMemoryChatMemory() // TODO: implement database chat memory
+    fun chatMemory(): InMemoryChatMemory = InMemoryChatMemory()
 }
