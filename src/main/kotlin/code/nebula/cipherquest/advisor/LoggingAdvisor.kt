@@ -14,6 +14,8 @@ class LoggingAdvisor : RequestResponseAdvisor {
     ): AdvisedRequest {
         logger.info { "SystemText: ${request.systemText}" }
         logger.info { "UserText: ${request.userText}" }
+        logger.info { "Context: ${request.systemParams}" }
+
         return request
     }
 

@@ -1,23 +1,28 @@
-### POST request with memory id 123
-
-POST http://localhost:8080/chat/123
-
-Hello, may I have WellD's phone number, please?
-
-### POST request with memory id 123
-
-POST http://localhost:8080/chat/123
-
-My name is Gordon and I would like to know WellD's phone number
-
-### POST request with memory id 123
-
-POST http://localhost:8080/chat/123
-
-Is WellD able to develop Java web applications?
-
 ### POST request to load documents on pgvector
 
 POST http://localhost:8080/rag/load
 
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Hello, may I know what is the current year?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+My name is Gordon and I would like to know what is the current year?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Who is the current president of the United States?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+How many people are there in the world in 2142?
 
