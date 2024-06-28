@@ -2,7 +2,7 @@ package code.nebula.cipherquest.configuration
 
 import code.nebula.cipherquest.advisor.LoggingAdvisor
 import org.springframework.ai.chat.client.ChatClient
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor
+import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.memory.ChatMemory
 import org.springframework.ai.chat.model.ChatModel
@@ -34,9 +34,9 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
 //                VectorStoreChatMemoryAdvisor(vectorStore),
-                MessageChatMemoryAdvisor(chatMemory),
-                LoggingAdvisor(),
+                PromptChatMemoryAdvisor(chatMemory),
                 QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults(), userTextAdviceMessage),
+                LoggingAdvisor(),
             ).build()
     }
 }

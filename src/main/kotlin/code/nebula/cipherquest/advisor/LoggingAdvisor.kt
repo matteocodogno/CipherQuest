@@ -1,17 +1,19 @@
 package code.nebula.cipherquest.advisor
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.RequestResponseAdvisor
 import org.springframework.ai.chat.model.ChatResponse
+
+private val logger = KotlinLogging.logger {}
 
 class LoggingAdvisor : RequestResponseAdvisor {
     override fun adviseRequest(
         request: AdvisedRequest,
         context: Map<String, Any>,
     ): AdvisedRequest {
-        logger.info("Request: $request")
+        logger.info { "SystemText: ${request.systemText}" }
+        logger.info { "UserText: ${request.userText}" }
         return request
     }
 
@@ -19,12 +21,9 @@ class LoggingAdvisor : RequestResponseAdvisor {
         response: ChatResponse,
         context: Map<String, Any>,
     ): ChatResponse {
-        logger.info("Token: " + response.metadata.usage.totalTokens)
-
+        logger.info {
+            "Token: " + response.metadata.usage.totalTokens
+        }
         return response
-    }
-
-    companion object {
-        private val logger: Logger = LoggerFactory.getLogger(LoggingAdvisor::class.java)
     }
 }

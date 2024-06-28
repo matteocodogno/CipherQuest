@@ -2,17 +2,14 @@ spring:
   application:
     name: CipherQuest
   ai:
-    ollama:
-      base-url: http://localhost:11434
+    openai:
       chat:
         options:
-          model: llama3
-          keep-alive: 10m
-          temperature: 0.8
+          model: gpt-4o
       embedding:
         options:
-          model: llama3
-          keep-alive: 10m
+          model: text-embedding-3-small
+      api-key: ${OPENAI_API_KEY}
     vectorstore:
       pgvector:
         index-type: HNSW
@@ -25,7 +22,6 @@ spring:
 application:
   name: '@project.name@'
   version: '@project.version@'
-
 
 info:
   app:
