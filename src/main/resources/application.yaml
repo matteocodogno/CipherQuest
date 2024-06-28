@@ -2,18 +2,10 @@ spring:
   application:
     name: CipherQuest
   ai:
-    ollama:
-      base-url: http://localhost:11434
-      chat:
-        options:
-          model: llama3
-          keep-alive: 10m
-          temperature: 0.8
-      embedding:
-        enabled: false
     openai:
       chat:
-        enabled: false
+        options:
+          model: gpt-4o
       embedding:
         options:
           model: text-embedding-3-small
