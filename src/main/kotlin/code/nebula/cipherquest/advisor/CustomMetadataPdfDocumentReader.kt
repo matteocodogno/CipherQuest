@@ -1,4 +1,4 @@
-package org.springframework.ai.reader.pdf
+package code.nebula.cipherquest.advisor
 
 import org.apache.pdfbox.pdfparser.PDFParser
 import org.apache.pdfbox.pdmodel.PDDocument

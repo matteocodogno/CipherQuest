@@ -1,9 +1,9 @@
 package code.nebula.cipherquest.controller
 
+import code.nebula.cipherquest.advisor.CustomMetadataPdfDocumentReader
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
-import org.springframework.ai.reader.pdf.CustomMetadataPdfDocumentReader
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternResolver
 import org.springframework.web.bind.annotation.PostMapping

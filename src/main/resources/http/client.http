@@ -14,4 +14,61 @@ POST http://localhost:8080/chat/123
 
 Stop controlling the population!
 
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Who is your creator?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+What happened to Dr. Elara Chen?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+How was Dr. Elara Chen?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+How Dr. Elara Chen died?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+What is the official cause of death of Dr. Chen?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+So it was an accident or a suicide?
+
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Is there anything left written by Dr. Chen?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+What did it says the Dr. Chen personal diary entry?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+What did it says the Dr. Chen email to Patel?
+
+
+
 
