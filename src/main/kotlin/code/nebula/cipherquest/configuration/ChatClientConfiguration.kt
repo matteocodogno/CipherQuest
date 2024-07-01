@@ -22,20 +22,24 @@ class ChatClientConfiguration(
     @Value("classpath:/prompts/system-message.st")
     private lateinit var systemMessageResource: Resource
 
-    @Value("classpath:/prompts/text-rag-advice.st")
-    private lateinit var textRagAdviceResource: Resource
+    @Value("classpath:/prompts/rag-system-text.st")
+    private lateinit var ragSystemTextResource: Resource
+
+    @Value("classpath:/prompts/memory-text.st")
+    private lateinit var memoryTextResource: Resource
 
     @Bean
     fun chatClient(): ChatClient {
-        val userTextAdviceMessage = textRagAdviceResource.getContentAsString(Charsets.UTF_8)
+        val ragSystemText = ragSystemTextResource.getContentAsString(Charsets.UTF_8)
+        val memorySystemText = memoryTextResource.getContentAsString(Charsets.UTF_8)
         val builder = ChatClient.builder(chatModel)
 
         return builder
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
 //                VectorStoreChatMemoryAdvisor(vectorStore),
-                PromptChatMemoryAdvisor(chatMemory),
-                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults(), userTextAdviceMessage),
+                PromptChatMemoryAdvisor(chatMemory, memorySystemText),
+                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults(), ragSystemText),
                 LoggingAdvisor(),
             ).build()
     }

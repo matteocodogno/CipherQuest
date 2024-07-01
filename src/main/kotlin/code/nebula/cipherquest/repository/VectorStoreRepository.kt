@@ -8,7 +8,7 @@ class VectorStoreRepository(
     val jdbcTemplate: JdbcTemplate,
 ) {
     fun existsDocumentWithFileName(source: String?): Boolean {
-        val sql = "SELECT EXISTS (SELECT 1 FROM vector_store WHERE metadata->>'source' = ?)"
+        val sql = "SELECT EXISTS (SELECT 1 FROM vector_store WHERE metadata->>'file_name' = ?)"
         return jdbcTemplate.queryForObject(sql, Boolean::class.java, source)
     }
 }
