@@ -12,6 +12,14 @@ class UserLevelRepository(
         return jdbcTemplate.update(sql, userId)
     }
 
+    fun update(
+        userId: String,
+        level: Int?,
+    ): Int {
+        val sql = "UPDATE user_level SET level = ? WHERE user_id = ?;"
+        return jdbcTemplate.update(sql, level, userId)
+    }
+
     fun getLevelByUser(userId: String): Int {
         val sql = "SELECT ul.level from user_level ul WHERE ul.user_id = ?"
         return jdbcTemplate.queryForObject(sql, Int::class.java, userId)

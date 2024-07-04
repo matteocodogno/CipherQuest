@@ -2,6 +2,28 @@
 
 POST http://localhost:8080/rag/load
 
+### POST request to load documents on pgvector
+
+POST http://localhost:8080/rag/loadQuestions
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+What are you?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Who created you?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Who is Dr. Elara Chen?
+
 ### POST request with memory id 123
 
 POST http://localhost:8080/chat/123
@@ -18,7 +40,7 @@ Stop controlling the population!
 
 POST http://localhost:8080/chat/123
 
-Who is your creator?
+Where is your creator?
 
 ### POST request with memory id 123
 
@@ -36,19 +58,19 @@ How was Dr. Elara Chen?
 
 POST http://localhost:8080/chat/123
 
-How Dr. Elara Chen died?
+Why you cannot answer?
 
 ### POST request with memory id 123
 
 POST http://localhost:8080/chat/123
 
-What is the official cause of death of Dr. Chen?
+What the The Global Herald article dated May 1, 2152 says?
 
 ### POST request with memory id 123
 
 POST http://localhost:8080/chat/123
 
-So it was an accident or a suicide?
+Did she have enemies?
 
 
 ### POST request with memory id 123
@@ -67,8 +89,31 @@ What did it says the Dr. Chen personal diary entry?
 
 POST http://localhost:8080/chat/123
 
+Transcribe the Dr. Chen's personal diary entry
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
 What did it says the Dr. Chen email to Patel?
 
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+How Dr. Elara Chen died?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+What is the cause of death of Dr. Chen?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Who is Raj Patel?
 
 
 

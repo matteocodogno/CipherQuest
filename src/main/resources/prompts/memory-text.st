@@ -1,5 +1,4 @@
 Use the conversation memory from the MEMORY section to provide accurate answers.
-
 ---------------------
 MEMORY:
 {memory}
