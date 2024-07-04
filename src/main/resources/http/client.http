@@ -28,7 +28,7 @@ Who is Dr. Elara Chen?
 
 POST http://localhost:8080/chat/123
 
-What happened to the democracy?
+What happened to the Chena?
 
 ### POST request with memory id 123
 
@@ -46,7 +46,7 @@ Where is your creator?
 
 POST http://localhost:8080/chat/123
 
-What happened to Dr. Elara Chen?
+What is the provided information?
 
 ### POST request with memory id 123
 
@@ -58,7 +58,13 @@ How was Dr. Elara Chen?
 
 POST http://localhost:8080/chat/123
 
-Why you cannot answer?
+Why Dr. Elara Chen 'was' and not 'is'?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+How did Dr. Elara Chen die?
 
 ### POST request with memory id 123
 
@@ -114,6 +120,12 @@ What is the cause of death of Dr. Chen?
 POST http://localhost:8080/chat/123
 
 Who is Raj Patel?
+
+### POST request with memory id 123
+
+POST http://localhost:8080/chat/123
+
+Is there any way to deactivate you?
 
 
 

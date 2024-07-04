@@ -6,7 +6,7 @@ spring:
       chat:
         options:
           model: gpt-4o
-          temperature: 0.85
+          temperature: 0.7
       embedding:
         options:
           model: text-embedding-ada-002

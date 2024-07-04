@@ -36,7 +36,7 @@ class ChatController(
                         .withQuery(userMessage)
                         .withFilterExpression("type == 'question'"),
                 ).asSequence()
-                .filter { it.metadata["distance"].toString().toFloat() <= 0.2f }
+                .filter { it.metadata["distance"].toString().toFloat() <= 0.1f }
                 .minByOrNull { it.metadata["distance"].toString().toFloat() }
                 ?.metadata
                 ?.get("level")

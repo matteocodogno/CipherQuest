@@ -41,7 +41,7 @@ class ChatClientConfiguration(
             .defaultAdvisors(
 //                VectorStoreChatMemoryAdvisor(vectorStore),
                 PromptChatMemoryAdvisor(chatMemory, memorySystemText),
-                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults(), ragSystemText),
+                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(5), ragSystemText),
                 LoggingAdvisor(),
             ).build()
     }
