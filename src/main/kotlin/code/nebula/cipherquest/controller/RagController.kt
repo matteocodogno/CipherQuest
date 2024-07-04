@@ -20,6 +20,12 @@ class RagController(
     val resourceLoader: ResourceLoader,
     val resourcePatternResolver: ResourcePatternResolver,
 ) {
+    val levelUpQuestionList =
+        listOf(
+            LevelUpQuestion(2, "How Dr. Elara Chen died?"),
+            LevelUpQuestion(3, "What is the Dr. Elara Chen's first research paper?"),
+        )
+
     @PostMapping("/load")
     fun load() {
         val documents: List<Document> =
@@ -52,27 +58,25 @@ class RagController(
     @PostMapping("/loadQuestions")
     fun loadQuestions() {
         val documents: List<Document> =
-            listOf(
-                LevelUpQuestion(2, "How Dr. Elara Chen died?"),
-                LevelUpQuestion(3, "What is the Dr. Elara Chen's first research paper?"),
-            ).filterNot { q ->
-                vectorStoreService.existsDocumentWithFileName(q.question)
-            }.map { d ->
-                Document(
-                    d.question,
-                    mapOf<String, Any>(
-                        "type" to "question",
-                        "level" to d.level,
-                        "filename" to d.question,
-                    ),
-                )
-            }
+            levelUpQuestionList
+                .filterNot { q ->
+                    vectorStoreService.existsDocumentWithFileName(q.question)
+                }.map { d ->
+                    Document(
+                        d.question,
+                        mapOf<String, Any>(
+                            "type" to "question",
+                            "level" to d.level,
+                            "filename" to d.question,
+                        ),
+                    )
+                }
 
         if (documents.isNotEmpty()) {
-            logger.info { "Loading ${documents.size} documents" }
+            logger.info { "Loading ${documents.size} questions" }
             vectorStoreService.loadDocument(documents)
         } else {
-            logger.info { "No new documents to load" }
+            logger.info { "No new questions to load" }
         }
     }
 }

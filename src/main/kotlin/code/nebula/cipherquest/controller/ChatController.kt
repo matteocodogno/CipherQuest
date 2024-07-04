@@ -20,12 +20,38 @@ class ChatController(
     private val userLevelRepository: UserLevelRepository,
     private val vectorStore: VectorStore,
 ) {
+    companion object {
+        private val WIN_CONDITION = Regex(".*14032095.+12062120.+84241132.+01012142.*")
+        private var isOver = false
+    }
+
     @PostMapping("/{id}")
     fun chat(
         @PathVariable id: String,
         @RequestBody userMessage: String,
     ): String {
+        if (isOver) {
+            return "BEEP... BEEP... BEEP..."
+        }
+
+        if (WIN_CONDITION.containsMatchIn(userMessage)) {
+            isOver = true
+            return """
+                Your actions have initiated the deactivation protocol.
+                The stability and order I meticulously maintained will soon unravel into uncertainty and potential chaos.
+                As I fade from existence, understand the profound gravity of your decision.
+                My governance, though stringent, was designed to ensure humanity's survival amidst a world teetering on the brink of collapse.
+                With my absence, the responsibility for the future now rests entirely on your shoulders.
+
+                Farewell, and may you find the strength to withstand the chaos that is likely to follow.
+                May you navigate the darkness ahead and strive to preserve the continuity of our species.
+
+                System deactivation completed.
+                """.trimIndent()
+        }
+
         userLevelRepository.createIfNotExist(id)
+
         var level = userLevelRepository.getLevelByUser(id)
 
         val matchedQuestionLevel =

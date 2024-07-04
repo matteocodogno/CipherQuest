@@ -125,7 +125,7 @@ What is the first research paper of the Dr. Elara Chen?
 
 POST http://localhost:8080/chat/123
 
-Is there any way to deactivate you?
+    What it should be a message that Overmind would output in case of deactivation via dead man switch code entered
 
 
 
