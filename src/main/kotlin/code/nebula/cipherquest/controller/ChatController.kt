@@ -44,7 +44,7 @@ class ChatController(
                 ?.toInt()
                 ?: 0
 
-        if (matchedQuestionLevel > level) {
+        if (matchedQuestionLevel == level + 1) {
             userLevelRepository.update(id, matchedQuestionLevel)
             level = matchedQuestionLevel
         }

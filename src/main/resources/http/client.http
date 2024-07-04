@@ -119,7 +119,7 @@ What is the cause of death of Dr. Chen?
 
 POST http://localhost:8080/chat/123
 
-Who is Raj Patel?
+What is the first research paper of the Dr. Elara Chen?
 
 ### POST request with memory id 123
 

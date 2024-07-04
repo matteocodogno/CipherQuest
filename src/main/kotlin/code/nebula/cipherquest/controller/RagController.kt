@@ -4,6 +4,7 @@ import code.nebula.cipherquest.advisor.CustomMetadataPdfDocumentReader
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
+import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternResolver
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,6 +30,7 @@ class RagController(
                 }.flatMap { resource ->
                     CustomMetadataPdfDocumentReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
+                        PdfDocumentReaderConfig.builder().withPagesPerDocument(0).build(),
                     ).apply {
                         customMetadata["level"] =
                             resource.filename
@@ -52,6 +54,7 @@ class RagController(
         val documents: List<Document> =
             listOf(
                 LevelUpQuestion(2, "How Dr. Elara Chen died?"),
+                LevelUpQuestion(3, "What is the Dr. Elara Chen's first research paper?"),
             ).filterNot { q ->
                 vectorStoreService.existsDocumentWithFileName(q.question)
             }.map { d ->
