@@ -1,7 +1,6 @@
 import { component$ } from "@builder.io/qwik";
-import AiAvatarImage from "~/media/ai-avatar.jpeg?jsx";
-import HumanAvatarImage from "~/media/human-avatar.jpeg?jsx";
 import Avatar from '~/components/avatar';
+import { formatDistanceToNow } from 'date-fns';
 
 export default component$(({
   user,
@@ -46,6 +45,15 @@ export default component$(({
                 )
               }
             </div>
+          </div>
+          <div class="flex justify-start px-4">
+            <span class="m-0 font-normal text-xs overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
+              {
+                formatDistanceToNow(new Date(timestamp), {
+                  addSuffix: true,
+                })
+              }
+            </span>
           </div>
         </div>
       </div>
