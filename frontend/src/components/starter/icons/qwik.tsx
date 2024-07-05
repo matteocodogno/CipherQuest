@@ -1,4 +1,4 @@
-import Logo from "../../../media/logo.jpeg";
+import Logo from "../../../media/th.jpeg";
 
 export const QwikLogo = ({
   width = 35,
