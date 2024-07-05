@@ -1,5 +1,6 @@
 import { $, component$, createContextId, useContextProvider, useSignal, useStore } from "@builder.io/qwik";
 import { routeAction$ } from '@builder.io/qwik-city';
+import { MatSendOutlined } from '@qwikest/icons/material';
 import { getRandomArbitrary } from '~/utility/number';
 import Comic from '~/components/comic';
 import Avatar from '~/components/avatar';
@@ -98,7 +99,11 @@ export default component$(() => {
             bind:value={prompt}/>{" "}
         </div>
 
-        <button type="submit" class="button-dark">Ask</button>
+        <span>
+          <button type="submit" class="inline-flex items-center justify-center relative box-border outline-0 border-0 m-0 cursor-pointer select-none align-middle no-underline text-center text-base p-2 overflow-visible rounded-lg h-10 w-10 bg-blue-800 text-black">
+            <MatSendOutlined />
+          </button>
+        </span>
       </form>
     </div>
   );
