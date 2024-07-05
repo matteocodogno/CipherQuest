@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import Avatar from '~/components/avatar';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -15,6 +15,16 @@ export default component$(({
   isLoading: boolean,
   message: string,
 }) => {
+  const time = useSignal(formatDistanceToNow(new Date(timestamp), {addSuffix: true}));
+
+  useVisibleTask$(({ cleanup }) => {
+    const update = () => {
+      time.value = formatDistanceToNow(new Date(timestamp), {addSuffix: true});
+    };
+    const id = setInterval(update, 60000);
+    cleanup(() => clearInterval(id));
+  });
+
   return (
     <div class={`flex grow-0 shrink-0 basis-auto ${role==='bot' ? 'items-start' : 'items-end'}`}>
       <div class={`flex flex-row gap-4 items-start max-w-lg ml-0 ${role==='user' ? 'flex-row-reverse ml-auto' : 'mr-auto'}`}>
@@ -48,11 +58,7 @@ export default component$(({
           </div>
           <div class="flex justify-start px-4">
             <span class="m-0 font-normal text-xs overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
-              {
-                formatDistanceToNow(new Date(timestamp), {
-                  addSuffix: true,
-                })
-              }
+              { time.value }
             </span>
           </div>
         </div>
