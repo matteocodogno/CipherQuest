@@ -18,6 +18,9 @@ export default component$(() => {
 
         <div class="flex flex-row gap-4 items-center flex-auto justify-end">
           <Timer as="h4" startDate={new Date()} />
+          {/* TODO: reset button. it should ask confirmation and reset the entire game */}
+          {/* TODO: number of questions, we should save a rank of the best player */}
+          {/* TODO: add button to show up a modal / drawer that explains the rules of the game */}
         </div>
       </div>
     </header>
