@@ -23,7 +23,7 @@ export default component$(({
           <div
             class={`
             ${isLoading ? '':"py-2"}
-            ${role==='bot' ? 'bg-gray-900':'bg-[#7578ff]'}
+            ${role==='bot' ? 'bg-neutral-800':'bg-[#7578ff]'}
             shadow-ai rounded-2xl gap-2 overflow-hidden px-4 bg-none text-neutral-100
           `}
           >
