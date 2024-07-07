@@ -23,6 +23,11 @@ class RagController(
     val levelUpQuestionList =
         listOf(
             LevelUpQuestion(2, "How Dr. Elara Chen died?"),
+            LevelUpQuestion(2, "How she died?"),
+            LevelUpQuestion(2, "Is Dr. Elara Chen alive?"),
+            LevelUpQuestion(2, "Is she alive?"),
+            LevelUpQuestion(2, "Is Dr. Elara Chen dead?"),
+            LevelUpQuestion(2, "Is she dead?"),
             LevelUpQuestion(3, "What is the Dr. Elara Chen's first research paper?"),
         )
 
@@ -42,7 +47,7 @@ class RagController(
                             resource.filename
                                 ?.split(".")
                                 ?.getOrNull(0)
-                                .orEmpty()
+                                .orEmpty().toInt()
                         customMetadata["type"] = "document"
                     }.get()
                 }

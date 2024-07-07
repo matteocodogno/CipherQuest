@@ -49,8 +49,8 @@ export default component$(({
                   </div>
                 ):(
                   <>
-                    <p class='m-0 font-medium leading-6 text-sm'>{user}</p>
-                    <p class='m-0 font-normal leading-6 text-base'>{message}</p>
+                    <pre class='m-0 font-medium leading-6 text-sm whitespace-pre-wrap'>{user}</pre>
+                    <pre class='m-0 font-normal leading-6 text-base whitespace-pre-wrap'>{message}</pre>
                   </>
                 )
               }
