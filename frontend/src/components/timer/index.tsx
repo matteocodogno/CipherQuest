@@ -1,5 +1,5 @@
 import { component$, type FunctionComponent, useSignal, useVisibleTask$ } from "@builder.io/qwik";
-import { differenceInSeconds } from 'date-fns';
+import { differenceInMinutes } from 'date-fns';
 
 export default component$(
   <C extends string | FunctionComponent = 'div'>({
@@ -12,7 +12,7 @@ export default component$(
   useVisibleTask$(({ cleanup }) => {
     const update = () => {
       const leftDate = new Date()
-      time.value = differenceInSeconds(leftDate, rightDate);
+      time.value = differenceInMinutes(leftDate, rightDate);
     };
     const id = setInterval(update, 1000);
     cleanup(() => clearInterval(id));

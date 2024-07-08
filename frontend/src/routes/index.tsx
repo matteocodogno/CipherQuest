@@ -1,4 +1,12 @@
-import { $, component$, createContextId, useContextProvider, useSignal, useStore } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  createContextId,
+  useContextProvider,
+  useSignal,
+  useStore,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import { routeAction$ } from '@builder.io/qwik-city';
 import { MatSendOutlined } from '@qwikest/icons/material';
 import { getRandomArbitrary } from '~/utility/number';
@@ -32,6 +40,7 @@ export default component$(() => {
   const askToBot = useAskToBot();
   const prompt = useSignal("");
   const isLoading = useSignal(false);
+  const chatRef = useSignal<Element>();
   const store = useStore<MessageStore>({
     messages: [{
       date: new Date().toISOString(),
@@ -46,6 +55,21 @@ How may I assist you today?
   });
   useContextProvider(ChatContext, store);
 
+  useVisibleTask$(async () => {
+    if (chatRef.value) {
+      const observer = new MutationObserver((mutations) => {
+        const ele = mutations
+          .filter(mutation => mutation.type === 'childList' && mutation.addedNodes.length > 0 && mutation.addedNodes[0].firstChild)
+          .map(mutation => mutation.addedNodes[0] as HTMLElement)
+          .reduce((max, element) => chatRef.value!.scrollHeight + element.scrollHeight > chatRef.value!.scrollHeight + max.scrollHeight ? element : max)
+
+        chatRef.value!.scrollTop = chatRef.value!.scrollHeight + ele.scrollHeight;
+      });
+
+      observer.observe(chatRef.value, { childList: true, subtree: true });
+    }
+  });
+
   const handleSubmit = $(async () => {
     isLoading.value = true;
     const query = prompt.value;
@@ -55,7 +79,6 @@ How may I assist you today?
     store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
 
     const {value} = await askToBot.submit({query, userId});
-    console.log('value', value);
 
     store.messages[store.messages.length - 1].text = value as string;
     isLoading.value = false;
@@ -63,7 +86,7 @@ How may I assist you today?
 
   return (
     <div class="flex flex-col h-full gap-y-4 my-8 w-4/6">
-      <div class="flex flex-col h-full bg-neutral-900 rounded-lg p-6 gap-4 overflow-y-auto">
+      <div ref={chatRef} class="flex flex-col h-full bg-neutral-900 rounded-lg p-6 gap-4 overflow-y-auto">
         {
           store.messages.map((message, index) => (
             <Comic
