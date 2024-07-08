@@ -35,7 +35,7 @@ export const useAskToBot = routeAction$<string>(async (data) => {
 });
 
 export default component$(() => {
-  const userId = getRandomArbitrary(100000, 999999);
+  const userId = getRandomArbitrary(1000000000, 9999999999);
 
   const askToBot = useAskToBot();
   const prompt = useSignal("");

@@ -5,8 +5,11 @@ import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
+import org.springframework.ai.chat.prompt.SystemPromptTemplate
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.Resource
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,6 +22,8 @@ class ChatController(
     private val chatClient: ChatClient,
     private val userLevelRepository: UserLevelRepository,
     private val vectorStore: VectorStore,
+    @Value("classpath:/prompts/system-message.st")
+    private val systemMessageResource: Resource
 ) {
     companion object {
         private val WIN_CONDITION = Regex(".*14032095.+12062120.+84241132.+01012142.*")
@@ -77,13 +82,15 @@ class ChatController(
 
         return chatClient
             .prompt()
+            .system { sp -> sp.param("userId", id) }
             .user(userMessage)
             .advisors { a ->
                 a
                     .param(CHAT_MEMORY_CONVERSATION_ID_KEY, id)
                     .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100)
                     .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type != 'question' && level <= '$level'")
-            }.call()
+            }
+            .call()
             .content()
     }
 }
