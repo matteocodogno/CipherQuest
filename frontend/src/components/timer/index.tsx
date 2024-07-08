@@ -14,11 +14,11 @@ export default component$(
       const leftDate = new Date()
       time.value = differenceInMinutes(leftDate, rightDate);
     };
-    const id = setInterval(update, 1000);
+    const id = setInterval(update, 60000);
     cleanup(() => clearInterval(id));
   });
 
   return (
-    <Cmp>Game started {time} seconds ago</Cmp>
+    <Cmp>Game started {time} minutes ago</Cmp>
   );
 });
