@@ -2,6 +2,7 @@ import {
   $,
   component$,
   useComputed$,
+  useContext,
   useContextProvider,
   useSignal,
   useStore,
@@ -9,10 +10,10 @@ import {
 } from "@builder.io/qwik";
 import { routeAction$ } from '@builder.io/qwik-city';
 import { FaPaperPlaneRegular } from '@qwikest/icons/font-awesome';
-import { getRandomArbitrary } from '~/utility/number';
 import Comic from '~/components/comic';
 import Avatar from '~/components/avatar';
 import { ChatContext, type MessageStore } from '~/context/chat-context';
+import { UserContext } from '~/context/user-context';
 
 export const useAskToBot = routeAction$<string>(async (data) => {
   const response = await fetch(`http://localhost:8080/chat/${data.userId}`, {
@@ -24,7 +25,7 @@ export const useAskToBot = routeAction$<string>(async (data) => {
 });
 
 export default component$(() => {
-  const userId = getRandomArbitrary(1000000000, 9999999999);
+  const user = useContext(UserContext);
 
   const askToBot = useAskToBot();
   const prompt = useSignal("");
@@ -68,7 +69,7 @@ How may I assist you today?
     store.messages = [...store.messages, {date: new Date().toISOString(), role: 'user', text: query}];
     store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
 
-    const {value} = await askToBot.submit({query, userId});
+    const {value} = await askToBot.submit({query, userId: user.id});
 
     store.messages[store.messages.length - 1].text = value as string;
     isLoading.value = false;
@@ -96,7 +97,7 @@ How may I assist you today?
         preventdefault:submit
         onSubmit$={handleSubmit}>
         <Avatar role='user' size='medium' />
-        <input class='flex-auto' type='hidden' name='userId' value={userId} />
+        <input class='flex-auto' type='hidden' name='userId' value={user.id} />
         <div class={`
             font-normal text-base text-neutral-100 box-border cursor-text inline-flex items-center min-h-10 relative
             rounded-lg border border-solid border-neutral-700 flex-auto shadow-1 before:content-[' '] before:absolute
