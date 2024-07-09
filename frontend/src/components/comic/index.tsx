@@ -1,6 +1,7 @@
 import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import Avatar from '~/components/avatar';
 import { formatDistanceToNow } from 'date-fns';
+import Loader from '~/components/loader';
 
 export default component$(({
   user,
@@ -41,12 +42,7 @@ export default component$(({
             <div class='flex flex-col gap-2'>
               {
                 isLoading ? (
-                  <div class="lds-ellipsis">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
+                  <Loader />
                 ):(
                   <>
                     <pre class='m-0 font-medium leading-6 text-sm whitespace-pre-wrap'>{user}</pre>
