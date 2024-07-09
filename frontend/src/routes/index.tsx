@@ -1,7 +1,7 @@
 import {
   $,
   component$,
-  createContextId, useComputed$,
+  useComputed$,
   useContextProvider,
   useSignal,
   useStore,
@@ -12,18 +12,7 @@ import { FaPaperPlaneRegular } from '@qwikest/icons/font-awesome';
 import { getRandomArbitrary } from '~/utility/number';
 import Comic from '~/components/comic';
 import Avatar from '~/components/avatar';
-
-type Message = {
-  date: string;
-  role: 'user' | 'bot';
-  text: string;
-};
-
-type MessageStore = {
-  messages: Message[];
-};
-
-export const ChatContext = createContextId<MessageStore>('ChatContext');
+import { ChatContext, type MessageStore } from '~/context/chat-context';
 
 export const useAskToBot = routeAction$<string>(async (data) => {
   const response = await fetch(`http://localhost:8080/chat/${data.userId}`, {
