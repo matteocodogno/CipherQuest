@@ -38,6 +38,9 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        action: {
+          disabled: "#ffffff4d",
+        },
       },
       borderRadius: {
         base: "var(--border-radius)",

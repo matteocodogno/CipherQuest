@@ -1,14 +1,14 @@
 import {
   $,
   component$,
-  createContextId,
+  createContextId, useComputed$,
   useContextProvider,
   useSignal,
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
 import { routeAction$ } from '@builder.io/qwik-city';
-import { MatSendOutlined } from '@qwikest/icons/material';
+import { FaPaperPlaneRegular } from '@qwikest/icons/font-awesome';
 import { getRandomArbitrary } from '~/utility/number';
 import Comic from '~/components/comic';
 import Avatar from '~/components/avatar';
@@ -54,6 +54,7 @@ How may I assist you today?
     }],
   });
   useContextProvider(ChatContext, store);
+  const sendDisabled = useComputed$(() => isLoading.value || prompt.value === "");
 
   useVisibleTask$(async () => {
     if (chatRef.value) {
@@ -123,8 +124,15 @@ How may I assist you today?
         </div>
 
         <span>
-          <button type="submit" class="inline-flex items-center justify-center relative box-border outline-0 border-0 m-0 cursor-pointer select-none align-middle no-underline text-center text-base p-2 overflow-visible rounded-lg h-10 w-10 bg-blue-800 text-black">
-            <MatSendOutlined />
+          <button
+            disabled={sendDisabled.value}
+            type="submit"
+            class={`
+              ${sendDisabled.value ? 'pointer-events-none cursor-default bg-transparent text-action-disabled' : 'bg-blue-800 text-black'}
+              inline-flex items-center justify-center relative box-border outline-0 border-0 m-0 cursor-pointer select-none
+              align-middle no-underline text-center text-2xl p-2 overflow-visible rounded-lg h w-10
+         `}>
+            <FaPaperPlaneRegular />
           </button>
         </span>
       </form>
