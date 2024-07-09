@@ -1,27 +1,8 @@
 package code.nebula.cipherquest.repository
 
-import org.springframework.jdbc.core.JdbcTemplate
+import code.nebula.cipherquest.repository.entities.UserLevel
+import org.springframework.data.repository.ListCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-class UserLevelRepository(
-    val jdbcTemplate: JdbcTemplate,
-) {
-    fun createIfNotExist(userId: String): Int {
-        val sql = "INSERT INTO user_level (user_id) VALUES (?) ON CONFLICT (user_id) DO NOTHING;"
-        return jdbcTemplate.update(sql, userId)
-    }
-
-    fun update(
-        userId: String,
-        level: Int?,
-    ): Int {
-        val sql = "UPDATE user_level SET level = ? WHERE user_id = ?;"
-        return jdbcTemplate.update(sql, level, userId)
-    }
-
-    fun getLevelByUser(userId: String): Int {
-        val sql = "SELECT ul.level from user_level ul WHERE ul.user_id = ?"
-        return jdbcTemplate.queryForObject(sql, Int::class.java, userId)
-    }
-}
+interface UserLevelRepository : ListCrudRepository<UserLevel, String>

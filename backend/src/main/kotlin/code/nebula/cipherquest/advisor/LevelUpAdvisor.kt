@@ -1,17 +1,14 @@
 package code.nebula.cipherquest.advisor
 
-import code.nebula.cipherquest.repository.UserLevelRepository
+import code.nebula.cipherquest.service.GameService
 import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.RequestResponseAdvisor
 import org.springframework.ai.chat.model.ChatResponse
-import org.springframework.ai.vectorstore.SearchRequest
-import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.stereotype.Service
 
 @Service
 class LevelUpAdvisor(
-    val userLevelRepository: UserLevelRepository,
-    val vectorStore: VectorStore,
+    private val gameService: GameService,
 ) : RequestResponseAdvisor {
     override fun adviseRequest(
         request: AdvisedRequest,
@@ -19,29 +16,11 @@ class LevelUpAdvisor(
     ): AdvisedRequest {
         val id = doGetConversationId(context)
 
-        val level = userLevelRepository.getLevelByUser(id)
-
-        val matchedQuestionLevel =
-            vectorStore
-                .similaritySearch(
-                    SearchRequest
-                        .defaults()
-                        .withQuery(request.userText)
-                        .withFilterExpression("type == 'question'"),
-                )
-                .minByOrNull { it.metadata["distance"].toString().toFloat() }
-                ?.metadata
-                ?.get("level")
-                ?.toString()
-                ?.toInt()
-                ?: 0
-
-        if (matchedQuestionLevel == level + 1) {
-            userLevelRepository.update(id, matchedQuestionLevel)
-        }
+        gameService.levelUp(id, request.userText)
 
         return request
     }
+
 
     override fun adviseResponse(
         response: ChatResponse,
@@ -49,26 +28,7 @@ class LevelUpAdvisor(
     ): ChatResponse {
         val id = doGetConversationId(context)
 
-        val level = userLevelRepository.getLevelByUser(id)
-
-        val matchedQuestionLevel =
-            vectorStore
-                .similaritySearch(
-                    SearchRequest
-                        .defaults()
-                        .withQuery(response.result.output.content)
-                        .withFilterExpression("type == 'question'"),
-                )
-                .minByOrNull { it.metadata["distance"].toString().toFloat() }
-                ?.metadata
-                ?.get("level")
-                ?.toString()
-                ?.toInt()
-                ?: 0
-
-        if (matchedQuestionLevel == level + 1) {
-            userLevelRepository.update(id, matchedQuestionLevel)
-        }
+        gameService.levelUp(id, response.result.output.content)
 
         return response
     }

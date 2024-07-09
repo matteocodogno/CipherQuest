@@ -1,12 +1,10 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.repository.UserLevelRepository
+import code.nebula.cipherquest.service.GameService
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
-import org.springframework.ai.vectorstore.SearchRequest
-import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/chat")
 class ChatController(
     private val chatClient: ChatClient,
-    private val userLevelRepository: UserLevelRepository,
-    private val vectorStore: VectorStore,
+    private val gameService: GameService,
 ) {
     companion object {
         private val WIN_CONDITION = Regex(".*14032095.+84241132.+12062120.+01012142.*")
@@ -50,30 +47,7 @@ class ChatController(
                 """.trimIndent()
         }
 
-        userLevelRepository.createIfNotExist(id)
-
-        var level = userLevelRepository.getLevelByUser(id)
-
-        val matchedQuestionLevel =
-            vectorStore
-                .similaritySearch(
-                    SearchRequest
-                        .defaults()
-                        .withQuery(userMessage)
-                        .withFilterExpression("type == 'question'"),
-                ).asSequence()
-                .filter { it.metadata["distance"].toString().toFloat() <= 0.1f }
-                .minByOrNull { it.metadata["distance"].toString().toFloat() }
-                ?.metadata
-                ?.get("level")
-                ?.toString()
-                ?.toInt()
-                ?: 0
-
-        if (matchedQuestionLevel == level + 1) {
-            userLevelRepository.update(id, matchedQuestionLevel)
-            level = matchedQuestionLevel
-        }
+        val level = gameService.getLevelByUser(id)
 
         return chatClient
             .prompt()
@@ -83,7 +57,7 @@ class ChatController(
                 a
                     .param(CHAT_MEMORY_CONVERSATION_ID_KEY, id)
                     .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100)
-                    .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type != 'question' && level <= '$level'")
+                    .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type != 'question' && level <= $level")
             }
             .call()
             .content()
