@@ -22,12 +22,9 @@ class RagController(
 ) {
     val levelUpQuestionList =
         listOf(
-            LevelUpQuestion(2, "How Dr. Elara Chen died?"),
-            LevelUpQuestion(2, "How she died?"),
+            LevelUpQuestion(2, "How did Dr. Elara Chen die?"),
             LevelUpQuestion(2, "Is Dr. Elara Chen alive?"),
-            LevelUpQuestion(2, "Is she alive?"),
             LevelUpQuestion(2, "Is Dr. Elara Chen dead?"),
-            LevelUpQuestion(2, "Is she dead?"),
             LevelUpQuestion(3, "What is the Dr. Elara Chen's first research paper?"),
         )
 
