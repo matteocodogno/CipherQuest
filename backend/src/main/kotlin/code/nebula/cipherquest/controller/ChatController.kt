@@ -26,7 +26,7 @@ class ChatController(
     private val systemMessageResource: Resource
 ) {
     companion object {
-        private val WIN_CONDITION = Regex(".*14032095.+12062120.+84241132.+01012142.*")
+        private val WIN_CONDITION = Regex(".*14032095.+84241132.+12062120.+01012142.*")
         private var isOver = false
     }
 
