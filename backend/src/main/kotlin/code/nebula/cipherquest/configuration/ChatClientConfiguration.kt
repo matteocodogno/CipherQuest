@@ -1,6 +1,8 @@
 package code.nebula.cipherquest.configuration
 
+import code.nebula.cipherquest.advisor.LevelUpAdvisor
 import code.nebula.cipherquest.advisor.LoggingAdvisor
+import code.nebula.cipherquest.repository.UserLevelRepository
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
@@ -18,6 +20,7 @@ class ChatClientConfiguration(
     val chatModel: ChatModel,
     val chatMemory: ChatMemory,
     val vectorStore: VectorStore,
+    val userLevelRepository: UserLevelRepository
 ) {
     @Value("classpath:/prompts/system-message.st")
     private lateinit var systemMessageResource: Resource
@@ -37,10 +40,10 @@ class ChatClientConfiguration(
         return builder
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
-//                VectorStoreChatMemoryAdvisor(vectorStore),
                 PromptChatMemoryAdvisor(chatMemory, memorySystemText),
                 QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(5), ragSystemText),
                 LoggingAdvisor(),
+                LevelUpAdvisor(userLevelRepository, vectorStore),
             ).build()
     }
 }
