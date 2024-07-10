@@ -56,7 +56,7 @@ class ChatController(
             .advisors { a ->
                 a
                     .param(CHAT_MEMORY_CONVERSATION_ID_KEY, id)
-                    .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100)
+                    .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 20)
                     .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type != 'question' && level <= $level")
             }
             .call()
