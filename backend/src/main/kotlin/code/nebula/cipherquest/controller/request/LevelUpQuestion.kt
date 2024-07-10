@@ -1,4 +1,4 @@
-package code.nebula.cipherquest.controller
+package code.nebula.cipherquest.controller.request
 
 data class LevelUpQuestion(
     val level: Int,

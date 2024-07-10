@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.DocumentType
+import code.nebula.cipherquest.controller.request.LevelUpQuestion
 import code.nebula.cipherquest.service.CustomMetadataPdfDocumentReader
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
