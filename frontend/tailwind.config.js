@@ -41,6 +41,10 @@ export default {
         action: {
           disabled: "#ffffff4d",
         },
+        success: {
+          200: "#9af5e1",
+          800: "#115e56",
+        },
       },
       borderRadius: {
         base: "var(--border-radius)",

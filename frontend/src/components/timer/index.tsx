@@ -19,6 +19,6 @@ export default component$(
   });
 
   return (
-    <Cmp>Game started {time} minutes ago</Cmp>
+    <Cmp>Game started <b>{time} minutes</b> ago</Cmp>
   );
 });
