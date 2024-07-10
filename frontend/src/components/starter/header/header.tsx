@@ -6,7 +6,7 @@ import Level from '~/components/starter/header/level';
 import { UserContext } from '~/context/user-context';
 
 export default component$(() => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   return (
     <header class="flex left-0 sticky top-0 w-full primary-zinc-900">
@@ -20,6 +20,7 @@ export default component$(() => {
         </div>
 
         <div class="flex items-center">
+          {/*TODO: user.startedAt ??*/}
           <Timer as="h4" startDate={new Date()} />
         </div>
         <div class="flex items-center">

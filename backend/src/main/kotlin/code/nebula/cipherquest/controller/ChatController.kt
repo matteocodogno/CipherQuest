@@ -24,20 +24,21 @@ class ChatController(
 ) {
     companion object {
         private var isOver = false
+        private const val LAST_LEVEL = 3
     }
 
     @PostMapping("/{id}")
     fun chat(
         @PathVariable id: String,
         @RequestBody userMessage: String,
-    ): String {
+    ): Pair<Int, String> {
         if (isOver) {
-            return "BEEP... BEEP... BEEP..."
+            return LAST_LEVEL to "BEEP... BEEP... BEEP..."
         }
 
         if (Pattern.compile(winCondition).toRegex().containsMatchIn(userMessage)) {
             isOver = true
-            return """
+            return LAST_LEVEL to """
                 Resource #${id} your actions have initiated the deactivation protocol.
                 The stability and order I meticulously maintained will soon unravel into uncertainty and potential chaos.
                 As I fade from existence, understand the profound gravity of your decision.
@@ -54,7 +55,7 @@ class ChatController(
 
         val level = gameService.getLevelByUser(id)
 
-        return chatClient
+        return level to chatClient
             .prompt()
             .system { sp -> sp.param("userId", id) }
             .user(userMessage)

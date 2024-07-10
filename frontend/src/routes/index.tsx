@@ -15,17 +15,23 @@ import Avatar from '~/components/avatar';
 import { ChatContext, type MessageStore } from '~/context/chat-context';
 import { UserContext } from '~/context/user-context';
 
-export const useAskToBot = routeAction$<string>(async (data) => {
+type JSONResponse = {
+  first: number,
+  second: string,
+}
+
+export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
   const response = await fetch(`http://localhost:8080/chat/${data.userId}`, {
     method: "POST",
     body: data.query as string,
   });
 
-  return await response.text()
+  const responseString = await response.text();
+  return JSON.parse(responseString);
 });
 
 export default component$(() => {
-  const user = useContext(UserContext);
+  const { user, setLevel } = useContext(UserContext);
 
   const askToBot = useAskToBot();
   const prompt = useSignal("");
@@ -69,9 +75,10 @@ How may I assist you today?
     store.messages = [...store.messages, {date: new Date().toISOString(), role: 'user', text: query}];
     store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
 
-    const {value} = await askToBot.submit({query, userId: user.id});
+    const {value: {first: level, second: answer}} = await askToBot.submit({query, userId: user.id});
 
-    store.messages[store.messages.length - 1].text = value as string;
+    setLevel(level);
+    store.messages[store.messages.length - 1].text = answer as string;
     isLoading.value = false;
   });
 
