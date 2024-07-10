@@ -5,10 +5,7 @@ import code.nebula.cipherquest.advisor.LoggingAdvisor
 import code.nebula.cipherquest.advisor.PgVectorStoreChatMemoryAdvisor
 import code.nebula.cipherquest.service.GameService
 import org.springframework.ai.chat.client.ChatClient
-import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
-import org.springframework.ai.chat.client.advisor.VectorStoreChatMemoryAdvisor
-import org.springframework.ai.chat.memory.ChatMemory
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
@@ -20,7 +17,6 @@ import org.springframework.core.io.Resource
 @Configuration
 class ChatClientConfiguration(
     val chatModel: ChatModel,
-    val chatMemory: ChatMemory,
     val vectorStore: VectorStore,
     private val gameService: GameService,
 ) {
@@ -45,8 +41,8 @@ class ChatClientConfiguration(
                 PgVectorStoreChatMemoryAdvisor(vectorStore, memorySystemText),
 //                PromptChatMemoryAdvisor(chatMemory, memorySystemText),
                 QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(5), ragSystemText),
-                LoggingAdvisor(),
                 LevelUpAdvisor(gameService),
+                LoggingAdvisor(),
             ).build()
     }
 }
