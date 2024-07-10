@@ -1,4 +1,4 @@
-package code.nebula.cipherquest.advisor
+package code.nebula.cipherquest.service
 
 import org.apache.pdfbox.pdfparser.PDFParser
 import org.apache.pdfbox.pdmodel.PDDocument
