@@ -1,7 +1,7 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.DocumentType
 import code.nebula.cipherquest.advisor.CustomMetadataPdfDocumentReader
+import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
@@ -36,7 +36,8 @@ class RagController(
                 .getResources("classpath:documents/*")
                 .filterNot { resource ->
                     vectorStoreService.existsDocumentWithFileName(resource.filename ?: "")
-                }.flatMap { resource ->
+                }
+                .flatMap { resource ->
                     CustomMetadataPdfDocumentReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
                         PdfDocumentReaderConfig.builder().withPagesPerDocument(0).build(),

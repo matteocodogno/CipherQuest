@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.DocumentType
+import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.vectorstore.SearchRequest

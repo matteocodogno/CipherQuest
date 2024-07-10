@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.DocumentType
+import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.GameService
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY

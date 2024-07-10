@@ -15,7 +15,7 @@
  */
 package code.nebula.cipherquest.advisor
 
-import code.nebula.cipherquest.DocumentType
+import code.nebula.cipherquest.models.DocumentType
 import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor
 import org.springframework.ai.chat.messages.Message
