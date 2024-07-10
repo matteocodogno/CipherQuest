@@ -15,6 +15,7 @@
  */
 package code.nebula.cipherquest.advisor
 
+import code.nebula.cipherquest.DocumentType
 import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor
 import org.springframework.ai.chat.messages.Message
@@ -57,7 +58,7 @@ class PgVectorStoreChatMemoryAdvisor : AbstractChatMemoryAdvisor<VectorStore?> {
         val searchRequest = SearchRequest.query(request.userText())
             .withTopK(this.doGetChatMemoryRetrieveSize(context))
             .withFilterExpression(
-                DOCUMENT_METADATA_CONVERSATION_ID + "=='" + this.doGetConversationId(context) + "' && type == 'memory'"
+                DOCUMENT_METADATA_CONVERSATION_ID + "=='" + this.doGetConversationId(context) + "' && type == '${DocumentType.MEMORY}'"
             )
 
         val documents =
@@ -112,7 +113,7 @@ class PgVectorStoreChatMemoryAdvisor : AbstractChatMemoryAdvisor<VectorStore?> {
                 val metadata = HashMap(if (message.metadata != null) message.metadata else HashMap())
                 metadata[DOCUMENT_METADATA_CONVERSATION_ID] = conversationId
                 metadata[DOCUMENT_METADATA_MESSAGE_TYPE] = message.messageType.name
-                metadata["type"] = "memory"
+                metadata["type"] = DocumentType.MEMORY
                 val doc = Document(message.content, metadata)
                 doc
             }
@@ -125,16 +126,11 @@ class PgVectorStoreChatMemoryAdvisor : AbstractChatMemoryAdvisor<VectorStore?> {
         private const val DOCUMENT_METADATA_MESSAGE_TYPE = "messageType"
 
         private val DEFAULT_SYSTEM_TEXT_ADVISE = """
-
 			Use the long term conversation memory from the LONG_TERM_MEMORY section to provide accurate answers.
-
 			---------------------
 			LONG_TERM_MEMORY:
 			{long_term_memory}
 			---------------------
-
-
-
 			""".trimIndent()
     }
 }

@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.service
 
+import code.nebula.cipherquest.DocumentType
 import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.vectorstore.SearchRequest
@@ -37,7 +38,7 @@ class GameService(
                         .defaults()
                         .withSimilarityThreshold(LEVEL_UP_THRESHOLD)
                         .withQuery(query)
-                        .withFilterExpression("type == 'question'"),
+                        .withFilterExpression("type == '${DocumentType.QUESTION}'"),
                 )
                 .minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
                 ?.metadata

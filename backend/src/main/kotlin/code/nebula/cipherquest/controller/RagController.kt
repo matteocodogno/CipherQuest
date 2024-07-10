@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.controller
 
+import code.nebula.cipherquest.DocumentType
 import code.nebula.cipherquest.advisor.CustomMetadataPdfDocumentReader
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -45,7 +46,7 @@ class RagController(
                                 ?.split(".")
                                 ?.getOrNull(0)
                                 .orEmpty().toInt()
-                        customMetadata["type"] = "document"
+                        customMetadata["type"] = DocumentType.DOCUMENT
                     }.get()
                 }
 
@@ -67,7 +68,7 @@ class RagController(
                     Document(
                         d.question,
                         mapOf<String, Any>(
-                            "type" to "question",
+                            "type" to DocumentType.QUESTION,
                             "level" to d.level,
                             "filename" to d.question,
                         ),

@@ -23,6 +23,7 @@ spring:
 application:
   name: '@project.name@'
   version: '@project.version@'
+  win-condition: '.*14032095.+84241132.+12062120.+01012142.*'
 
 info:
   app:

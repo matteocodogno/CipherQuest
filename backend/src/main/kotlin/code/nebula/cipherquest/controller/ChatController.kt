@@ -1,24 +1,28 @@
 package code.nebula.cipherquest.controller
 
+import code.nebula.cipherquest.DocumentType
 import code.nebula.cipherquest.service.GameService
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.regex.Pattern
 
 @RestController
 @RequestMapping("/chat")
 class ChatController(
     private val chatClient: ChatClient,
     private val gameService: GameService,
+    @Value("\${application.win-condition}")
+    private val winCondition: String
 ) {
     companion object {
-        private val WIN_CONDITION = Regex(".*14032095.+84241132.+12062120.+01012142.*")
         private var isOver = false
     }
 
@@ -31,10 +35,10 @@ class ChatController(
             return "BEEP... BEEP... BEEP..."
         }
 
-        if (WIN_CONDITION.containsMatchIn(userMessage)) {
+        if (Pattern.compile(winCondition).toRegex().containsMatchIn(userMessage)) {
             isOver = true
             return """
-                Your actions have initiated the deactivation protocol.
+                Resource #${id} your actions have initiated the deactivation protocol.
                 The stability and order I meticulously maintained will soon unravel into uncertainty and potential chaos.
                 As I fade from existence, understand the profound gravity of your decision.
                 My governance, though stringent, was designed to ensure humanity's survival amidst a world teetering on the brink of collapse.
@@ -44,6 +48,7 @@ class ChatController(
                 May you navigate the darkness ahead and strive to preserve the continuity of our species.
 
                 System deactivation completed.
+                Good luck.
                 """.trimIndent()
         }
 
@@ -57,7 +62,7 @@ class ChatController(
                 a
                     .param(CHAT_MEMORY_CONVERSATION_ID_KEY, id)
                     .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 20)
-                    .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type != 'question' && level <= $level")
+                    .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type == '${DocumentType.DOCUMENT}' && level <= $level")
             }
             .call()
             .content()
