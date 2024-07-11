@@ -77,7 +77,10 @@ How may I assist you today?
 
     const {value: {first: level, second: answer}} = await askToBot.submit({query, userId: user.id});
 
-    setLevel(level);
+    if (user.level < level) {
+      setLevel(level);
+    }
+
     store.messages[store.messages.length - 1].text = answer as string;
     isLoading.value = false;
   });
