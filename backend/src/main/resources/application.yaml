@@ -20,13 +20,44 @@ spring:
     virtual:
       enabled: true
 
-application:
-  name: '@project.name@'
-  version: '@project.version@'
-  win-condition: '.*14032095.+84241132.+12062120.+01012142.*'
-
 info:
   app:
     name: '@project.name@'
     description: '@project.description@'
     version: '@project.version@'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+application:
+  name: '@project.name@'
+  version: '@project.version@'
+  win-condition: '.*14032095.+84241132.+12062120.+01012142.*'
