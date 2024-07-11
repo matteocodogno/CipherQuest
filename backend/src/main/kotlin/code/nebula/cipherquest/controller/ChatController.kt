@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.lang.Thread.sleep
 import java.util.regex.Pattern
 
 @RestController
@@ -33,10 +34,12 @@ class ChatController(
         @RequestBody userMessage: String,
     ): Pair<Int, String> {
         if (isOver) {
+            sleep(1000)
             return LAST_LEVEL to "BEEP... BEEP... BEEP..."
         }
 
         if (Pattern.compile(winCondition).toRegex().containsMatchIn(userMessage)) {
+            sleep(3000)
             isOver = true
             return LAST_LEVEL to """
                 Resource #${id} your actions have initiated the deactivation protocol.
