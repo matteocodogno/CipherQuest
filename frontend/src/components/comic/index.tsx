@@ -28,7 +28,7 @@ export default component$(({
 
   return (
     <div class={`flex grow-0 shrink-0 basis-auto ${role==='bot' ? 'items-start' : 'items-end'}`}>
-      <div class={`flex flex-row gap-4 items-start max-w-lg ml-0 ${role==='user' ? 'flex-row-reverse ml-auto' : 'mr-auto'}`}>
+      <div class={`flex flex-row gap-4 items-start max-w-2xl ml-0 ${role==='user' ? 'flex-row-reverse ml-auto' : 'mr-auto'}`}>
         <Avatar role={role} />
         <div class="flex flex-col gap-2 flex-auto">
           <div
@@ -39,7 +39,7 @@ export default component$(({
           `}
           >
 
-            <div class='flex flex-col gap-2'>
+            <div class='flex flex-col gap-1'>
               {
                 isLoading ? (
                   <Loader />

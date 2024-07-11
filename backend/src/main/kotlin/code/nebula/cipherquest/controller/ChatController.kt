@@ -57,7 +57,7 @@ class ChatController(
 
         return level to chatClient
             .prompt()
-            .system { sp -> sp.param("userId", id) }
+            .system { sp -> sp.param("userId", id).param("level", level) }
             .user(userMessage)
             .advisors { a ->
                 a
