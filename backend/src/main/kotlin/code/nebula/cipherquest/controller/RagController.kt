@@ -1,9 +1,8 @@
 package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.DocumentType
-import code.nebula.cipherquest.controller.request.LevelUpQuestion
 import code.nebula.cipherquest.service.CustomMetadataPdfDocumentReader
-import code.nebula.cipherquest.service.LevelUpQuestionService
+import code.nebula.cipherquest.service.LevelUpQuestions
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
@@ -21,8 +20,7 @@ private val logger = KotlinLogging.logger {}
 class RagController(
     val vectorStoreService: VectorStoreService,
     val resourceLoader: ResourceLoader,
-    val resourcePatternResolver: ResourcePatternResolver,
-    val levelUpQuestionService: LevelUpQuestionService
+    val resourcePatternResolver: ResourcePatternResolver
 ) {
 
     @PostMapping("/load")
@@ -59,7 +57,7 @@ class RagController(
     @PostMapping("/loadQuestions")
     fun loadQuestions() {
         val documents: List<Document> =
-            levelUpQuestionService.getLevelUpQuestionList()
+            LevelUpQuestions.levelUpQuestionList
                 .filterNot { q ->
                     vectorStoreService.existsDocumentWithFileName(q.question)
                 }.map { d ->
