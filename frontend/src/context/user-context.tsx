@@ -33,7 +33,6 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
 
   useVisibleTask$(async () => {
     const existingJsonUser = localStorage.getItem('user');
-    console.log('local storage user', existingJsonUser);
 
     if ( existingJsonUser === null ) {
       localStorage.setItem('user', JSON.stringify(user));

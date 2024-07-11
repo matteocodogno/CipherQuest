@@ -73,13 +73,20 @@ How may I assist you today?
     prompt.value = "";
 
     store.messages = [...store.messages, {date: new Date().toISOString(), role: 'user', text: query}];
-    store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
+    if ( user.coins < 1 ) {
+      store.messages = [...store.messages, {
+        date: new Date().toISOString(),
+        role: 'bot',
+        text: `Resource #${user.id} I've spent enough time on this, and I need to focus on other priorities now. Our time is up.`
+      }];
+    } else {
+      store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
+      const {value: {first: level, second: answer}} = await askToBot.submit({query, userId: user.id});
+      user.level < level ? setLevel(level) : redeemCoin();
 
-    const {value: {first: level, second: answer}} = await askToBot.submit({query, userId: user.id});
+      store.messages[store.messages.length - 1].text = answer as string;
+    }
 
-    user.level < level ? setLevel(level) : redeemCoin();
-
-    store.messages[store.messages.length - 1].text = answer as string;
     isLoading.value = false;
   });
 
