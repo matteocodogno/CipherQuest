@@ -4,12 +4,14 @@ import { getRandomArbitrary } from '~/utility/number';
 export type User = {
   id: number;
   level: number;
+  coins: number;
   startedAt: Date;
 };
 
 export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
   id: getRandomArbitrary(1000000000, 9999999999),
   level: 1,
+  coins: 25,
   startedAt: new Date(),
   ...initialUser,
 });
@@ -17,6 +19,7 @@ export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
 export type UserContextValue = {
   user: User;
   setLevel: (level: number) => void;
+  redeemCoin: () => void;
 }
 
 export const UserContext = createContextId<UserContextValue>("UserContext");
@@ -39,6 +42,7 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
 
       user.id = existingUser.id;
       user.level = existingUser.level;
+      user.coins = existingUser.coins;
       user.startedAt = existingUser.startedAt;
     }
   });
@@ -47,8 +51,13 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
     user,
     setLevel: $(async (level: number) => {
       user.level = level;
+      user.coins += 10;
       localStorage.setItem('user', JSON.stringify(user));
-    })
+    }),
+    redeemCoin: $(async () => {
+      user.coins -= 1;
+      localStorage.setItem('user', JSON.stringify(user));
+    }),
   });
 
   return (

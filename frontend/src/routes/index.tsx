@@ -31,7 +31,7 @@ export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
 });
 
 export default component$(() => {
-  const { user, setLevel } = useContext(UserContext);
+  const { user, setLevel, redeemCoin } = useContext(UserContext);
 
   const askToBot = useAskToBot();
   const prompt = useSignal("");
@@ -77,9 +77,7 @@ How may I assist you today?
 
     const {value: {first: level, second: answer}} = await askToBot.submit({query, userId: user.id});
 
-    if (user.level < level) {
-      setLevel(level);
-    }
+    user.level < level ? setLevel(level) : redeemCoin();
 
     store.messages[store.messages.length - 1].text = answer as string;
     isLoading.value = false;

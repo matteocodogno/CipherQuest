@@ -45,6 +45,10 @@ export default {
           200: "#9af5e1",
           800: "#115e56",
         },
+        warning: {
+          200: "#ffe587",
+          800: "#953b0b",
+        },
       },
       borderRadius: {
         base: "var(--border-radius)",

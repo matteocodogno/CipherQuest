@@ -1,8 +1,8 @@
 import { component$, useContext } from "@builder.io/qwik";
-import { FaStarSolid } from '@qwikest/icons/font-awesome';
+import { FaStarSolid, FaCoinsSolid } from '@qwikest/icons/font-awesome';
 import { QwikLogo } from "../icons/qwik";
 import Timer from '~/components/timer';
-import Level from '~/components/starter/header/level';
+import Chip from '~/components/chip';
 import { UserContext } from '~/context/user-context';
 
 export default component$(() => {
@@ -23,11 +23,15 @@ export default component$(() => {
           {/*TODO: user.startedAt ??*/}
           <Timer as="h4" startDate={new Date()} />
         </div>
-        <div class="flex items-center">
-          <Level>
+        <div class="flex items-center gap-x-2">
+          <Chip>
             <FaStarSolid q:slot="Icon" class="mr-2" />
             Level {user.level}
-          </Level>
+          </Chip>
+          <Chip color="warning">
+            <FaCoinsSolid q:slot="Icon" class="mr-2" />
+            Coins {user.coins}
+          </Chip>
         </div>
         {/* TODO: reset button. it should ask confirmation and reset the entire game */}
         {/* TODO: number of questions, we should save a rank of the best player */}
