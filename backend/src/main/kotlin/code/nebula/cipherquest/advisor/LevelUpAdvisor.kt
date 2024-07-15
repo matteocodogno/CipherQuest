@@ -17,6 +17,7 @@ class LevelUpAdvisor(
 ) : RequestResponseAdvisor {
     companion object {
         private const val LEVEL_UP_THRESHOLD = 0.82
+        private const val LEVEL_UP_COINS = 10
     }
 
     override fun adviseRequest(
@@ -62,7 +63,7 @@ class LevelUpAdvisor(
                 ?: 0
 
         if (matchedQuestionLevel == userLevel.level + 1) {
-            userLevelRepository.save(UserLevel(id, matchedQuestionLevel))
+            userLevelRepository.save(userLevel.copy(level = matchedQuestionLevel, coins = userLevel.coins + LEVEL_UP_COINS))
         }
     }
 

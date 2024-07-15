@@ -72,7 +72,8 @@ class GameService(
         return listOf(::gameWon, ::gameOver, ::gameWin)
             .map { fn -> fn(Pair(userLevel, userMessage)) }
             .firstOrNull() ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
-                return BotAnswer.build(response, getLevelByUser(userId))
+                val user = getLevelByUser(userId).let { userLevelRepository.save(it.copy(coins = it.coins-1)) }
+                return BotAnswer.build(response, user)
             }
     }
 }
