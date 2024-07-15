@@ -9,6 +9,7 @@ export default component$(
   const time = useSignal(0);
   const rightDate = startDate;
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
     const update = () => {
       const leftDate = new Date()

@@ -18,6 +18,7 @@ export default component$(({
 }) => {
   const time = useSignal(formatDistanceToNow(new Date(timestamp), {addSuffix: true}));
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
     const update = () => {
       time.value = formatDistanceToNow(new Date(timestamp), {addSuffix: true});

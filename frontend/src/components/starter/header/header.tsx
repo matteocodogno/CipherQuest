@@ -1,12 +1,30 @@
-import { component$, useContext } from "@builder.io/qwik";
+import { component$, useContext, useVisibleTask$ } from "@builder.io/qwik";
 import { FaStarSolid, FaCoinsSolid } from '@qwikest/icons/font-awesome';
 import { QwikLogo } from "../icons/qwik";
 import Timer from '~/components/timer';
 import Chip from '~/components/chip';
 import { UserContext } from '~/context/user-context';
+import { animate } from 'framer-motion';
 
 export default component$(() => {
   const { user } = useContext(UserContext);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(async ({track}) => {
+    track(() => user.coins);
+
+    animate(
+      '#coins',
+      {
+        scale: 1.5,
+      }, {
+        duration: 0.4,
+        repeat: 3,
+        repeatType: 'mirror',
+
+      }
+    );
+  }, );
 
   return (
     <header class="flex left-0 sticky top-0 w-full primary-zinc-900">
@@ -24,11 +42,11 @@ export default component$(() => {
           <Timer as="h4" startDate={new Date()} />
         </div>
         <div class="flex items-center gap-x-2">
-          <Chip>
+          <Chip id="level">
             <FaStarSolid q:slot="Icon" class="mr-2" />
             Level {user.level}
           </Chip>
-          <Chip color="warning">
+          <Chip id="coins" color="warning">
             <FaCoinsSolid q:slot="Icon" class="mr-2" />
             Coins {user.coins}
           </Chip>

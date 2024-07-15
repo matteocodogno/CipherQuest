@@ -31,6 +31,7 @@ export type UserProviderProps = {
 export const UserProvider = component$((initialUser: UserProviderProps) => {
   const user = useStore<User>(initialUser.user);
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     const existingJsonUser = localStorage.getItem('user');
 

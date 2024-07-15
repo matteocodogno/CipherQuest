@@ -19,7 +19,7 @@ type JSONResponse = {
   level: number,
   answer: string,
   coins: number,
-  terminatedAt: string,
+  terminatedAt: string | null,
 }
 
 export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
@@ -54,6 +54,7 @@ How may I assist you today?
   useContextProvider(ChatContext, store);
   const sendDisabled = useComputed$(() => isLoading.value || prompt.value === "");
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     if (chatRef.value) {
       const observer = new MutationObserver((mutations) => {
@@ -85,8 +86,8 @@ How may I assist you today?
       store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
       const {value: {level, answer, coins, terminatedAt}} = await askToBot.submit({query, userId: user.id});
       if (user.level < level) {
-        setLevel(level)
-        setCoins(coins)
+        setLevel(level);
+        setCoins(coins);
       } else setCoins(coins);
 
       store.messages[store.messages.length - 1].text = answer as string;
