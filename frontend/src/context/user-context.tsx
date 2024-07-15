@@ -19,7 +19,7 @@ export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
 export type UserContextValue = {
   user: User;
   setLevel: (level: number) => void;
-  redeemCoin: () => void;
+  setCoins: (coins: number) => void;
 }
 
 export const UserContext = createContextId<UserContextValue>("UserContext");
@@ -50,11 +50,10 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
     user,
     setLevel: $(async (level: number) => {
       user.level = level;
-      user.coins += 10;
       localStorage.setItem('user', JSON.stringify(user));
     }),
-    redeemCoin: $(async () => {
-      user.coins -= 1;
+    setCoins: $(async (coins: number) => {
+      user.coins = coins;
       localStorage.setItem('user', JSON.stringify(user));
     }),
   });

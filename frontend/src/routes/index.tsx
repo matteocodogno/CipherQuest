@@ -16,8 +16,10 @@ import { ChatContext, type MessageStore } from '~/context/chat-context';
 import { UserContext } from '~/context/user-context';
 
 type JSONResponse = {
-  first: number,
-  second: string,
+  level: number,
+  answer: string,
+  coins: number,
+  terminatedAt: string,
 }
 
 export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
@@ -31,7 +33,7 @@ export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
 });
 
 export default component$(() => {
-  const { user, setLevel, redeemCoin } = useContext(UserContext);
+  const { user, setLevel, setCoins } = useContext(UserContext);
 
   const askToBot = useAskToBot();
   const prompt = useSignal("");
@@ -81,8 +83,11 @@ How may I assist you today?
       }];
     } else {
       store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
-      const {value: {first: level, second: answer}} = await askToBot.submit({query, userId: user.id});
-      user.level < level ? setLevel(level) : redeemCoin();
+      const {value: {level, answer, coins, terminatedAt}} = await askToBot.submit({query, userId: user.id});
+      if (user.level < level) {
+        setLevel(level)
+        setCoins(coins)
+      } else setCoins(coins);
 
       store.messages[store.messages.length - 1].text = answer as string;
     }
