@@ -11,6 +11,8 @@ import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.util.Optional
 import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrDefault
@@ -41,7 +43,11 @@ class GameService(
      * Check if the user is winning the game, and return the win message if so.
      */
     private fun gameWin(userToQuery: Pair<UserLevel, String>): BotAnswer? = if (Pattern.compile(winCondition).toRegex()
-        .containsMatchIn(userToQuery.second)) BotAnswer.buildWinMessage(userToQuery.first) else null
+        .containsMatchIn(userToQuery.second)) {
+        userToQuery.first.terminatedAt = OffsetDateTime.now()
+        userLevelRepository.save(userToQuery.first)
+        BotAnswer.buildWinMessage(userToQuery.first)
+    } else null
 
     /**
      * Check if the user has spent all their coins, and return the game over message if so.
