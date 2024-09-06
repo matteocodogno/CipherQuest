@@ -20,7 +20,7 @@ private val logger = KotlinLogging.logger {}
 class RagController(
     val vectorStoreService: VectorStoreService,
     val resourceLoader: ResourceLoader,
-    val resourcePatternResolver: ResourcePatternResolver
+    val resourcePatternResolver: ResourcePatternResolver,
 ) {
 
     @PostMapping("/load")
@@ -47,8 +47,10 @@ class RagController(
                 }
 
         if (documents.isNotEmpty()) {
+            documents.forEach { document ->
+                vectorStoreService.loadDocument(listOf(document))
+            }
             logger.info { "Loading ${documents.size} documents" }
-            vectorStoreService.loadDocument(documents)
         } else {
             logger.info { "No new documents to load" }
         }
