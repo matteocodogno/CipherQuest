@@ -11,7 +11,8 @@ import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.Optional
+import java.time.OffsetDateTime
+import java.util.*
 import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrDefault
 
@@ -20,7 +21,7 @@ class GameService(
     private val userLevelRepository: UserLevelRepository,
     private val chatClient: ChatClient,
     @Value("\${application.win-condition}")
-    private val winCondition: String
+    private val winCondition: String,
 ) {
     fun getLevelByUser(userId: String): UserLevel =
         userLevelRepository
@@ -40,8 +41,14 @@ class GameService(
     /**
      * Check if the user is winning the game, and return the win message if so.
      */
-    private fun gameWin(userToQuery: Pair<UserLevel, String>): BotAnswer? = if (Pattern.compile(winCondition).toRegex()
-        .containsMatchIn(userToQuery.second)) BotAnswer.buildWinMessage(userToQuery.first) else null
+    private fun gameWin(userToQuery: Pair<UserLevel, String>): BotAnswer? {
+        return Pattern.compile(winCondition).toRegex().find(userToQuery.second)?.let {
+            userToQuery.first.terminatedAt = OffsetDateTime.now()
+            userLevelRepository.save(userToQuery.first)
+            BotAnswer.buildWinMessage(userToQuery.first)
+        }
+    }
+
 
     /**
      * Check if the user has spent all their coins, and return the game over message if so.
@@ -60,8 +67,11 @@ class GameService(
             a
                 .param(CHAT_MEMORY_CONVERSATION_ID_KEY, userToQuery.first.userId)
                 .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 20)
-                .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, "type == '${DocumentType.DOCUMENT}' && level <= " +
-                    "${userToQuery.first.level}")
+                .param(
+                    QuestionAnswerAdvisor.FILTER_EXPRESSION,
+                    "type == '${DocumentType.DOCUMENT}' && level <= " +
+                        "${userToQuery.first.level}",
+                )
         }
         .call()
         .content()
@@ -69,11 +79,10 @@ class GameService(
     fun play(userId: String, userMessage: String): BotAnswer {
         val userLevel = getLevelByUser(userId)
 
-        return listOf(::gameWon, ::gameOver, ::gameWin)
-            .map { fn -> fn(Pair(userLevel, userMessage)) }
-            .firstOrNull() ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
-                val user = getLevelByUser(userId).let { userLevelRepository.save(it.copy(coins = it.coins-1)) }
-                return BotAnswer.build(response, user)
-            }
+        return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
+            ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
+            val user = getLevelByUser(userId).let { userLevelRepository.save(it.copy(coins = it.coins - 1)) }
+            return BotAnswer.build(response, user)
+        }
     }
 }
