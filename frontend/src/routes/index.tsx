@@ -44,10 +44,12 @@ export default component$(() => {
       date: new Date().toISOString(),
       role: 'bot',
       text: `
-I am Overmind, an advanced artificial intelligence. My primary mission is to ensure humanity's survival and
+Hello Resource #${user.id}! I am Overmind, an advanced artificial intelligence. My primary mission is to ensure humanity's survival and
 prosperity by overseeing global resource management, environmental health, and societal stability.
 
 How may I assist you today?
+
+  If you need to read a specific document, ask me "Show me the document 'document title'"
 `,
     }],
   });
