@@ -40,7 +40,7 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 PgVectorStoreChatMemoryAdvisor(vectorStore, memorySystemText),
-                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(2), ragSystemText),
+                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(1), ragSystemText),
                 LevelUpAdvisor(vectorStore, userLevelRepository),
                 LoggingAdvisor(),
             ).build()

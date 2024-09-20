@@ -31,7 +31,7 @@
         <kotlin.version>1.9.24</kotlin.version>
         <spring-ai.version>1.0.0-SNAPSHOT</spring-ai.version>
     </properties>
-    <dependencies>n
+    <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>

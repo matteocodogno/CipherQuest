@@ -47,7 +47,7 @@ class PgVectorStoreChatMemoryAdvisor : AbstractChatMemoryAdvisor<VectorStore?> {
     @JvmOverloads
     constructor(
         vectorStore: VectorStore?, defaultConversationId: String?,
-        chatHistoryWindowSize: Int, systemTextAdvise: String = DEFAULT_SYSTEM_TEXT_ADVISE
+        chatHistoryWindowSize: Int, systemTextAdvise: String = DEFAULT_SYSTEM_TEXT_ADVISE,
     ) : super(vectorStore, defaultConversationId, chatHistoryWindowSize) {
         this.systemTextAdvise = systemTextAdvise
     }
@@ -56,9 +56,9 @@ class PgVectorStoreChatMemoryAdvisor : AbstractChatMemoryAdvisor<VectorStore?> {
         val advisedSystemText = request.systemText() + System.lineSeparator() + this.systemTextAdvise
 
         val searchRequest = SearchRequest.query(request.userText())
-            .withTopK(this.doGetChatMemoryRetrieveSize(context))
+            .withTopK(10)
             .withFilterExpression(
-                DOCUMENT_METADATA_CONVERSATION_ID + "=='" + this.doGetConversationId(context) + "' && type == '${DocumentType.MEMORY}'"
+                DOCUMENT_METADATA_CONVERSATION_ID + "=='" + this.doGetConversationId(context) + "' && type == '${DocumentType.MEMORY}'",
             )
 
         val documents =
@@ -80,8 +80,8 @@ class PgVectorStoreChatMemoryAdvisor : AbstractChatMemoryAdvisor<VectorStore?> {
         getChatMemoryStore()!!.write(
             toDocuments(
                 java.util.List.of<Message>(userMessage),
-                this.doGetConversationId(context)
-            )
+                this.doGetConversationId(context),
+            ),
         )
 
         return advisedRequest
