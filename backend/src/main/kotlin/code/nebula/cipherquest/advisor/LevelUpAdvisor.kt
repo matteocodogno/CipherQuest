@@ -2,7 +2,6 @@ package code.nebula.cipherquest.advisor
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.repository.UserLevelRepository
-import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.RequestResponseAdvisor
 import org.springframework.ai.chat.model.ChatResponse
