@@ -9,7 +9,7 @@ data class UserLevel(
     @Id
     var userId: String,
     var level: Int,
-    var username: String? = null,
+    var username: String,
     var coins: Int = 25,
     var terminatedAt: OffsetDateTime? = null,
 )
