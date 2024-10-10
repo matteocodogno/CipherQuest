@@ -2,8 +2,6 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.models.dto.BotAnswer
-import code.nebula.cipherquest.models.dto.BotAnswer.Companion.DEFAULT_LEVEL
-import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
@@ -11,26 +9,15 @@ import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.time.OffsetDateTime
-import java.util.*
 import java.util.regex.Pattern
-import kotlin.jvm.optionals.getOrDefault
 
 @Service
 class GameService(
-    private val userLevelRepository: UserLevelRepository,
     private val chatClient: ChatClient,
     @Value("\${application.win-condition}")
     private val winCondition: String,
+    private val userLevelService: UserLevelService,
 ) {
-    fun getLevelByUser(userId: String): UserLevel =
-        userLevelRepository
-            .findById(userId)
-            .or {
-                Optional.of(userLevelRepository.save(UserLevel(userId, DEFAULT_LEVEL)))
-            }
-            .getOrDefault(UserLevel(userId, DEFAULT_LEVEL))
-
     /**
      * Check if the user has already won the game, and return the final message if so.
      */
@@ -43,12 +30,10 @@ class GameService(
      */
     private fun gameWin(userToQuery: Pair<UserLevel, String>): BotAnswer? {
         return Pattern.compile(winCondition).toRegex().find(userToQuery.second)?.let {
-            userToQuery.first.terminatedAt = OffsetDateTime.now()
-            userLevelRepository.save(userToQuery.first)
+            userLevelService.hasWon(userToQuery.first.userId)
             BotAnswer.buildWinMessage(userToQuery.first)
         }
     }
-
 
     /**
      * Check if the user has spent all their coins, and return the game over message if so.
@@ -77,11 +62,11 @@ class GameService(
         .content()
 
     fun play(userId: String, userMessage: String): BotAnswer {
-        val userLevel = getLevelByUser(userId)
+        val userLevel = userLevelService.getLevelByUser(userId)
 
         return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
-            val user = getLevelByUser(userId).let { userLevelRepository.save(it.copy(coins = it.coins - 1)) }
+            val user = userLevelService.decreaseCoins(userId)
             return BotAnswer.build(response, user)
         }
     }
