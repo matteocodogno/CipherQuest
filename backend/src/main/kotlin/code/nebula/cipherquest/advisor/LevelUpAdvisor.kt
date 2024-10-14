@@ -1,7 +1,7 @@
 package code.nebula.cipherquest.advisor
 
 import code.nebula.cipherquest.models.DocumentType
-import code.nebula.cipherquest.repository.UserLevelRepository
+import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.RequestResponseAdvisor
 import org.springframework.ai.chat.model.ChatResponse
@@ -12,11 +12,10 @@ import org.springframework.stereotype.Service
 @Service
 class LevelUpAdvisor(
     private val vectorStore: VectorStore,
-    private val userLevelRepository: UserLevelRepository,
+    private val userLevelService: UserLevelService,
 ) : RequestResponseAdvisor {
     companion object {
         private const val LEVEL_UP_THRESHOLD = 0.82
-        private const val LEVEL_UP_COINS = 10
     }
 
     override fun adviseRequest(
@@ -42,8 +41,8 @@ class LevelUpAdvisor(
         return response
     }
 
-    fun levelUp(id: String, query: String) {
-        val userLevel = userLevelRepository.findById(id).orElseThrow()
+    fun levelUp(userId: String, query: String) {
+        val userLevel = userLevelService.getLevelByUser(userId)
 
         val matchedQuestionLevel =
             vectorStore
@@ -62,7 +61,7 @@ class LevelUpAdvisor(
                 ?: 0
 
         if (matchedQuestionLevel == userLevel.level + 1) {
-            userLevelRepository.save(userLevel.copy(level = matchedQuestionLevel, coins = userLevel.coins + LEVEL_UP_COINS))
+            userLevelService.increaseLevelTo(userId, matchedQuestionLevel)
         }
     }
 

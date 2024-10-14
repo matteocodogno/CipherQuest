@@ -1,5 +1,6 @@
 import { $, component$, createContextId, Slot, useContextProvider, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { getRandomArbitrary } from '~/utility/number';
+import { useNavigate } from "@builder.io/qwik-city";
 
 export type User = {
   id: number;
@@ -30,13 +31,14 @@ export type UserProviderProps = {
 
 export const UserProvider = component$((initialUser: UserProviderProps) => {
   const user = useStore<User>(initialUser.user);
+  const nav = useNavigate();
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     const existingJsonUser = localStorage.getItem('user');
 
     if ( existingJsonUser === null ) {
-      localStorage.setItem('user', JSON.stringify(user));
+      nav('/login');
     } else {
       const existingUser = JSON.parse(existingJsonUser) as User;
 
