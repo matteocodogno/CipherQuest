@@ -23,6 +23,7 @@ The bot won't reveal its secret until you ask the right questions. Can you outsm
 - [Docker](https://www.docker.com/)
 - Node.js
 - npm
+- OOOH
 - Ensure you have created the following directory under the project base path: `.mnt/postgres/data`
 
 ## Initialization
