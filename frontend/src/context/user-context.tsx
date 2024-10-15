@@ -1,5 +1,14 @@
-import { $, component$, createContextId, Slot, useContextProvider, useStore, useVisibleTask$ } from '@builder.io/qwik';
-import { getRandomArbitrary } from '~/utility/number';
+import type { QRL } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  createContextId,
+  Slot,
+  useContextProvider,
+  useStore,
+  useVisibleTask$,
+} from "@builder.io/qwik";
+import { getRandomArbitrary } from "~/utility/number";
 
 export type User = {
   id: number;
@@ -18,28 +27,26 @@ export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
 
 export type UserContextValue = {
   user: User;
-  setLevel: (level: number) => void;
-  setCoins: (coins: number) => void;
-}
+  setLevel: QRL<(level: number) => Promise<void>>;
+  setCoins: QRL<(coins: number) => Promise<void>>;
+  isLogged: QRL<() => Promise<boolean>>;
+};
 
 export const UserContext = createContextId<UserContextValue>("UserContext");
 
 export type UserProviderProps = {
   user: User;
-}
+};
 
 export const UserProvider = component$((initialUser: UserProviderProps) => {
   const user = useStore<User>(initialUser.user);
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
-    const existingJsonUser = localStorage.getItem('user');
+    const existingJsonUser = localStorage.getItem("user");
 
-    if ( existingJsonUser === null ) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
+    if (existingJsonUser !== null) {
       const existingUser = JSON.parse(existingJsonUser) as User;
-
       user.id = existingUser.id;
       user.level = existingUser.level;
       user.coins = existingUser.coins;
@@ -51,15 +58,18 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
     user,
     setLevel: $(async (level: number) => {
       user.level = level;
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     }),
     setCoins: $(async (coins: number) => {
       user.coins = coins;
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     }),
+    isLogged: $(async () => Boolean(localStorage.getItem("user"))),
   });
 
   return (
-    <><Slot /></>
+    <>
+      <Slot />
+    </>
   );
 });

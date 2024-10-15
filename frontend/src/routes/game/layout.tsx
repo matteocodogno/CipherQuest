@@ -1,6 +1,10 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { RequestHandler, routeLoader$ } from "@builder.io/qwik-city";
-import Footer from "~/components/starter/footer/footer";
+import type { RequestHandler } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
+
+import Header from "../../components/starter/header/header";
+import Footer from "../../components/starter/footer/footer";
+import { applyDefaultUser, UserProvider } from "~/context/user-context";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -13,19 +17,16 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
-export const useServerTimeLoader = routeLoader$(() => {
-  return {
-    date: new Date().toISOString(),
-  };
-});
+
 
 export default component$(() => {
   return (
     <>
-      <main class="flex flex-col h-[calc(100%-8rem)] items-center">
+      <UserProvider user={applyDefaultUser()}>
+        <Header />
         <Slot />
-      </main>
-      <Footer />
+      </UserProvider>
+
     </>
   );
 });
