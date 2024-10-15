@@ -8,19 +8,19 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { routeAction$ } from '@builder.io/qwik-city';
-import { FaPaperPlaneRegular } from '@qwikest/icons/font-awesome';
-import Comic from '~/components/comic';
-import Avatar from '~/components/avatar';
-import { ChatContext, type MessageStore } from '~/context/chat-context';
-import { UserContext } from '~/context/user-context';
+import { routeAction$, useNavigate } from "@builder.io/qwik-city";
+import { FaPaperPlaneRegular } from "@qwikest/icons/font-awesome";
+import Comic from "~/components/comic";
+import Avatar from "~/components/avatar";
+import { ChatContext, type MessageStore } from "~/context/chat-context";
+import { UserContext } from "~/context/user-context";
 
 type JSONResponse = {
-  level: number,
-  answer: string,
-  coins: number,
-  terminatedAt: string | null,
-}
+  level: number;
+  answer: string;
+  coins: number;
+  terminatedAt: string | null;
+};
 
 export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
   const response = await fetch(`http://localhost:8080/chat/${data.userId}`, {
@@ -33,17 +33,25 @@ export const useAskToBot = routeAction$<JSONResponse>(async (data) => {
 });
 
 export default component$(() => {
-  const { user, setLevel, setCoins } = useContext(UserContext);
+  const nav = useNavigate();
+  const { user, setLevel, setCoins, isLogged } = useContext(UserContext);
+
+  useVisibleTask$(async () => {
+    if (!(await isLogged())) {
+      nav("/login");
+    }
+  });
 
   const askToBot = useAskToBot();
   const prompt = useSignal("");
   const isLoading = useSignal(false);
   const chatRef = useSignal<Element>();
   const store = useStore<MessageStore>({
-    messages: [{
-      date: new Date().toISOString(),
-      role: 'bot',
-      text: `
+    messages: [
+      {
+        date: new Date().toISOString(),
+        role: "bot",
+        text: `
 Hello Resource #${user.id}! I am Overmind, an advanced artificial intelligence. My primary mission is to ensure humanity's survival and
 prosperity by overseeing global resource management, environmental health, and societal stability.
 
@@ -51,21 +59,35 @@ How may I assist you today?
 
   If you need to read a specific document, ask me "Show me the document 'document title'"
 `,
-    }],
+      },
+    ],
   });
   useContextProvider(ChatContext, store);
-  const sendDisabled = useComputed$(() => isLoading.value || prompt.value === "");
+  const sendDisabled = useComputed$(
+    () => isLoading.value || prompt.value === "",
+  );
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     if (chatRef.value) {
       const observer = new MutationObserver((mutations) => {
         const ele = mutations
-          .filter(mutation => mutation.type === 'childList' && mutation.addedNodes.length > 0 && mutation.addedNodes[0].firstChild)
-          .map(mutation => mutation.addedNodes[0] as HTMLElement)
-          .reduce((max, element) => chatRef.value!.scrollHeight + element.scrollHeight > chatRef.value!.scrollHeight + max.scrollHeight ? element : max)
+          .filter(
+            (mutation) =>
+              mutation.type === "childList" &&
+              mutation.addedNodes.length > 0 &&
+              mutation.addedNodes[0].firstChild,
+          )
+          .map((mutation) => mutation.addedNodes[0] as HTMLElement)
+          .reduce((max, element) =>
+            chatRef.value!.scrollHeight + element.scrollHeight >
+            chatRef.value!.scrollHeight + max.scrollHeight
+              ? element
+              : max,
+          );
 
-        chatRef.value!.scrollTop = chatRef.value!.scrollHeight + ele.scrollHeight;
+        chatRef.value!.scrollTop =
+          chatRef.value!.scrollHeight + ele.scrollHeight;
       });
 
       observer.observe(chatRef.value, { childList: true, subtree: true });
@@ -77,20 +99,31 @@ How may I assist you today?
     const query = prompt.value;
     prompt.value = "";
 
-    store.messages = [...store.messages, {date: new Date().toISOString(), role: 'user', text: query}];
-    if ( user.coins < 1 ) {
-      store.messages = [...store.messages, {
-        date: new Date().toISOString(),
-        role: 'bot',
-        text: `Resource #${user.id} I've spent enough time on this, and I need to focus on other priorities now. Our time is up.`
-      }];
+    store.messages = [
+      ...store.messages,
+      { date: new Date().toISOString(), role: "user", text: query },
+    ];
+    if (user.coins < 1) {
+      store.messages = [
+        ...store.messages,
+        {
+          date: new Date().toISOString(),
+          role: "bot",
+          text: `Resource #${user.id} I've spent enough time on this, and I need to focus on other priorities now. Our time is up.`,
+        },
+      ];
     } else {
-      store.messages = [...store.messages, {date: new Date().toISOString(), role: 'bot', text: ""}];
-      const {value: {level, answer, coins, terminatedAt}} = await askToBot.submit({query, userId: user.id});
+      store.messages = [
+        ...store.messages,
+        { date: new Date().toISOString(), role: "bot", text: "" },
+      ];
+      const {
+        value: { level, answer, coins, terminatedAt },
+      } = await askToBot.submit({ query, userId: user.id });
       if (user.level < level) {
-        setLevel(level);
-        setCoins(coins);
-      } else setCoins(coins);
+        await setLevel(level);
+        await setCoins(coins);
+      } else await setCoins(coins);
 
       store.messages[store.messages.length - 1].text = answer as string;
     }
@@ -99,41 +132,46 @@ How may I assist you today?
   });
 
   return (
-    <div class="flex flex-col h-full gap-y-4 my-8 w-4/6">
-      <div ref={chatRef} class="flex flex-col h-full bg-neutral-900 rounded-lg p-6 gap-4 overflow-y-auto">
-        {
-          store.messages.map((message, index) => (
-            <Comic
-              key={index}
-              message={message.text}
-              role={message.role}
-              isLoading={index === store.messages.length-1 && isLoading.value}
-              user={message.role === 'user' ? 'You' : 'Overmind'}
-              timestamp={message.date}
-            />
-          ))
-        }
+    <div class="my-8 flex h-full w-4/6 flex-col gap-y-4">
+      <div
+        ref={chatRef}
+        class="flex h-full flex-col gap-4 overflow-y-auto rounded-lg bg-neutral-900 p-6"
+      >
+        {store.messages.map((message, index) => (
+          <Comic
+            key={index}
+            message={message.text}
+            role={message.role}
+            isLoading={index === store.messages.length - 1 && isLoading.value}
+            user={message.role === "user" ? "You" : "Overmind"}
+            timestamp={message.date}
+          />
+        ))}
       </div>
 
       <form
-        class="flex flex-row gap-4 items-center grow-0 shrink-0 basis-auto py-2 px-4"
+        class="flex shrink-0 grow-0 basis-auto flex-row items-center gap-4 px-4 py-2"
         preventdefault:submit
-        onSubmit$={handleSubmit}>
-        <Avatar role='user' size='medium' />
-        <input class='flex-auto' type='hidden' name='userId' value={user.id} />
-        <div class={`
-            font-normal text-base text-neutral-100 box-border cursor-text inline-flex items-center min-h-10 relative
-            rounded-lg border border-solid border-neutral-700 flex-auto shadow-1 before:content-[' '] before:absolute
-            before:bottom-0 before:left-0 before:right-0 before:top-0 before:pointer-events-none px-3
-      `}>
+        onSubmit$={handleSubmit}
+      >
+        <Avatar role="user" size="medium" />
+        <input class="flex-auto" type="hidden" name="userId" value={user.id} />
+        <div
+          class={`
+            before:content-[' '] relative box-border inline-flex min-h-10 flex-auto cursor-text items-center
+            rounded-lg border border-solid border-neutral-700 px-3 text-base font-normal text-neutral-100 shadow-1
+            before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0
+      `}
+        >
           <input
             type="text"
             placeholder="Ask me anything"
             class={`
-              border-0 box-content bg-transparent m-0 min-w-0 w-full items-center self-stretch inline-flex h-auto p-0
+              m-0 box-content inline-flex h-auto w-full min-w-0 items-center self-stretch border-0 bg-transparent p-0
               text-base font-normal focus:outline-0
             `}
-            bind:value={prompt}/>{" "}
+            bind:value={prompt}
+          />{" "}
         </div>
 
         <span>
@@ -141,10 +179,11 @@ How may I assist you today?
             disabled={sendDisabled.value}
             type="submit"
             class={`
-              ${sendDisabled.value ? 'pointer-events-none cursor-default bg-transparent text-action-disabled' : 'bg-blue-800 text-black'}
-              inline-flex items-center justify-center relative box-border outline-0 border-0 m-0 cursor-pointer select-none
-              align-middle no-underline text-center text-2xl p-2 overflow-visible rounded-lg h w-10
-         `}>
+              ${sendDisabled.value ? "pointer-events-none cursor-default bg-transparent text-action-disabled" : "bg-blue-800 text-black"}
+              h relative m-0 box-border inline-flex w-10 cursor-pointer select-none items-center justify-center
+              overflow-visible rounded-lg border-0 p-2 text-center align-middle text-2xl no-underline outline-0
+         `}
+          >
             <FaPaperPlaneRegular />
           </button>
         </span>
