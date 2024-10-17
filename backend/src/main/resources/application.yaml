@@ -20,6 +20,12 @@ spring:
     virtual:
       enabled: true
 
+overmind:
+  ai:
+    chat:
+      history:
+        max-size: 10
+
 info:
   app:
     name: '@project.name@'

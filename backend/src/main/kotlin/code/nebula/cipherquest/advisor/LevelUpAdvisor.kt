@@ -2,9 +2,10 @@ package code.nebula.cipherquest.advisor
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.UserLevelService
-import org.springframework.ai.chat.client.AdvisedRequest
-import org.springframework.ai.chat.client.RequestResponseAdvisor
-import org.springframework.ai.chat.model.ChatResponse
+import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
+import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
+import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisor
+import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.stereotype.Service
@@ -13,32 +14,20 @@ import org.springframework.stereotype.Service
 class LevelUpAdvisor(
     private val vectorStore: VectorStore,
     private val userLevelService: UserLevelService,
-) : RequestResponseAdvisor {
+) : CallAroundAdvisor {
     companion object {
         private const val LEVEL_UP_THRESHOLD = 0.82
     }
 
-    override fun adviseRequest(
-        request: AdvisedRequest,
-        context: Map<String, Any>,
-    ): AdvisedRequest {
-        val id = doGetConversationId(context)
+    override fun getOrder() = 0
 
-        levelUp(id, request.userText)
+    override fun getName(): String = javaClass.simpleName
 
-        return request
-    }
+    override fun aroundCall(advisedRequest: AdvisedRequest, chain: CallAroundAdvisorChain): AdvisedResponse {
+        val id = doGetConversationId(advisedRequest.adviseContext)
+        levelUp(id, advisedRequest.userText)
 
-
-    override fun adviseResponse(
-        response: ChatResponse,
-        context: Map<String, Any>,
-    ): ChatResponse {
-        val id = doGetConversationId(context)
-
-        levelUp(id, response.result.output.content)
-
-        return response
+        return chain.nextAroundCall(advisedRequest)
     }
 
     fun levelUp(userId: String, query: String) {

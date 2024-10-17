@@ -1,31 +1,27 @@
 package code.nebula.cipherquest.advisor
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.ai.chat.client.AdvisedRequest
-import org.springframework.ai.chat.client.RequestResponseAdvisor
-import org.springframework.ai.chat.model.ChatResponse
+import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
+import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
+import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisor
+import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
 
 private val logger = KotlinLogging.logger {}
 
-class LoggingAdvisor : RequestResponseAdvisor {
-    override fun adviseRequest(
-        request: AdvisedRequest,
-        context: Map<String, Any>,
-    ): AdvisedRequest {
-        logger.info { "SystemText: ${request.systemText}" }
-        logger.info { "UserText: ${request.userText}" }
-        logger.info { "Context: ${request.systemParams}" }
+class LoggingAdvisor : CallAroundAdvisor {
+    override fun getOrder(): Int = 9
 
-        return request
-    }
+    override fun getName(): String = javaClass.simpleName
 
-    override fun adviseResponse(
-        response: ChatResponse,
-        context: Map<String, Any>,
-    ): ChatResponse {
-        logger.info {
-            "Token: " + response.metadata.usage.totalTokens
-        }
-        return response
+    override fun aroundCall(advisedRequest: AdvisedRequest, chain: CallAroundAdvisorChain): AdvisedResponse {
+        logger.info { "SystemText: ${advisedRequest.systemText}" }
+        logger.info { "UserText: ${advisedRequest.userText}" }
+        logger.info { "Context: ${advisedRequest.systemParams}" }
+
+        val advisedResponse = chain.nextAroundCall(advisedRequest)
+
+        logger.info { "Token: " + advisedResponse.response.metadata.usage.totalTokens }
+
+        return advisedResponse
     }
 }
