@@ -29,7 +29,6 @@ class LevelUpAdvisor(
         return request
     }
 
-
     override fun adviseResponse(
         response: ChatResponse,
         context: Map<String, Any>,
@@ -41,7 +40,10 @@ class LevelUpAdvisor(
         return response
     }
 
-    fun levelUp(userId: String, query: String) {
+    fun levelUp(
+        userId: String,
+        query: String,
+    ) {
         val userLevel = userLevelService.getLevelByUser(userId)
 
         val matchedQuestionLevel =
@@ -52,8 +54,7 @@ class LevelUpAdvisor(
                         .withSimilarityThreshold(LEVEL_UP_THRESHOLD)
                         .withQuery(query)
                         .withFilterExpression("type == '${DocumentType.QUESTION}'"),
-                )
-                .minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
+                ).minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
                 ?.metadata
                 ?.get("level")
                 ?.toString()
@@ -65,9 +66,5 @@ class LevelUpAdvisor(
         }
     }
 
-
-    protected fun doGetConversationId(context: Map<String, Any>): String {
-        return context["chat_memory_conversation_id"].toString()
-    }
+    protected fun doGetConversationId(context: Map<String, Any>): String = context["chat_memory_conversation_id"].toString()
 }
-

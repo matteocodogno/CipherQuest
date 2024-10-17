@@ -3,6 +3,7 @@ package code.nebula.cipherquest.configuration
 import code.nebula.cipherquest.advisor.LevelUpAdvisor
 import code.nebula.cipherquest.advisor.LoggingAdvisor
 import code.nebula.cipherquest.advisor.PgVectorStoreChatMemoryAdvisor
+import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
 import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
@@ -19,6 +20,10 @@ class ChatClientConfiguration(
     private val chatModel: ChatModel,
     private val vectorStore: VectorStore,
     private val userLevelService: UserLevelService,
+    @Value("\${overmind.ai.rag.result-limit}")
+    private val requestLimitRag: Int,
+    @Value("\${overmind.ai.rag.similarity-threshold}")
+    private val similarityThreshold: Double,
 ) {
     @Value("classpath:/prompts/system-message.st")
     private lateinit var systemMessageResource: Resource
@@ -39,7 +44,14 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 PgVectorStoreChatMemoryAdvisor(vectorStore, memorySystemText),
-                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(1), ragSystemText),
+                TitleQuestionAnswerAdvisor(
+                    vectorStore,
+                    SearchRequest
+                        .defaults()
+                        .withTopK(requestLimitRag)
+                        .withSimilarityThreshold(similarityThreshold),
+                    ragSystemText,
+                ),
                 LevelUpAdvisor(vectorStore, userLevelService),
                 LoggingAdvisor(),
             ).build()
