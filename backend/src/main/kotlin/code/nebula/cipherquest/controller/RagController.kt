@@ -32,7 +32,6 @@ class RagController(
                 }.flatMap { resource ->
                     CustomMetadataPdfDocumentReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
-                        PdfDocumentReaderConfig.builder().withPagesPerDocument(0).build(),
                     ).apply {
                         customMetadata["level"] =
                             resource.filename
