@@ -52,11 +52,6 @@ class UserLevelService(
             EntityNotFoundException("User with ID $userId not found")
         }
 
-    fun increaseQuestionCounter(userId: String) {
-        getLevelByUser(userId)
-            .let(userLevelRepository::save)
-    }
-
     fun decreaseCoins(userId: String): UserLevel =
         getLevelByUser(userId)
             .apply { coins -= 1 }
