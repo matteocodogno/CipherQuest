@@ -20,6 +20,12 @@ spring:
     virtual:
       enabled: true
 
+overmind:
+  ai:
+    rag:
+      result-limit: 5
+      similarity-threshold: 0.72
+
 info:
   app:
     name: '@project.name@'
