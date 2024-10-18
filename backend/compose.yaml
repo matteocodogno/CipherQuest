@@ -19,7 +19,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ${PWD}/.mnt/postgres/data
+      device: ${PWD}/../.mnt/postgres/data
 
 
 networks:
