@@ -36,12 +36,11 @@ data class UserLevel(
 
         val coinsWeight = 2
         val timeThresholdInMinutes = 25
-        val minutes = ChronoUnit.MINUTES.between(createdAt, Optional.ofNullable(terminatedAt).orElse(updatedAt));
+        val minutes = ChronoUnit.MINUTES.between(createdAt, Optional.ofNullable(terminatedAt).orElse(updatedAt))
 
-        score = score
-            .plus(levelScore)
+        score = levelScore
             .plus(coins.times(coinsWeight))
-            .minus(if(minutes > timeThresholdInMinutes) minutes else 0)
+            .minus(if(minutes > timeThresholdInMinutes) minutes.minus(timeThresholdInMinutes) else 0)
             .plus(Optional.ofNullable(terminatedAt).map { 100 }.orElse(0))
     }
 }
