@@ -24,24 +24,37 @@ The bot won't reveal its secret until you ask the right questions. Can you outsm
 - Node.js
 - npm
 - Ensure you have created the following directory under the project base path: `.mnt/postgres/data`
+- Configure the following environment variables:
+  - `OPENAI_API_KEY` with the OpenAI API key, alternatively you can define it in your run configuration of your IDE.
 
 ## Initialization
 
 In order to install all the dependencies, you need to:
-```
-cd backend
-./mvnw clean install
 
-cd ../frontend
-npm install
-```
+- Install the backend dependencies: `cd backend && ./mvnw clean install`
+- Install the frontend dependencies: `cd frontend && npm install`
 
 ## Usage
 
-Tu run the backend, execute the following command `cd backend && ./mvnw spring-boot:run`, it will start the application on port 8080.
-And then because we have `spring-boot-docker-compose` dependency, it will also start a docker container with a postgres database with pgvector extension.
+Now you can run the application. As you can guess, you need to run the backend and the frontend separately. Here's how you can do it:
 
-To run the frontend, execute the following command `cd frontend && npm run dev`, it will start the application on port 5173.
+- backend: `cd backend && ./mvnw spring-boot:run`
+- frontend: `cd frontend && npm run dev`
+
+At this point, you should have two services up and running. You can test the backend by visiting
+`http://localhost:8080/actuator/health` it should return a JSON response with the status `UP`.
+Navigating to `http://localhost:5173` you should see the frontend application. First time you land on the page, you
+will be asked to provide a name, it is mandatory and it will be stored in the local storage of your browser.
+
+> ⚠️ **Important**: Until the logout feature is implemented, you have to clear the local storage of your browser to
+log out to start a new session.
+
+### IDE Configuration
+
+When running the backend from your IDE, you need to set the following environment variables
+- `OPENAI_API_KEY` with the OpenAI API key
+- Working directory: `${PWD}/backend`
+![IDE Configuration](./docs/assets/working-dir.png)
 
 ## Features
 
@@ -59,7 +72,7 @@ No tests have been written yet.
 
 ## Credits
 
-- [matteocodogno](https://github.com/matteocodogno)
+- [matteo codogno](https://github.com/matteocodogno)
 - [andrea rubino](https://github.com/rubin0)
 
 ## License
