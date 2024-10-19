@@ -36,6 +36,7 @@ export default component$(() => {
   const nav = useNavigate();
   const { user, setLevel, setCoins, isLogged } = useContext(UserContext);
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     if (!(await isLogged())) {
       nav("/login");
@@ -116,7 +117,7 @@ How may I assist you today?
         { date: new Date().toISOString(), role: "bot", text: "" },
       ];
       const {
-        value: { level, answer, coins, terminatedAt },
+        value: { level, answer, coins, terminatedAt: _terminatedAt },
       } = await askToBot.submit({ query, userId: user.id });
       if (user.level < level) {
         await setLevel(level);
