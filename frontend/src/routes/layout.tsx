@@ -1,5 +1,6 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { RequestHandler, routeLoader$ } from "@builder.io/qwik-city";
+import type { RequestHandler} from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import Footer from "~/components/starter/footer/footer";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
