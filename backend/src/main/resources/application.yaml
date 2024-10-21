@@ -20,6 +20,15 @@ spring:
     virtual:
       enabled: true
 
+overmind:
+  ai:
+    rag:
+      result-limit: 5
+      similarity-threshold: 0.72
+    chat:
+      history:
+        max-size: 10
+
 management:
   endpoints:
     web:
@@ -28,12 +37,6 @@ management:
   endpoint:
     health:
       show-details: always
-
-overmind:
-  ai:
-    chat:
-      history:
-        max-size: 10
 
 info:
   app:
