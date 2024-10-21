@@ -1,7 +1,10 @@
 package code.nebula.cipherquest.advisor
 
-import org.springframework.ai.chat.client.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
+import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
+import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
+import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
+import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.document.Document
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
@@ -12,11 +15,11 @@ class TitleQuestionAnswerAdvisor : QuestionAnswerAdvisor {
     private var vectorStore: VectorStore? = null
     private var searchRequest: SearchRequest? = null
 
-    constructor(vectorStore: VectorStore) : super(vectorStore){
+    constructor(vectorStore: VectorStore) : super(vectorStore) {
         this.vectorStore = vectorStore
     }
 
-    constructor(vectorStore: VectorStore, searchRequest: SearchRequest) : super(vectorStore, searchRequest){
+    constructor(vectorStore: VectorStore, searchRequest: SearchRequest) : super(vectorStore, searchRequest) {
         this.vectorStore = vectorStore
         this.searchRequest = searchRequest
     }
@@ -31,10 +34,18 @@ class TitleQuestionAnswerAdvisor : QuestionAnswerAdvisor {
         this.userTextAdvise = userTextAdvise
     }
 
-    override fun adviseRequest(
-        request: AdvisedRequest,
-        context: MutableMap<String, Any>,
-    ): AdvisedRequest {
+    override fun aroundCall(
+        advisedRequest: AdvisedRequest,
+        chain: CallAroundAdvisorChain,
+    ): AdvisedResponse {
+        val advisedRequest2 = before(advisedRequest)
+        val advisedResponse = chain.nextAroundCall(advisedRequest2)
+        return after(advisedResponse)
+    }
+
+    private fun before(request: AdvisedRequest): AdvisedRequest {
+        val context = HashMap(request.adviseContext())
+
         // 1. Advise the system text.
         val advisedUserText = request.userText() + System.lineSeparator() + this.userTextAdvise
 
@@ -70,5 +81,14 @@ class TitleQuestionAnswerAdvisor : QuestionAnswerAdvisor {
                 .build()
 
         return advisedRequest
+    }
+
+    private fun after(advisedResponse: AdvisedResponse): AdvisedResponse {
+        val chatResponseBuilder = ChatResponse.builder().from(advisedResponse.response())
+        chatResponseBuilder.withMetadata(
+            RETRIEVED_DOCUMENTS,
+            advisedResponse.adviseContext()[RETRIEVED_DOCUMENTS],
+        )
+        return AdvisedResponse(chatResponseBuilder.build(), advisedResponse.adviseContext())
     }
 }
