@@ -5,6 +5,7 @@ import Timer from '~/components/timer';
 import Chip from '~/components/chip';
 import { UserContext } from '~/context/user-context';
 import { animate } from 'framer-motion';
+import User from "~/components/user";
 
 export default component$(() => {
   const { user } = useContext(UserContext);
@@ -50,6 +51,7 @@ export default component$(() => {
             <FaCoinsSolid q:slot="Icon" class="mr-2" />
             Coins {user.coins}
           </Chip>
+          <User />
         </div>
         {/* TODO: reset button. it should ask confirmation and reset the entire game */}
         {/* TODO: number of questions, we should save a rank of the best player */}
