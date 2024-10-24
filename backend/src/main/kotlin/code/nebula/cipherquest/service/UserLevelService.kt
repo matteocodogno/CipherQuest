@@ -32,24 +32,29 @@ class UserLevelService(
             .findById(userId)
             .orElseThrow()
 
-    fun decreaseCoins(userId: String): UserLevel = getLevelByUser(userId).apply {
+    fun increaseQuestionCounter(userId: String) {
+        getLevelByUser(userId)
+            .apply {
+                questionCounter++
+            }.let(userLevelRepository::save)
+    }
+
+    fun decreaseCoins(userId: String): UserLevel =
+        getLevelByUser(userId)
+            .apply {
             coins -= 1
         }.also(UserLevel::updateScore)
             .let(userLevelRepository::save)
 
-    fun increaseLevelTo(
-        userId: String,
-        newLevel: Int,
-    ): UserLevel =
-        getLevelByUser(userId)
-            .apply {
-                level = newLevel
-                coins += LEVEL_UP_COINS
-            }.also(UserLevel::updateScore).let(userLevelRepository::save)
+    fun increaseLevelTo(userId: String, newLevel: Int): UserLevel =
+        getLevelByUser(userId).apply {
+            level = newLevel
+            coins += LEVEL_UP_COINS
+        }.also(UserLevel::updateScore).let(userLevelRepository::save)
+
 
     fun hasWon(userId: String): UserLevel =
-        getLevelByUser(userId)
-            .apply {
-                terminatedAt = OffsetDateTime.now()
-            }.also(UserLevel::updateScore).let(userLevelRepository::save)
+        getLevelByUser(userId).apply {
+            terminatedAt = OffsetDateTime.now()
+        }.also(UserLevel::updateScore).let(userLevelRepository::save)
 }
