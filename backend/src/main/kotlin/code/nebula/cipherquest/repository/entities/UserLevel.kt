@@ -21,26 +21,25 @@ data class UserLevel(
     var updatedAt: OffsetDateTime = OffsetDateTime.now(),
     var terminatedAt: OffsetDateTime? = null,
     var score: Long = 0,
+    var questionCounter: Int = 0,
 ) {
-    // coins -> increase by each coin twice
-    // time -> decrease for each minute after a threshold of 25 mins
-    // level -> increase - 1: 0, 2: 30, 3: 70
-    // win -> increase by 100
-    fun updateScore() {
+    companion object {
+        private const val WIN_SCORE = 500
+        private const val COINS_SCORE = 5
+        private const val TIME_THRESHOLD = 30
+        private const val LEVEL_SCORE = 250
+    }
 
-        val levelScore = when (level) {
-            2 -> 30
-            3 -> 70
-            else -> 0
-        }
-
-        val coinsWeight = 2
-        val timeThresholdInMinutes = 25
+    fun updateScore(): UserLevel {
+        val win: Boolean = terminatedAt != null
         val minutes = ChronoUnit.MINUTES.between(createdAt, Optional.ofNullable(terminatedAt).orElse(updatedAt))
 
-        score = levelScore
-            .plus(coins.times(coinsWeight))
-            .minus(if(minutes > timeThresholdInMinutes) minutes.minus(timeThresholdInMinutes) else 0)
-            .plus(Optional.ofNullable(terminatedAt).map { 100 }.orElse(0))
+        score =
+            (coins.times(COINS_SCORE))
+                .plus(if ((minutes - TIME_THRESHOLD) > 0) TIME_THRESHOLD - minutes else 0)
+                .plus((level.minus(1)).times(LEVEL_SCORE))
+                .plus(if (win) WIN_SCORE else 0)
+
+        return this
     }
 }
