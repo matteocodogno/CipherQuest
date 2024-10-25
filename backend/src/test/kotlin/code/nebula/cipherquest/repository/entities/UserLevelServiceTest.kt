@@ -1,8 +1,16 @@
 package code.nebula.cipherquest.repository.entities
 
+import code.nebula.cipherquest.service.UserLevelService
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.utility.DockerImageName
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
@@ -10,8 +18,20 @@ import java.util.stream.Stream
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class UserLevelTest {
+
+@Testcontainers
+@SpringBootTest
+class UserLevelServiceTest {
+    @Autowired
+    private lateinit var userLevelService: UserLevelService
+
     companion object {
+        @Container
+        @JvmStatic
+        @ServiceConnection
+        var postgresContainer: PostgreSQLContainer<*> =
+            PostgreSQLContainer(DockerImageName.parse("pgvector/pgvector:pg16"))
+
         @JvmStatic
         fun userLevelProvider(): Stream<Arguments> =
             Stream.of(
@@ -43,7 +63,8 @@ class UserLevelTest {
         expectedScore: Long,
     ) {
         val userLevel = generateUser(id, hasWon, level, coins, time)
-        assertEquals(expectedScore, userLevel.score)
+        val updatedUserLevel = userLevelService.calculateScore(userLevel)
+        assertEquals(expectedScore, updatedUserLevel.score)
     }
 
     @Test
@@ -55,7 +76,10 @@ class UserLevelTest {
                     generateUser(id as Int, hasWon as Boolean, level as Int, coins as Int, time as Int)
                 }.collect(Collectors.toList())
 
-        val sortedUsers = users.sortedByDescending { it.score }
+        val sortedUsers =
+            users
+                .map { userLevelService.calculateScore(it) }
+                .sortedByDescending { it.score }
 
         for (i in sortedUsers.indices) {
             assertEquals(i, sortedUsers[i].userId.toInt())
@@ -69,24 +93,25 @@ class UserLevelTest {
         coins: Int,
         time: Int,
     ): UserLevel {
-        if (hasWon) {
-            return UserLevel(
-                id.toString(),
-                level,
-                id.toString(),
-                coins,
-                OffsetDateTime.now().minus(time.toLong(), ChronoUnit.MINUTES),
+        val createdAt = OffsetDateTime.now().minus(time.toLong(), ChronoUnit.MINUTES)
+        return if (hasWon) {
+            UserLevel(
+                userId = id.toString(),
+                level = level,
+                username = id.toString(),
+                coins = coins,
+                createdAt = createdAt,
                 terminatedAt = OffsetDateTime.now(),
-            ).updateScore()
+            )
         } else {
-            return UserLevel(
-                id.toString(),
-                level,
-                id.toString(),
-                coins,
-                OffsetDateTime.now().minus(time.toLong(), ChronoUnit.MINUTES),
+            UserLevel(
+                userId = id.toString(),
+                level = level,
+                username = id.toString(),
+                coins = coins,
+                createdAt = createdAt,
                 updatedAt = OffsetDateTime.now(),
-            ).updateScore()
+            )
         }
     }
 }
