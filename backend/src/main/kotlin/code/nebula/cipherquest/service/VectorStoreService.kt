@@ -16,4 +16,6 @@ class VectorStoreService(
     fun search(query: String): List<Document> = vectorStore.similaritySearch(query)
 
     fun existsDocumentWithFileName(filename: String) = vectorStoreRepository.existsDocumentWithFileName(filename)
+
+    fun getMessageHistoryByUserId(userId: String) = vectorStoreRepository.getMessageHistoryByUserId(userId)
 }
