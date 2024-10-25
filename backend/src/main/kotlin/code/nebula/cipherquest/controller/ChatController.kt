@@ -1,7 +1,9 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.models.dto.BotAnswer
+import code.nebula.cipherquest.models.dto.BotMessage
+import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.service.GameService
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,5 +19,10 @@ class ChatController(
     fun chat(
         @PathVariable id: String,
         @RequestBody userMessage: String,
-    ): BotAnswer = gameService.play(id, userMessage)
+    ): BotMessage = gameService.play(id, userMessage)
+
+    @GetMapping("/{id}")
+    fun getChatHistory(
+        @PathVariable id: String,
+    ): List<Message> = gameService.getChatHistory(id)
 }

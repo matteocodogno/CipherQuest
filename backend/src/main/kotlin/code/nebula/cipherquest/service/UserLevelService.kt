@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.models.dto.BotAnswer.Companion.DEFAULT_LEVEL
+import code.nebula.cipherquest.models.dto.BotMessage.Companion.DEFAULT_LEVEL
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
