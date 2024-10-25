@@ -2,6 +2,7 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.models.dto.BotAnswer
+import code.nebula.cipherquest.models.dto.ScoreboardEntry
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
@@ -77,4 +78,6 @@ class GameService(
                 return BotAnswer.build(response, user)
             }
     }
+
+    fun calculateScoreboard(): List<ScoreboardEntry> = userLevelService.calculateScoreboard()
 }
