@@ -71,7 +71,6 @@ class GameService(
         return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
-                userLevelService.increaseQuestionCounter(userId)
                 return BotAnswer.build(response, user)
             }
     }

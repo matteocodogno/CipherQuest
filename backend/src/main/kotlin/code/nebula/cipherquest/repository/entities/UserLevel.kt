@@ -19,5 +19,4 @@ data class UserLevel(
     var updatedAt: OffsetDateTime = OffsetDateTime.now(),
     var terminatedAt: OffsetDateTime? = null,
     var score: Long = 0,
-    var questionCounter: Int = 0,
 )
