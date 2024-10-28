@@ -2,7 +2,6 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.models.dto.BotMessage
-import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
@@ -18,7 +17,6 @@ class GameService(
     @Value("\${application.win-condition}")
     private val winCondition: String,
     private val userLevelService: UserLevelService,
-    private val vectorStoreService: VectorStoreService,
 ) {
     companion object {
         private const val CHAT_MEMORY_MAX_SIZE = 20
@@ -46,8 +44,13 @@ class GameService(
     /**
      * Check if the user has spent all their coins, and return the game over message if so.
      */
-    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotMessage? = if (userToQuery.first.coins <= 0) BotMessage
-        .buildGameOverMessage(userToQuery.first) else null
+    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotMessage? =
+        if (userToQuery.first.coins <= 0) {
+            BotMessage
+                .buildGameOverMessage(userToQuery.first)
+        } else {
+            null
+        }
 
     /**
      * Go ahead to the next turn in the game. Pass the user's message to the chat client and return the response.
@@ -78,7 +81,7 @@ class GameService(
         return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
-            return BotMessage.build(response, user)
+                return BotMessage.build(response, user)
             }
     }
 }

@@ -26,7 +26,11 @@ Good luck.
             """Resource #%s I've spent enough time on this, and I need to focus on other priorities now. Our time is
                 |up."""
 
-        fun build(message: String, userLevel: UserLevel): BotMessage = BotMessage(
+        fun build(
+            message: String,
+            userLevel: UserLevel,
+        ): BotMessage =
+            BotMessage(
                 message,
                 userLevel.level,
                 userLevel.coins,
