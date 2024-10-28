@@ -17,7 +17,7 @@ import { UserContext } from "~/context/user-context";
 
 type JSONResponse = {
   level: number;
-  answer: string;
+  message: string;
   coins: number;
   terminatedAt: string | null;
 };
@@ -117,14 +117,14 @@ How may I assist you today?
         { date: new Date().toISOString(), role: "bot", text: "" },
       ];
       const {
-        value: { level, answer, coins, terminatedAt: _terminatedAt },
+        value: { level, message, coins, terminatedAt: _terminatedAt },
       } = await askToBot.submit({ query, userId: user.id });
       if (user.level < level) {
         await setLevel(level);
         await setCoins(coins);
       } else await setCoins(coins);
 
-      store.messages[store.messages.length - 1].text = answer as string;
+      store.messages[store.messages.length - 1].text = message as string;
     }
 
     isLoading.value = false;
