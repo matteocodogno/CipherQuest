@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20240701133600-create-user-level-table.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20241015140000-vector_store_created_at.sql
