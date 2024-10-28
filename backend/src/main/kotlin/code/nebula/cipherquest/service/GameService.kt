@@ -81,6 +81,4 @@ class GameService(
             return BotMessage.build(response, user)
             }
     }
-
-    fun getChatHistory(userId: String): List<Message> = vectorStoreService.getMessageHistoryByUserId(userId)
 }
