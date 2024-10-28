@@ -3,6 +3,7 @@ package code.nebula.cipherquest.controller
 import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.service.GameService
+import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/chat")
 class ChatController(
     private val gameService: GameService,
+    private val vectorStoreService: VectorStoreService
 ) {
     @PostMapping("/{id}")
     fun chat(
@@ -24,5 +26,5 @@ class ChatController(
     @GetMapping("/{id}")
     fun getChatHistory(
         @PathVariable id: String,
-    ): List<Message> = gameService.getChatHistory(id)
+    ): List<Message> = vectorStoreService.getMessageHistoryByUserId(id)
 }
