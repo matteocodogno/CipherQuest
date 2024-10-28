@@ -13,7 +13,10 @@ class LoggingAdvisor : CallAroundAdvisor {
 
     override fun getName(): String = javaClass.simpleName
 
-    override fun aroundCall(advisedRequest: AdvisedRequest, chain: CallAroundAdvisorChain): AdvisedResponse {
+    override fun aroundCall(
+        advisedRequest: AdvisedRequest,
+        chain: CallAroundAdvisorChain,
+    ): AdvisedResponse {
         logger.info { "SystemText: ${advisedRequest.systemText}" }
         logger.info { "UserText: ${advisedRequest.userText}" }
         logger.info { "Context: ${advisedRequest.systemParams}" }
