@@ -6,7 +6,6 @@ import code.nebula.cipherquest.service.LevelUpQuestions
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
-import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternResolver
 import org.springframework.web.bind.annotation.PostMapping
@@ -32,7 +31,6 @@ class RagController(
                 }.flatMap { resource ->
                     CustomMetadataPdfDocumentReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
-                        PdfDocumentReaderConfig.builder().withPagesPerDocument(0).build(),
                     ).apply {
                         customMetadata["level"] =
                             resource.filename
