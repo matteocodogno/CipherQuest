@@ -59,5 +59,5 @@ class LevelUpAdvisor(
         }
     }
 
-    protected fun doGetConversationId(context: Map<String, Any>): String = context["chat_memory_conversation_id"].toString()
+    private fun doGetConversationId(context: Map<String, Any>) = context["chat_memory_conversation_id"].toString()
 }

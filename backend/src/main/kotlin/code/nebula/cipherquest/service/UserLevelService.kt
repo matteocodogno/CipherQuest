@@ -14,12 +14,14 @@ class UserLevelService(
 ) {
     companion object {
         private const val LEVEL_UP_COINS = 10
+        private const val MIN_USER_ID = 1_000_000_000L
+        private const val MAX_USER_ID = 9_999_999_999L
     }
 
     fun createUserLevel(request: CreateUserLevelRequest): UserLevel =
         userLevelRepository.save(
             UserLevel(
-                nextLong(1_000_000_000, 9_999_999_999).toString(),
+                nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
                 username = request.username,
                 level = DEFAULT_LEVEL,
             ),
@@ -30,7 +32,10 @@ class UserLevelService(
             .findById(userId)
             .orElseThrow()
 
-    fun decreaseCoins(userId: String): UserLevel = getLevelByUser(userId).apply { coins -= 1 }.let(userLevelRepository::save)
+    fun decreaseCoins(userId: String): UserLevel =
+        getLevelByUser(userId)
+            .apply { coins -= 1 }
+            .let(userLevelRepository::save)
 
     fun increaseLevelTo(
         userId: String,

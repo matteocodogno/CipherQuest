@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class CipherQuestApplication
 
 fun main(args: Array<String>) {
-    runApplication<CipherQuestApplication>(*args)
+    runApplication<CipherQuestApplication>(args = args)
 }

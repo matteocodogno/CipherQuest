@@ -10,7 +10,6 @@ data class BotAnswer(
 ) {
     companion object {
         const val DEFAULT_LEVEL = 1
-        private const val LAST_LEVEL = 3
         private const val DEAD_MESSAGE = "BEEP... BEEP... BEEP..."
         private const val WIN_MESSAGE =
 """Resource #%s your actions have initiated the deactivation protocol.
@@ -24,7 +23,8 @@ System deactivation completed.
 Good luck.
 """
         private const val GAME_OVER_MESSAGE =
-            """Resource #%s I've spent enough time on this, and I need to focus on other priorities now. Our time is up."""
+            """Resource #%s I've spent enough time on this, and I need to focus on other priorities now. Our time is
+                |up."""
 
         fun build(
             message: String,
