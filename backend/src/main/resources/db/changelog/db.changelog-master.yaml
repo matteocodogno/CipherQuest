@@ -13,7 +13,4 @@ databaseChangeLog:
       file: sql/20241017083000-user-level-score.sql
   - include:
       relativeToChangelogFile: true
-      file: sql/202410211600-user-level-question-counter.sql
-  - include:
-      relativeToChangelogFile: true
       file: sql/20241015140000-vector_store_created_at.sql
