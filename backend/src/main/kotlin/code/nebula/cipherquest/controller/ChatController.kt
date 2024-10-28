@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/chat")
 class ChatController(
     private val gameService: GameService,
-    private val vectorStoreService: VectorStoreService
+    private val vectorStoreService: VectorStoreService,
 ) {
     @PostMapping("/{id}")
     fun chat(

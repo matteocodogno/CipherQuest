@@ -5,7 +5,6 @@ import code.nebula.cipherquest.models.dto.Sender
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 @Repository
 class VectorStoreRepository(
@@ -18,7 +17,8 @@ class VectorStoreRepository(
 
     fun getMessageHistoryByUserId(userId: String?): List<Message> {
         val sql =
-            "SELECT content as message, metadata->>'messageType' as sender, created_at as timestamp FROM vector_store " +
+            "SELECT content as message, metadata->>'messageType' as sender, created_at as timestamp" +
+                " FROM vector_store " +
                 "WHERE metadata->>'conversationId' = ? ORDER BY created_at"
         return jdbcTemplate.query(
             sql,
