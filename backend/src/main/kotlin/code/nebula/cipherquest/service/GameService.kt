@@ -18,6 +18,10 @@ class GameService(
     private val winCondition: String,
     private val userLevelService: UserLevelService,
 ) {
+    companion object {
+        private const val CHAT_MEMORY_MAX_SIZE = 20
+    }
+
     /**
      * Check if the user has already won the game, and return the final message if so.
      */
@@ -59,7 +63,7 @@ class GameService(
             .advisors { a ->
                 a
                     .param(CHAT_MEMORY_CONVERSATION_ID_KEY, userToQuery.first.userId)
-                    .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 20)
+                    .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, CHAT_MEMORY_MAX_SIZE)
                     .param(
                         QuestionAnswerAdvisor.FILTER_EXPRESSION,
                         "type == '${DocumentType.DOCUMENT}' && level <= " +
