@@ -23,14 +23,20 @@ class LevelUpAdvisor(
 
     override fun getName(): String = javaClass.simpleName
 
-    override fun aroundCall(advisedRequest: AdvisedRequest, chain: CallAroundAdvisorChain): AdvisedResponse {
+    override fun aroundCall(
+        advisedRequest: AdvisedRequest,
+        chain: CallAroundAdvisorChain,
+    ): AdvisedResponse {
         val id = doGetConversationId(advisedRequest.adviseContext)
         levelUp(id, advisedRequest.userText)
 
         return chain.nextAroundCall(advisedRequest)
     }
 
-    fun levelUp(userId: String, query: String) {
+    fun levelUp(
+        userId: String,
+        query: String,
+    ) {
         val userLevel = userLevelService.getLevelByUser(userId)
 
         val matchedQuestionLevel =
@@ -41,8 +47,7 @@ class LevelUpAdvisor(
                         .withSimilarityThreshold(LEVEL_UP_THRESHOLD)
                         .withQuery(query)
                         .withFilterExpression("type == '${DocumentType.QUESTION}'"),
-                )
-                .minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
+                ).minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
                 ?.metadata
                 ?.get("level")
                 ?.toString()
@@ -54,9 +59,5 @@ class LevelUpAdvisor(
         }
     }
 
-
-    protected fun doGetConversationId(context: Map<String, Any>): String {
-        return context["chat_memory_conversation_id"].toString()
-    }
+    protected fun doGetConversationId(context: Map<String, Any>): String = context["chat_memory_conversation_id"].toString()
 }
-

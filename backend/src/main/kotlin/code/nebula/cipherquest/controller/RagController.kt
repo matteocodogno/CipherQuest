@@ -22,7 +22,6 @@ class RagController(
     val resourceLoader: ResourceLoader,
     val resourcePatternResolver: ResourcePatternResolver,
 ) {
-
     @PostMapping("/load")
     fun load() {
         val documents: List<Document> =
@@ -30,8 +29,7 @@ class RagController(
                 .getResources("classpath:documents/*")
                 .filterNot { resource ->
                     vectorStoreService.existsDocumentWithFileName(resource.filename ?: "")
-                }
-                .flatMap { resource ->
+                }.flatMap { resource ->
                     CustomMetadataPdfDocumentReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
                         PdfDocumentReaderConfig.builder().withPagesPerDocument(0).build(),
@@ -40,7 +38,8 @@ class RagController(
                             resource.filename
                                 ?.split(".")
                                 ?.getOrNull(0)
-                                .orEmpty().toInt()
+                                .orEmpty()
+                                .toInt()
 
                         customMetadata["type"] = DocumentType.DOCUMENT
                     }.get()

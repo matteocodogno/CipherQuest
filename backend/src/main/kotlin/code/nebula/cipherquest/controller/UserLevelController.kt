@@ -19,5 +19,4 @@ class UserLevelController(
     fun createUser(
         @RequestBody request: CreateUserLevelRequest,
     ) = userLevelService.createUserLevel(request)
-
 }

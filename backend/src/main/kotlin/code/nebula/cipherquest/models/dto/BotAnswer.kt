@@ -26,26 +26,33 @@ Good luck.
         private const val GAME_OVER_MESSAGE =
             """Resource #%s I've spent enough time on this, and I need to focus on other priorities now. Our time is up."""
 
-        fun build(message: String, userLevel: UserLevel): BotAnswer = BotAnswer(
-            message,
-            userLevel.level,
-            userLevel.coins,
-            userLevel.terminatedAt.toString(),
-        )
+        fun build(
+            message: String,
+            userLevel: UserLevel,
+        ): BotAnswer =
+            BotAnswer(
+                message,
+                userLevel.level,
+                userLevel.coins,
+                userLevel.terminatedAt.toString(),
+            )
 
-        fun buildDeadMessage(userLevel: UserLevel): BotAnswer = build(
-            DEAD_MESSAGE,
-            userLevel,
-        )
+        fun buildDeadMessage(userLevel: UserLevel): BotAnswer =
+            build(
+                DEAD_MESSAGE,
+                userLevel,
+            )
 
-        fun buildWinMessage(userLevel: UserLevel): BotAnswer = build(
-            String.format(WIN_MESSAGE, userLevel.userId),
-            userLevel,
-        )
+        fun buildWinMessage(userLevel: UserLevel): BotAnswer =
+            build(
+                String.format(WIN_MESSAGE, userLevel.userId),
+                userLevel,
+            )
 
-        fun buildGameOverMessage(userLevel: UserLevel): BotAnswer = build(
-            String.format(GAME_OVER_MESSAGE, userLevel.userId),
-            userLevel,
-        )
+        fun buildGameOverMessage(userLevel: UserLevel): BotAnswer =
+            build(
+                String.format(GAME_OVER_MESSAGE, userLevel.userId),
+                userLevel,
+            )
     }
 }
