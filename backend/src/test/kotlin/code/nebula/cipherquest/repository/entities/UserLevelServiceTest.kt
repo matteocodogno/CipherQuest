@@ -18,9 +18,9 @@ import java.util.stream.Stream
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 @Testcontainers
 @SpringBootTest
+@Suppress("LongParameterList", "DestructuringDeclarationWithTooManyEntries")
 class UserLevelServiceTest {
     @Autowired
     private lateinit var userLevelService: UserLevelService
