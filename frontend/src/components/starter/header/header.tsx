@@ -51,7 +51,7 @@ export default component$(() => {
             <FaCoinsSolid q:slot="Icon" class="mr-2" />
             Coins {user.coins}
           </Chip>
-          <User />
+          <User username={user.username}/>
         </div>
         {/* TODO: reset button. it should ask confirmation and reset the entire game */}
         {/* TODO: number of questions, we should save a rank of the best player */}

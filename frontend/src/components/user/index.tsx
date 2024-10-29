@@ -1,45 +1,50 @@
-/** @jsxImportSource react */
-import { qwikify$ } from '@builder.io/qwik-react';
+import {component$, $, useSignal} from '@builder.io/qwik';
+import Avatar from "~/components/avatar";
+import {useNavigate} from "@builder.io/qwik-city";
 
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import React, {useState} from "react";
+export default component$(({username}: { username: string }) => {
+  const anchorEl = useSignal<HTMLElement | null>(null);
+  const nav = useNavigate();
 
-export default qwikify$(function BasicMenu() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClick = $((event: MouseEvent) => {
+    anchorEl.value = anchorEl.value ? null : event.currentTarget as HTMLElement;
+  });
+
+  const handleClose = $(() => {
+    anchorEl.value = null;
+  });
+
+  const handleLogout = $(async () => {
+    localStorage.clear();
+    await nav("/login");
+  });
+
+  const open = Boolean(anchorEl.value);
 
   return (
     <div>
-      <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
+      <button
+        onClick$={handleClick}
+        class="text-white p-1 rounded-full hover:bg-neutral-800 focus:outline-none"
       >
-        Dashboard
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
+        <Avatar role="user"/>
+      </button>
+
+      {open && (
+        <div
+          class="absolute right-0 w-56 bg-neutral-900 rounded-md border border-neutral-800"
+          onClick$={handleClose}
+        >
+          <div class="px-2 py-1 rounded-lg m-2">{username}</div>
+          <hr class="border-neutral-800"/>
+          <div
+            class="px-2 py-1 cursor-pointer text-red-500 hover:bg-neutral-800 rounded-lg m-2 flex justify-center"
+            onClick$={handleLogout}
+          >
+            Logout
+          </div>
+        </div>
+      )}
     </div>
   );
-}, { eagerness: "hover" });
+});
