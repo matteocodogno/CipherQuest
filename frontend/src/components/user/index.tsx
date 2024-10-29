@@ -32,16 +32,20 @@ export default component$(({username}: { username: string }) => {
 
       {open && (
         <div
-          class="absolute right-0 w-56 bg-neutral-900 rounded-md border border-neutral-800"
+          class="absolute top-0 left-0 w-screen h-screen"
           onClick$={handleClose}
         >
-          <div class="px-2 py-1 rounded-lg m-2">{username}</div>
-          <hr class="border-neutral-800"/>
           <div
-            class="px-2 py-1 cursor-pointer text-red-500 hover:bg-neutral-800 rounded-lg m-2 flex justify-center"
-            onClick$={handleLogout}
+            class="absolute mt-12 mr-2 right-0 w-56 bg-neutral-900 rounded-md border border-neutral-800"
           >
-            Logout
+            <div class="px-2 py-1 rounded-lg m-2">{username}</div>
+            <hr class="border-neutral-800"/>
+            <div
+              class="px-2 py-1 cursor-pointer text-red-500 hover:bg-neutral-800 rounded-lg m-2 flex justify-center"
+              onClick$={handleLogout}
+            >
+              Logout
+            </div>
           </div>
         </div>
       )}
