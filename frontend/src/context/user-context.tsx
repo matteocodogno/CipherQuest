@@ -12,6 +12,7 @@ import { getRandomArbitrary } from "~/utility/number";
 
 export type User = {
   id: number;
+  username: string;
   level: number;
   coins: number;
   startedAt: Date;
@@ -19,6 +20,7 @@ export type User = {
 
 export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
   id: getRandomArbitrary(1000000000, 9999999999),
+  username: "",
   level: 1,
   coins: 25,
   startedAt: new Date(),
@@ -48,6 +50,7 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
     if (existingJsonUser !== null) {
       const existingUser = JSON.parse(existingJsonUser) as User;
       user.id = existingUser.id;
+      user.username = existingUser.username;
       user.level = existingUser.level;
       user.coins = existingUser.coins;
       user.startedAt = existingUser.startedAt;
