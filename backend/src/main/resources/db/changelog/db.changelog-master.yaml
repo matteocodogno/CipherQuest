@@ -7,4 +7,10 @@ databaseChangeLog:
       file: sql/20240701133600-create-user-level-table.sql
   - include:
       relativeToChangelogFile: true
+      file: sql/20241010101400-user-level-username-not-nullable.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20241017083000-user-level-score.sql
+  - include:
+      relativeToChangelogFile: true
       file: sql/20241015140000-vector_store_created_at.sql

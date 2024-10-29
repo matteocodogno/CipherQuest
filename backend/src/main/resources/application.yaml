@@ -75,6 +75,7 @@ info:
 
 
 
+
 application:
   name: '@project.name@'
   version: '@project.version@'
