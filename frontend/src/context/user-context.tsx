@@ -20,7 +20,7 @@ export type User = {
 
 export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
   id: getRandomArbitrary(1000000000, 9999999999),
-  username: "paro",
+  username: "",
   level: 1,
   coins: 25,
   startedAt: new Date(),
@@ -55,7 +55,6 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
       user.coins = existingUser.coins;
       user.startedAt = existingUser.startedAt;
     }
-    console.log('mounting user provider', user);
   });
 
   useContextProvider(UserContext, {
