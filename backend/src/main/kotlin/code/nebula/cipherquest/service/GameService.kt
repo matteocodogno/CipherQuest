@@ -2,7 +2,6 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.models.dto.BotAnswer
-import code.nebula.cipherquest.models.dto.ScoreboardEntry
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
@@ -26,9 +25,12 @@ class GameService(
     /**
      * Check if the user has already won the game, and return the final message if so.
      */
-    private fun gameWon(userToQuery: Pair<UserLevel, String>): BotAnswer? = if (userToQuery.first.terminatedAt != null)
-        BotAnswer.buildDeadMessage(userToQuery.first)
-    else null
+    private fun gameWon(userToQuery: Pair<UserLevel, String>): BotAnswer? =
+        if (userToQuery.first.terminatedAt != null) {
+            BotAnswer.buildDeadMessage(userToQuery.first)
+        } else {
+            null
+        }
 
     /**
      * Check if the user is winning the game, and return the win message if so.
@@ -38,13 +40,17 @@ class GameService(
             userLevelService.hasWon(userToQuery.first.userId)
             BotAnswer.buildWinMessage(userToQuery.first)
         }
-    }
 
     /**
      * Check if the user has spent all their coins, and return the game over message if so.
      */
-    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotAnswer? = if (userToQuery.first.coins <= 0) BotAnswer
-        .buildGameOverMessage(userToQuery.first) else null
+    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotAnswer? =
+        if (userToQuery.first.coins <= 0) {
+            BotAnswer
+                .buildGameOverMessage(userToQuery.first)
+        } else {
+            null
+        }
 
     /**
      * Go ahead to the next turn in the game. Pass the user's message to the chat client and return the response.
@@ -78,6 +84,4 @@ class GameService(
                 return BotAnswer.build(response, user)
             }
     }
-
-    fun calculateScoreboard(): List<ScoreboardEntry> = userLevelService.calculateScoreboard()
 }
