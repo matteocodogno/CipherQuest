@@ -15,6 +15,16 @@ class VectorStoreRepository(
         return jdbcTemplate.queryForObject(sql, Boolean::class.java, source)
     }
 
+    fun getDocumentByFilename(
+        source: String?,
+        level: Int?,
+    ): String {
+        val sql =
+            "SELECT string_agg(content, '') FROM vector_store WHERE metadata->>'type' = 'DOCUMENT'" +
+                " and metadata->>'file_name' LIKE ? and (metadata->>'level')::integer <= ?;"
+        return jdbcTemplate.queryForObject(sql, String::class.java, "%$source%", level)
+    }
+
     fun getMessageHistoryByUserId(userId: String?): List<Message> {
         val sql =
             """

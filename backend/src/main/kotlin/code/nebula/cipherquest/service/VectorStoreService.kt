@@ -23,6 +23,12 @@ class VectorStoreService(
 
     fun existsDocumentWithFileName(filename: String) = vectorStoreRepository.existsDocumentWithFileName(filename)
 
+    fun getDocumentByFilename(
+        filename: String,
+        level: Int,
+    ) = vectorStoreRepository
+        .getDocumentByFilename(filename, level)
+
     fun getMessageHistoryByUserId(userId: String): List<Message> =
         vectorStoreRepository.getMessageHistoryByUserId(userId).ifEmpty {
             val initialMessage =
