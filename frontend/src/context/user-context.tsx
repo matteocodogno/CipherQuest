@@ -16,6 +16,7 @@ export type User = {
   level: number;
   coins: number;
   startedAt: Date;
+  username: string;
 };
 
 export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
@@ -24,6 +25,7 @@ export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
   level: 1,
   coins: 25,
   startedAt: new Date(),
+  username: 'Player',
   ...initialUser,
 });
 
@@ -54,6 +56,7 @@ export const UserProvider = component$((initialUser: UserProviderProps) => {
       user.level = existingUser.level;
       user.coins = existingUser.coins;
       user.startedAt = existingUser.startedAt;
+      user.username = existingUser.username;
     }
   });
 

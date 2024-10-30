@@ -132,6 +132,7 @@ How may I assist you today?
 
   return (
     <div class="my-8 flex h-full w-4/6 flex-col gap-y-4">
+      <h4 class='capitalize text-xl leading-4'>{user.username}</h4>
       <div
         ref={chatRef}
         class="flex h-full flex-col gap-4 overflow-y-auto rounded-lg bg-neutral-900 p-6"
