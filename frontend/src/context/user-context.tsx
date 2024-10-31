@@ -6,9 +6,10 @@ import {
   Slot,
   useContextProvider,
   useStore,
-  useVisibleTask$,
+  useTask$,
 } from "@builder.io/qwik";
 import { getRandomArbitrary } from "~/utility/number";
+import {isBrowser} from "@builder.io/qwik/build";
 
 export type User = {
   id: number;
@@ -16,7 +17,6 @@ export type User = {
   level: number;
   coins: number;
   startedAt: Date;
-  username: string;
 };
 
 export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
@@ -25,7 +25,6 @@ export const applyDefaultUser = (initialUser?: Partial<User>): User => ({
   level: 1,
   coins: 25,
   startedAt: new Date(),
-  username: 'Player',
   ...initialUser,
 });
 
@@ -45,18 +44,19 @@ export type UserProviderProps = {
 export const UserProvider = component$((initialUser: UserProviderProps) => {
   const user = useStore<User>(initialUser.user);
 
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(async () => {
-    const existingJsonUser = localStorage.getItem("user");
+  useTask$(async () => {
+    if (isBrowser) {
+      const existingJsonUser = localStorage.getItem("user");
 
-    if (existingJsonUser !== null) {
-      const existingUser = JSON.parse(existingJsonUser) as User;
-      user.id = existingUser.id;
-      user.username = existingUser.username;
-      user.level = existingUser.level;
-      user.coins = existingUser.coins;
-      user.startedAt = existingUser.startedAt;
-      user.username = existingUser.username;
+      if (existingJsonUser !== null) {
+        const existingUser = JSON.parse(existingJsonUser) as User;
+        user.id = existingUser.id;
+        user.username = existingUser.username;
+        user.level = existingUser.level;
+        user.coins = existingUser.coins;
+        user.startedAt = existingUser.startedAt;
+        user.username = existingUser.username;
+      }
     }
   });
 
