@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.service
 
+import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.models.dto.BotAnswer.Companion.DEFAULT_LEVEL
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
@@ -79,4 +80,16 @@ class UserLevelService(
             .apply { terminatedAt = OffsetDateTime.now() }
             .also(::calculateScore)
             .let(userLevelRepository::save)
+
+    fun calculateScoreboard(): List<ScoreboardEntry> =
+        userLevelRepository
+            .findAll()
+            .map {
+                ScoreboardEntry(
+                    username = it.username,
+                    score = it.score.toInt(),
+                    userId = it.userId,
+                    time = ChronoUnit.MINUTES.between(it.createdAt, it.terminatedAt ?: it.updatedAt).toInt(),
+                )
+            }.sortedByDescending { it.score }
 }
