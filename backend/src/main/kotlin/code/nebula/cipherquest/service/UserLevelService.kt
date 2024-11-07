@@ -84,12 +84,14 @@ class UserLevelService(
     fun calculateScoreboard(): List<ScoreboardEntry> =
         userLevelRepository
             .findAll()
-            .map {
+            .sortedByDescending { it.score }
+            .mapIndexed { index, it ->
                 ScoreboardEntry(
+                    index = index,
                     username = it.username,
                     score = it.score.toInt(),
                     userId = it.userId,
                     time = ChronoUnit.MINUTES.between(it.createdAt, it.terminatedAt ?: it.updatedAt).toInt(),
                 )
-            }.sortedByDescending { it.score }
+            }
 }
