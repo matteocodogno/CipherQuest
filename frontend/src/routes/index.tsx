@@ -1,14 +1,37 @@
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
-import { useNavigate } from "@builder.io/qwik-city";
+import { Outlet, RouteObject } from 'react-router-dom';
 
-export default component$(() => {
-  const nav = useNavigate();
+import { Layout as ChatLayout } from '@/components/chat/layout';
+import { Page as NotFoundPage } from '@/pages/not-found';
+import { route as customAuth } from './auth';
 
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(async () => {
-    const existingJsonUser = localStorage.getItem("user");
-    await nav(existingJsonUser === null ? "/login" : "/game");
-  });
-
-  return <>loading...</>;
-});
+export const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: (
+      <ChatLayout>
+        <Outlet />
+      </ChatLayout>
+    ),
+    children: [
+      {
+        index: true,
+        lazy: async () => {
+          const { Page } = await import('@/pages/game/chat');
+          return { Component: Page };
+        },
+      },
+      {
+        path: 'rules',
+        lazy: async () => {
+          const { Page } = await import('@/pages/game/rules');
+          return { Component: Page };
+        },
+      },
+    ],
+  },
+  {
+    path: 'auth',
+    children: [customAuth],
+  },
+  { path: '*', element: <NotFoundPage /> },
+];

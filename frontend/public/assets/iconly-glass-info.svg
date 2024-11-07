@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="107px" height="105px" viewBox="0 0 107 105" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>iconly-glass-info</title>
+    <defs>
+        <linearGradient x1="100%" y1="-3.79904441e-14%" x2="-2.46330734e-14%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-55.8%" y="-42.1%" width="211.6%" height="184.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="8" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="48.826724%" y1="11.0507813%" x2="50.8290475%" y2="95.9027344%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iconly-glass-info" transform="translate(1.000000, 17.000000)" fill-rule="nonzero">
+            <path d="M0,46.4999498 C0,24.1481764 18.1441599,6 40.4999498,6 C62.8965075,6 81,24.1478751 81,46.4999498 C81,68.8602583 62.8965075,87 40.4999498,87 C18.1440594,87 0,68.8598567 0,46.4999498 Z" id="Path" stroke="url(#linearGradient-1)" stroke-width="2" fill-opacity="0.35" fill="#3EA0FE" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M50,7.19687424 C55.4903821,2.69932897 62.5047477,0 70.1444751,0 C87.7605253,0 102,14.3002036 102,31.9129738 C102,47.0414188 91.5018455,59.7182493 77.3821273,63 C79.5570564,58.0105063 80.7629834,52.5000332 80.7629834,46.7079282 C80.7629834,27.6433171 67.6884218,11.6202119 50,7.19687424 Z" id="Path" fill="#4096FE"></path>
+            <g id="Group" opacity="0.5" transform="translate(39.000000, 7.000000)" fill="#4096FE">
+                <path d="M39.5772699,56.1686423 C41.7791369,51.1464668 43,45.5998996 43,39.7698557 C43,20.5802689 29.763401,4.45231097 11.8559978,0 C4.6208167,5.89268185 0,14.852112 0,24.8779927 C0,42.6125529 14.4479887,57 32.2499748,57 C34.7711166,57 37.223828,56.712508 39.5772699,56.1686423 Z" id="Path" filter="url(#filter-2)"></path>
+            </g>
+            <path d="M40.5200115,28 C38.6000144,28 37,29.6247841 37,31.5656315 L37,49.4748485 C37,51.4237719 38.6000144,53 40.5200115,53 C42.4400086,53 44,51.4237719 44,49.4748485 L44,31.5656315 C44,29.6247841 42.4400086,28 40.5200115,28 Z M37,62.4800191 C37,64.399955 38.5599914,66 40.5200115,66 C42.4400086,66 44,64.399955 44,62.4800191 C44,60.5599848 42.4400086,59 40.4799885,59 C38.5599914,59 37,60.5599848 37,62.4800191 Z" id="Combined-Shape" stroke="url(#linearGradient-3)" stroke-width="0.4" fill-opacity="0.9" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

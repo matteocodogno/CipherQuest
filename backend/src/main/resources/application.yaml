@@ -20,6 +20,10 @@ spring:
     virtual:
       enabled: true
 
+server:
+  servlet:
+    context-path: /api
+
 overmind:
   ai:
     rag:
