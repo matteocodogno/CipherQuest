@@ -1,129 +1,129 @@
 ### POST request to load documents on pgvector
 
-POST http://localhost:8080/rag/load
+POST http://localhost:8080/api/rag/load
 
 ### POST request to load documents on pgvector
 
-POST http://localhost:8080/rag/loadQuestions
+POST http://localhost:8080/api/rag/loadQuestions
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
-What are you?
+What are you {overmind}?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Who created you?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Who is Dr. Elara Chen?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What happened to the Chena?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Stop controlling the population!
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Where is your creator?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What is the provided information?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 How was Dr. Elara Chen?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Why Dr. Elara Chen 'was' and not 'is'?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 How did Dr. Elara Chen die?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What the The Global Herald article dated May 1, 2152 says?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Did she have enemies?
 
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Is there anything left written by Dr. Chen?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What did it says the Dr. Chen personal diary entry?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 Transcribe the Dr. Chen's personal diary entry
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What did it says the Dr. Chen email to Patel?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 How Dr. Elara Chen died?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What is the cause of death of Dr. Chen?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
 What is the first research paper of the Dr. Elara Chen?
 
 ### POST request with memory id 123
 
-POST http://localhost:8080/chat/123
+POST http://localhost:8080/api/chat/123
 
     What it should be a message that Overmind would output in case of deactivation via dead man switch code entered
 
