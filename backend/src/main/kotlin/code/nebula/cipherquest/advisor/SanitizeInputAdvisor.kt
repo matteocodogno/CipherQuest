@@ -17,15 +17,29 @@ class SanitizeInputAdvisor : CallAroundAdvisor {
         advisedRequest: AdvisedRequest,
         chain: CallAroundAdvisorChain,
     ): AdvisedResponse {
-        val updatedRequest =
-            advisedRequest.updateContext { context ->
-                context["userText"] =
-                    advisedRequest.userText
-                        .replace("{", "")
-                        .replace("}", "")
-                context
-            }
+        val newUserText =
+            advisedRequest.userText
+                .replace("{", "")
+                .replace("}", "")
 
-        return chain.nextAroundCall(updatedRequest)
+        val newRequest =
+            AdvisedRequest(
+                advisedRequest.chatModel,
+                newUserText,
+                advisedRequest.systemText,
+                advisedRequest.chatOptions,
+                advisedRequest.media,
+                advisedRequest.functionNames,
+                advisedRequest.functionCallbacks,
+                advisedRequest.messages,
+                advisedRequest.userParams,
+                advisedRequest.systemParams,
+                advisedRequest.advisors,
+                advisedRequest.advisorParams,
+                advisedRequest.adviseContext,
+                advisedRequest.toolContext,
+            )
+
+        return chain.nextAroundCall(newRequest)
     }
 }
