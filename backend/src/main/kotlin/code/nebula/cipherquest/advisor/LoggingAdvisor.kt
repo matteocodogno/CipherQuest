@@ -5,11 +5,12 @@ import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
 import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisor
 import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
+import org.springframework.core.Ordered
 
 private val logger = KotlinLogging.logger {}
 
 class LoggingAdvisor : CallAroundAdvisor {
-    override fun getOrder(): Int = 9
+    override fun getOrder(): Int = Ordered.LOWEST_PRECEDENCE
 
     override fun getName(): String = javaClass.simpleName
 
