@@ -2,10 +2,10 @@ package code.nebula.cipherquest.configuration
 
 import code.nebula.cipherquest.advisor.LevelUpAdvisor
 import code.nebula.cipherquest.advisor.LoggingAdvisor
+import code.nebula.cipherquest.advisor.SanitizeInputAdvisor
 import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
 import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.ai.chat.client.ChatClient
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.client.advisor.VectorStoreChatMemoryAdvisor
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.vectorstore.SearchRequest
@@ -45,6 +45,8 @@ class ChatClientConfiguration(
         return builder
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
+                SanitizeInputAdvisor(),
+                LevelUpAdvisor(vectorStore, userLevelService),
                 TitleQuestionAnswerAdvisor(
                     vectorStore,
                     SearchRequest
@@ -54,8 +56,6 @@ class ChatClientConfiguration(
                     ragSystemText,
                 ),
                 VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
-                QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withTopK(1), ragSystemText),
-                LevelUpAdvisor(vectorStore, userLevelService),
                 LoggingAdvisor(),
             ).build()
     }

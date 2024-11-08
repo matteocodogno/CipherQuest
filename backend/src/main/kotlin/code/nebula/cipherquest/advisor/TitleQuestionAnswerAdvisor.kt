@@ -7,6 +7,7 @@ import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
+import org.springframework.core.Ordered
 
 class TitleQuestionAnswerAdvisor(
     private val vectorStore: VectorStore,
@@ -24,6 +25,8 @@ class TitleQuestionAnswerAdvisor(
             the user that you can't answer the question.
         """
     }
+
+    override fun getOrder(): Int = Ordered.HIGHEST_PRECEDENCE + 2
 
     override fun aroundCall(
         advisedRequest: AdvisedRequest,

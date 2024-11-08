@@ -8,6 +8,7 @@ import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisor
 import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
+import org.springframework.core.Ordered
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,7 +20,7 @@ class LevelUpAdvisor(
         private const val LEVEL_UP_THRESHOLD = 0.82
     }
 
-    override fun getOrder() = 0
+    override fun getOrder() = Ordered.HIGHEST_PRECEDENCE + 1
 
     override fun getName(): String = javaClass.simpleName
 
