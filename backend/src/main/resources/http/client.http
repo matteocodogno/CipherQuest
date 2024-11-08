@@ -6,6 +6,10 @@ POST http://localhost:8080/rag/load
 
 POST http://localhost:8080/rag/loadQuestions
 
+### GET the scoreboard
+
+GET http://localhost:8080/api/score/
+
 ### POST request with memory id 123
 
 POST http://localhost:8080/chat/123
