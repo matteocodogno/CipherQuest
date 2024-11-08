@@ -38,3 +38,6 @@ build/
 !.mnt/postgres/data/.gitkeep
 .mnt/ollama/**
 !.mnt/ollama/.gitkeep
+
+### asdf ###
+/backend/.tool-versions
