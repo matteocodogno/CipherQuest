@@ -7,11 +7,10 @@ import { Header } from '@/components/chat/header.tsx';
 import { Message } from '@/components/chat/types';
 import { dayjs } from '@/lib/dayjs.ts';
 import { usePathname } from '@/hooks/use-pathname.ts';
-import { logger } from '@/lib/default-loggger.ts';
 
 type LayoutProps = {
   children: ReactNode;
-}
+};
 
 const contacts = [
   {
@@ -54,7 +53,7 @@ const backgroundMap: Record<string, string> = {
 
 export function Layout({ children }: LayoutProps): ReactElement {
   const pathname = usePathname();
-  logger.debug('Layout pathname', pathname);
+
   const background = backgroundMap[pathname] ?? '/assets/background.jpeg';
 
   return (
