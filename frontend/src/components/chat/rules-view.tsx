@@ -46,7 +46,7 @@ export const RulesView = (): ReactElement => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'start',
         alignItems: 'flex-start',
       }}
       gap={5}
