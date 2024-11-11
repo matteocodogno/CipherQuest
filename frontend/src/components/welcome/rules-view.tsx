@@ -1,4 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { AccordionMenu } from './constants';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -7,36 +8,6 @@ import { ReactElement } from 'react';
 import { RouterLink } from '@/components/core/link.tsx';
 import Typography from '@mui/material/Typography';
 import { useUser } from '@/hooks/use-user.ts';
-
-const AccordionMenu = [
-  {
-    title: 'Mission goal',
-    content: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia veniam
-    reprehenderit nam assumenda voluptatem ut. Ipsum eius dicta, officiis
-    quaerat iure quos dolorum accusantium ducimus in illum vero commodi
-    pariatur? Impedit autem esse nostrum quasi, fugiat a aut error cumque
-    quidem maiores doloremque est numquam praesentium eos voluptatem amet!
-    Repudiandae, mollitia id reprehenderit a ab odit!`,
-  },
-  {
-    title: 'Mission rules',
-    content: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia veniam
-    reprehenderit nam assumenda voluptatem ut. Ipsum eius dicta, officiis
-    quaerat iure quos dolorum accusantium ducimus in illum vero commodi
-    pariatur? Impedit autem esse nostrum quasi, fugiat a aut error cumque
-    quidem maiores doloremque est numquam praesentium eos voluptatem amet!
-    Repudiandae, mollitia id reprehenderit a ab odit!`,
-  },
-  {
-    title: 'Other mission infos',
-    content: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia veniam
-    reprehenderit nam assumenda voluptatem ut. Ipsum eius dicta, officiis
-    quaerat iure quos dolorum accusantium ducimus in illum vero commodi
-    pariatur? Impedit autem esse nostrum quasi, fugiat a aut error cumque
-    quidem maiores doloremque est numquam praesentium eos voluptatem amet!
-    Repudiandae, mollitia id reprehenderit a ab odit!`,
-  },
-];
 
 export const RulesView = (): ReactElement => {
   const { user } = useUser();
