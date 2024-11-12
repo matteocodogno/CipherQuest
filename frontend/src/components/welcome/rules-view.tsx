@@ -21,6 +21,7 @@ export const RulesView = (): ReactElement => {
         alignItems: 'center',
       }}
       flex={1}
+      overflow='hidden'
     >
       <Box
         style={{
@@ -35,6 +36,7 @@ export const RulesView = (): ReactElement => {
         paddingBottom={8}
         width={'80%'}
         height={'80%'}
+        overflow='scroll'
       >
         <Box
           style={{
