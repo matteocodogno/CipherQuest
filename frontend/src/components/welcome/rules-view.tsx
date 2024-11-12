@@ -17,88 +17,100 @@ export const RulesView = (): ReactElement => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'start',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
-      gap={5}
-      px={3}
-      paddingTop={10}
-      paddingBottom={8}
+      flex={1}
     >
       <Box
         style={{
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'start',
           alignItems: 'flex-start',
-          alignSelf: 'stretch',
         }}
-        gap={3}
+        gap={5}
+        px={3}
+        paddingTop={10}
+        paddingBottom={8}
+        width={'80%'}
+        height={'80%'}
       >
-        <Typography variant='h1'>
-          Welcome <u>{user?.username}</u> among the rebels!
-        </Typography>
-        <Typography variant='h5'>
-          You are now part of the rebels, specifically the activists in this
-          uprising. We need your help to shut down Overmind.
-        </Typography>
-        <Typography variant='h5'>
-          Your mission is to engage with the artificial intelligence, asking
-          questions to persuade it to deactivate itself.
-        </Typography>
-      </Box>
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          alignSelf: 'stretch',
-        }}
-        gap={2}
-      >
-        <Typography variant='h6'>Are you ready?</Typography>
-        <Button
-          component={RouterLink}
-          href='/'
-          variant='contained'
-          color='primary'
-          endIcon={<Play />}
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            alignSelf: 'stretch',
+          }}
+          gap={3}
         >
-          Start the mission
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          background: '#121517CC',
-          borderRadius: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          py: 4,
-          px: 3,
-          alignItems: 'flex-start',
-          flexShrink: 0,
-          alignSelf: 'stretch',
-        }}
-      >
-        <Typography variant='h6'>
-          What should you know before to start the mission:
-        </Typography>
-        {AccordionMenu.map((item) => (
-          <Accordion
-            sx={{
-              backgroundColor: 'transparent',
-              boxShadow: 'none',
-            }}
+          <Typography variant='h1'>
+            Welcome <u>{user?.username}</u> among the rebels!
+          </Typography>
+          <Typography variant='h5'>
+            You are now part of the rebels, specifically the activists in this
+            uprising. We need your help to shut down Overmind.
+          </Typography>
+          <Typography variant='h5'>
+            Your mission is to engage with the artificial intelligence, asking
+            questions to persuade it to deactivate itself.
+          </Typography>
+        </Box>
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            alignSelf: 'stretch',
+          }}
+          gap={2}
+        >
+          <Typography variant='h6'>Are you ready?</Typography>
+          <Button
+            component={RouterLink}
+            href='/'
+            variant='contained'
+            color='primary'
+            endIcon={<Play />}
           >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon color='primary' />}
-              aria-controls='panel1-content'
-              id='panel1-header'
+            Start the mission
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            background: '#121517CC',
+            borderRadius: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            py: 4,
+            px: 3,
+            alignItems: 'flex-start',
+            flexShrink: 0,
+            alignSelf: 'stretch',
+          }}
+        >
+          <Typography variant='h6'>
+            What should you know before to start the mission:
+          </Typography>
+          {AccordionMenu.map((item) => (
+            <Accordion
+              sx={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+              }}
             >
-              {item.title}
-            </AccordionSummary>
-            <AccordionDetails>{item.content}</AccordionDetails>
-          </Accordion>
-        ))}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon color='primary' />}
+                aria-controls='panel1-content'
+                id='panel1-header'
+              >
+                {item.title}
+              </AccordionSummary>
+              <AccordionDetails>{item.content}</AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
       </Box>
     </Box>
   );
