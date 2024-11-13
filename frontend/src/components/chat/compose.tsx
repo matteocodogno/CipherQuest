@@ -18,12 +18,10 @@ export function ComposeView(): ReactElement {
     <Box
       sx={{
         display: 'flex',
-        flex: '1',
+        width: '100%',
+        flex: 1,
         flexDirection: 'column',
-        width: '1200px',
-        paddingLeft: 7,
-        paddingRight: 7,
-        minHeight: 0,
+        flexShrink: 0,
         alignItems: 'center',
       }}
     >

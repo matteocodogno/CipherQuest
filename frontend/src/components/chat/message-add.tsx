@@ -69,7 +69,6 @@ export const MessageAdd = ({
       spacing={2}
       sx={{
         alignItems: 'center',
-        flex: '0 0 auto',
         py: 1,
         flexShrink: 0,
         alignSelf: 'stretch',

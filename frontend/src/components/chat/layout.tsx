@@ -2,7 +2,7 @@ import { ReactElement, ReactNode } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard.tsx';
 import Box from '@mui/material/Box';
 import { ChatProvider } from '@/components/chat/chat-provider.tsx';
-import { ChatView } from '@/components/chat/chat-view.tsx';
+import { ChatView } from './chat-view';
 import { Header } from '@/components/chat/header.tsx';
 import { Message } from '@/components/chat/types';
 import { dayjs } from '@/lib/dayjs.ts';
