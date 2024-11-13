@@ -1,8 +1,8 @@
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import AccordionItem from './accordion-item';
 import { AccordionMenu } from './constants';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { Play } from '@phosphor-icons/react';
 import { ReactElement } from 'react';
 import { RouterLink } from '@/components/core/link.tsx';
@@ -21,7 +21,7 @@ export const RulesView = (): ReactElement => {
         alignItems: 'center',
       }}
       flex={1}
-      overflow='hidden'
+      paddingBottom={128}
     >
       <Box
         style={{
@@ -36,7 +36,6 @@ export const RulesView = (): ReactElement => {
         paddingBottom={8}
         width={'80%'}
         height={'80%'}
-        overflow='scroll'
       >
         <Box
           style={{
@@ -79,6 +78,7 @@ export const RulesView = (): ReactElement => {
             Start the mission
           </Button>
         </Box>
+
         <Box
           sx={{
             background: '#121517CC',
@@ -96,21 +96,7 @@ export const RulesView = (): ReactElement => {
             What should you know before to start the mission:
           </Typography>
           {AccordionMenu.map((item) => (
-            <Accordion
-              sx={{
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon color='primary' />}
-                aria-controls='panel1-content'
-                id='panel1-header'
-              >
-                {item.title}
-              </AccordionSummary>
-              <AccordionDetails>{item.content}</AccordionDetails>
-            </Accordion>
+            <AccordionItem key={item.title} item={item} />
           ))}
         </Box>
       </Box>
