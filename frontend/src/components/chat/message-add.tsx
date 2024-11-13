@@ -1,16 +1,18 @@
-import { ChangeEvent, KeyboardEvent, ReactElement, useCallback, useRef, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import { Camera as CameraIcon } from '@phosphor-icons/react/dist/ssr/Camera';
-import IconButton from '@mui/material/IconButton';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  ReactElement,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
+import { ArrowUp } from '@phosphor-icons/react';
+import Button from '@mui/material/Button';
 import type { MessageType } from './types';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { PaperPlaneTilt as PaperPlaneTiltIcon } from '@phosphor-icons/react/dist/ssr/PaperPlaneTilt';
-import { Paperclip as PaperclipIcon } from '@phosphor-icons/react/dist/ssr/Paperclip';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import type { User } from '@/types/user';
-import Button from '@mui/material/Button';
-import { ArrowUp } from '@phosphor-icons/react';
 
 const user = {
   id: 9834759384,
@@ -28,7 +30,10 @@ export type MessageAddProps = {
   onSend?: (type: MessageType, content: string) => void;
 };
 
-export const MessageAdd = ({ disabled = false, onSend }: MessageAddProps): ReactElement => {
+export const MessageAdd = ({
+  disabled = false,
+  onSend,
+}: MessageAddProps): ReactElement => {
   const [content, setContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -55,18 +60,28 @@ export const MessageAdd = ({ disabled = false, onSend }: MessageAddProps): React
         handleSend();
       }
     },
-    [handleSend]
+    [handleSend],
   );
 
   return (
-    <Stack direction='row' spacing={2} sx={{ alignItems: 'center', flex: '0 0 auto', px: 3, py: 1 }}>
-      <Avatar src={user.avatar} sx={{ display: { xs: 'none', sm: 'inline' } }} />
+    <Stack
+      direction='row'
+      spacing={2}
+      sx={{
+        alignItems: 'center',
+        flex: '0 0 auto',
+        py: 1,
+        flexShrink: 0,
+        alignSelf: 'stretch',
+      }}
+      marginBottom={4}
+    >
       <OutlinedInput
         disabled={disabled}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
         placeholder='Ask something...'
-        sx={{ flex: '1 1 auto' }}
+        sx={{ flex: '1 1 auto', background: '#121517' }}
         value={content}
       />
       <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
@@ -78,7 +93,7 @@ export const MessageAdd = ({ disabled = false, onSend }: MessageAddProps): React
               onClick={handleSend}
               sx={{
                 bgcolor: 'var(--mui-palette-primary-main)',
-                color: 'var(--mui-palette-primary-contrastText)',
+                color: 'text.primary',
                 '&:hover': { bgcolor: 'var(--mui-palette-primary-dark)' },
               }}
               endIcon={<ArrowUp />}
@@ -91,4 +106,4 @@ export const MessageAdd = ({ disabled = false, onSend }: MessageAddProps): React
       <input hidden ref={fileInputRef} type='file' />
     </Stack>
   );
-}
+};
