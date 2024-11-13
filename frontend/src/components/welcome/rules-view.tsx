@@ -34,8 +34,8 @@ export const RulesView = (): ReactElement => {
         px={3}
         paddingTop={10}
         paddingBottom={8}
-        width={'80%'}
-        height={'80%'}
+        width={'90%'}
+        height={'90%'}
       >
         <Box
           style={{
@@ -47,15 +47,20 @@ export const RulesView = (): ReactElement => {
           gap={3}
         >
           <Typography variant='h1'>
-            Welcome <u>{user?.username}</u> among the rebels!
+            Here you are, <u>{user?.username}</u>!
           </Typography>
           <Typography variant='h5'>
-            You are now part of the rebels, specifically the activists in this
-            uprising. We need your help to shut down Overmind.
+            You&lsquo;re now part of the rebellion, you&lsquo;re an activist in
+            this uprising.
+            <br />
+            We need your help to bring down Overmind!
           </Typography>
           <Typography variant='h5'>
-            Your mission is to engage with the artificial intelligence, asking
-            questions to persuade it to deactivate itself.
+            After years of hunting, we&lsquo;ve finally tracked down an Overmind
+            terminal with lower defenses.
+            <br />
+            Your mission is to access the terminal and uncover how to dismantle
+            this tyrant using insider information.
           </Typography>
         </Box>
         <Box
@@ -67,7 +72,21 @@ export const RulesView = (): ReactElement => {
           }}
           gap={2}
         >
-          <Typography variant='h6'>Are you ready?</Typography>
+          <Box
+            gap={1}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              alignSelf: 'stretch',
+            }}
+          >
+            <Typography variant='h6'>Are you ready?</Typography>
+            <Typography variant='body1'>
+              If you exit the mission, it will no longer be possible to resume
+              the game session.
+            </Typography>
+          </Box>
           <Button
             component={RouterLink}
             href='/'
@@ -75,7 +94,7 @@ export const RulesView = (): ReactElement => {
             color='primary'
             endIcon={<Play />}
           >
-            Start the mission
+            Enter the terminal
           </Button>
         </Box>
 
