@@ -93,6 +93,9 @@ export const RulesView = (): ReactElement => {
             variant='contained'
             color='primary'
             endIcon={<Play />}
+            sx={{
+              color: 'text.primary',
+            }}
           >
             Enter the terminal
           </Button>
