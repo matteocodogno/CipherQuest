@@ -1,4 +1,9 @@
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from '@mui/material';
 import { useCallback, useRef } from 'react';
 import { AccordionMenu } from './constants';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -37,8 +42,11 @@ const AccordionItem = ({ item }: { item: (typeof AccordionMenu)[number] }) => {
         {item.title}
       </AccordionSummary>
       <AccordionDetails>
-        {item.content}
-        <div ref={ref} />
+        <div ref={ref}>
+          <Typography variant='body1' color='text.secondary'>
+            {item.content}
+          </Typography>
+        </div>
       </AccordionDetails>
     </Accordion>
   );
