@@ -3,7 +3,6 @@ package code.nebula.cipherquest.service
 import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.repository.VectorStoreRepository
 import org.springframework.ai.chat.messages.MessageType
-import org.springframework.ai.chat.prompt.PromptTemplate
 import org.springframework.ai.document.Document
 import org.springframework.ai.transformer.splitter.TokenTextSplitter
 import org.springframework.ai.vectorstore.VectorStore
@@ -26,24 +25,21 @@ class VectorStoreService(
 
     fun getMessageHistoryByUserId(userId: String): List<Message> =
         vectorStoreRepository.getMessageHistoryByUserId(userId).ifEmpty {
-            val introMessage = introMessageResource.getContentAsString(Charsets.UTF_8)
-            val introMessageInterpolated =
-                PromptTemplate(introMessage)
-                    .create(mapOf("userId" to userId))
-                    .contents
+            val initialMessage =
+                Message.getInitialMessage(introMessageResource.getContentAsString(Charsets.UTF_8), userId)
 
-            vectorStore.add(
-                listOf(
-                    Document(
-                        introMessageInterpolated,
-                        mapOf(
-                            "conversationId" to userId,
-                            "messageType" to MessageType.ASSISTANT.name,
-                        ) as Map<String, Any>,
-                    ),
-                ),
-            )
-
-            vectorStoreRepository.getMessageHistoryByUserId(userId)
+            listOf(initialMessage).apply {
+                vectorStore.add(
+                    map { (_, message) ->
+                        Document(
+                            message,
+                            mapOf(
+                                "conversationId" to userId,
+                                "messageType" to MessageType.ASSISTANT.name,
+                            ),
+                        )
+                    },
+                )
+            }
         }
 }

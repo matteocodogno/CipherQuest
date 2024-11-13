@@ -18,7 +18,7 @@ class VectorStoreRepository(
     fun getMessageHistoryByUserId(userId: String?): List<Message> {
         val sql =
             """
-                SELECT ROW_NUMBER() OVER (ORDER BY created_at) AS index,
+                SELECT ROW_NUMBER() OVER (ORDER BY created_at) - 1 AS index,
                     content as message,
                     metadata->>'messageType' as sender,
                     created_at as timestamp
