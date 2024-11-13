@@ -1,7 +1,7 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.DocumentType
-import code.nebula.cipherquest.models.dto.BotAnswer
+import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
@@ -25,9 +25,9 @@ class GameService(
     /**
      * Check if the user has already won the game, and return the final message if so.
      */
-    private fun gameWon(userToQuery: Pair<UserLevel, String>): BotAnswer? =
+    private fun gameWon(userToQuery: Pair<UserLevel, String>): BotMessage? =
         if (userToQuery.first.terminatedAt != null) {
-            BotAnswer.buildDeadMessage(userToQuery.first)
+            BotMessage.buildDeadMessage(userToQuery.first)
         } else {
             null
         }
@@ -35,18 +35,18 @@ class GameService(
     /**
      * Check if the user is winning the game, and return the win message if so.
      */
-    private fun gameWin(userToQuery: Pair<UserLevel, String>): BotAnswer? =
+    private fun gameWin(userToQuery: Pair<UserLevel, String>): BotMessage? =
         Pattern.compile(winCondition).toRegex().find(userToQuery.second)?.let {
             userLevelService.hasWon(userToQuery.first.userId)
-            BotAnswer.buildWinMessage(userToQuery.first)
+            BotMessage.buildWinMessage(userToQuery.first)
         }
 
     /**
      * Check if the user has spent all their coins, and return the game over message if so.
      */
-    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotAnswer? =
+    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotMessage? =
         if (userToQuery.first.coins <= 0) {
-            BotAnswer
+            BotMessage
                 .buildGameOverMessage(userToQuery.first)
         } else {
             null
@@ -75,13 +75,13 @@ class GameService(
     fun play(
         userId: String,
         userMessage: String,
-    ): BotAnswer {
+    ): BotMessage {
         val userLevel = userLevelService.getLevelByUser(userId)
 
         return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
-                return BotAnswer.build(response, user)
+                return BotMessage.build(response, user)
             }
     }
 }
