@@ -21,7 +21,7 @@ export const RulesView = (): ReactElement => {
         alignItems: 'center',
       }}
       flex={1}
-      paddingBottom={128}
+      paddingBottom={64}
     >
       <Box
         style={{
@@ -32,8 +32,6 @@ export const RulesView = (): ReactElement => {
         }}
         gap={5}
         px={3}
-        paddingTop={10}
-        paddingBottom={8}
         width={'90%'}
         height={'90%'}
       >
