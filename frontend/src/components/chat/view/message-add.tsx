@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { ArrowUp } from '@phosphor-icons/react';
 import Button from '@mui/material/Button';
-import type { MessageType } from './types';
+import type { MessageType } from '../types';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';

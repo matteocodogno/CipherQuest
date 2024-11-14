@@ -1,4 +1,4 @@
-import { ComposeView } from '@/components/chat/compose.tsx';
+import { ComposeView } from '@/components/chat/view/compose.tsx';
 import { Helmet } from 'react-helmet-async';
 import { Metadata } from '@/types/metadata';
 import { ReactElement } from 'react';

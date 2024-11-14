@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import ChatHeader from './header/chat-header';
+import ChatHeader from '../header/chat-header';
 import { Stack } from '@mui/system';
 
 export type ChatViewProps = {
