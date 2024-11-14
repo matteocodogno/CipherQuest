@@ -14,19 +14,5 @@ export function ComposeView(): ReactElement {
     [createMessage],
   );
 
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        flex: 1,
-        flexDirection: 'column',
-        flexShrink: 0,
-        alignItems: 'center',
-      }}
-    >
-      <Box sx={{ flex: '1 1 auto' }} />
-      <MessageAdd onSend={handleSendMessage} />
-    </Box>
-  );
+  return <MessageAdd onSend={handleSendMessage} />;
 }
