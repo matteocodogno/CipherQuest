@@ -26,7 +26,7 @@ class TitleQuestionAnswerAdvisor(
         """
     }
 
-    override fun getOrder(): Int = Ordered.HIGHEST_PRECEDENCE + 2
+    override fun getOrder(): Int = DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER + 10
 
     override fun aroundCall(
         advisedRequest: AdvisedRequest,
