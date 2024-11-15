@@ -17,11 +17,10 @@ const AccordionItem = ({ item }: { item: (typeof AccordionMenu)[number] }) => {
     }
 
     if (expanded) {
-      const { y, height } = ref.current.getBoundingClientRect();
-      //we need to wait for AccordionDetails to have a height (initially it's 0)
+      //we need to wait for AccordionDetails to have the correct height (initially it's 0)
       setTimeout(
-        () => window.scrollTo({ top: y + height, behavior: 'smooth' }),
-        100,
+        () => ref.current?.scrollIntoView({ behavior: 'smooth' }),
+        150,
       );
     }
   }, []);
@@ -42,11 +41,10 @@ const AccordionItem = ({ item }: { item: (typeof AccordionMenu)[number] }) => {
         {item.title}
       </AccordionSummary>
       <AccordionDetails>
-        <div ref={ref}>
-          <Typography variant='body1' color='text.secondary'>
-            {item.content}
-          </Typography>
-        </div>
+        <Typography variant='body1' color='text.secondary'>
+          {item.content}
+        </Typography>
+        <div ref={ref}></div>
       </AccordionDetails>
     </Accordion>
   );
