@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect, useRef } from 'react';
 import ChatHeader from '../header/chat-header';
 import { MessageBox } from '../messages/message-box';
 import { Stack } from '@mui/system';
@@ -10,6 +10,17 @@ export type ChatViewProps = {
 
 export const ChatView = ({ children }: ChatViewProps): ReactElement => {
   const { messages } = useMessages();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messages.length) {
+      if (!ref.current) {
+        return;
+      }
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages.length]);
+
   return (
     <Stack
       sx={{
@@ -38,8 +49,9 @@ export const ChatView = ({ children }: ChatViewProps): ReactElement => {
         gap={2}
       >
         {messages.map((message) => (
-          <MessageBox message={message} />
+          <MessageBox message={message} key={message.id} />
         ))}
+        <div ref={ref} />
       </Stack>
       {children}
     </Stack>
