@@ -1,12 +1,15 @@
 import { ReactElement, ReactNode } from 'react';
 import ChatHeader from '../header/chat-header';
+import { MessageBox } from '../messages/message-box';
 import { Stack } from '@mui/system';
+import { useMessages } from '@/hooks/use-messages';
 
 export type ChatViewProps = {
   children: ReactNode;
 };
 
 export const ChatView = ({ children }: ChatViewProps): ReactElement => {
+  const { messages } = useMessages();
   return (
     <Stack
       sx={{
@@ -33,7 +36,11 @@ export const ChatView = ({ children }: ChatViewProps): ReactElement => {
           },
         }}
         gap={2}
-      ></Stack>
+      >
+        {messages.map((message) => (
+          <MessageBox message={message} />
+        ))}
+      </Stack>
       {children}
     </Stack>
   );
