@@ -26,9 +26,9 @@ export const ChatView = ({ children }: ChatViewProps): ReactElement => {
         flex={1}
         alignSelf={'stretch'}
         sx={{
-          overflowY: 'scroll',
+          overflowY: 'auto',
           scrollbarWidth: 0,
-          ':-webkit-scrollbar': {
+          '::-webkit-scrollbar': {
             display: 'none',
           },
         }}
