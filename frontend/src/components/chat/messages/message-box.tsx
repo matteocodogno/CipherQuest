@@ -53,8 +53,8 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
               px: 2,
               py: 1,
               ...(position === 'right' && {
-                bgcolor: 'var(--mui-palette-primary-main)',
-                color: 'var(--mui-palette-primary-contrastText)',
+                bgcolor: '#7578ff33',
+                color: 'text.primary)',
               }),
             }}
           >
@@ -63,7 +63,7 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
                 <Link
                   color='inherit'
                   sx={{ cursor: 'pointer' }}
-                  variant='subtitle2'
+                  variant='caption'
                 >
                   {message.author.name}
                 </Link>
