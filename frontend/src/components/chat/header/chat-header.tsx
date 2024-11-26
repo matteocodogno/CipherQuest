@@ -8,7 +8,7 @@ const ChatHeader = () => {
   return (
     <Box
       sx={{
-        background: '#121517',
+        background: 'var(--mui-palette-background-paper)',
         borderRadius: '20px',
         display: 'flex',
         flexDirection: 'row',

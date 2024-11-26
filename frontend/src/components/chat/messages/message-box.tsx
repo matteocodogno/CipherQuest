@@ -53,8 +53,8 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
               px: 2,
               py: 1,
               ...(position === 'right' && {
-                bgcolor: '#7578ff33',
-                color: 'text.primary)',
+                bgcolor: 'var(--mui-palette-primary-main)',
+                color: 'text.primary',
               }),
             }}
           >

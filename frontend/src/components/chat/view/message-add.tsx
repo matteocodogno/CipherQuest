@@ -80,7 +80,10 @@ export const MessageAdd = ({
         onChange={handleChange}
         onKeyUp={handleKeyUp}
         placeholder='Ask something...'
-        sx={{ flex: '1 1 auto', background: '#121517' }}
+        sx={{
+          flex: '1 1 auto',
+          background: 'var(--mui-palette-background-paper)',
+        }}
         value={content}
       />
       <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
