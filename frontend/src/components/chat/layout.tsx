@@ -65,7 +65,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            backgroundImage: `radial-gradient(155.97% 49.35% at 50% 50%, rgba(9, 10, 11, 0.30) 0%, rgba(9, 10, 11, 0.90) 100%), url("${background}")`,
+            backgroundImage: `linear-gradient(0deg, rgba(9, 10, 11, 0.9) 0%, rgba(9, 10, 11, 0.9) 100%), url("${background}")`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundSize: 'cover',
