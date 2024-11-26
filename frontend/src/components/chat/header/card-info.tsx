@@ -10,7 +10,7 @@ const CardInfo = ({ svg, value }: CardInfoProps) => (
   <Stack
     sx={{
       borderRadius: '20px',
-      background: '#7578ff33',
+      background: 'var(--mui-palette-background-level3)',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',

@@ -1,5 +1,8 @@
 import type { ColorScheme, PrimaryColor } from './types';
-import type { ColorSystemOptions, PaletteColorOptions } from '@mui/material/styles';
+import type {
+  ColorSystemOptions,
+  PaletteColorOptions,
+} from '@mui/material/styles';
 import {
   california,
   chateauGreen,
@@ -14,7 +17,10 @@ import {
 } from './colors';
 import { logger } from '@/lib/default-loggger.ts';
 
-const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptions>> = {
+const primarySchemes: Record<
+  PrimaryColor,
+  Record<ColorScheme, PaletteColorOptions>
+> = {
   chateauGreen: {
     dark: {
       ...chateauGreen,
@@ -22,9 +28,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: chateauGreen[400],
       dark: chateauGreen[500],
       contrastText: 'var(--mui-palette-common-black)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
     light: {
       ...chateauGreen,
@@ -32,9 +41,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: chateauGreen[500],
       dark: chateauGreen[600],
       contrastText: 'var(--mui-palette-common-white)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
   },
   neonBlue: {
@@ -44,9 +56,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: neonBlue[400],
       dark: neonBlue[500],
       contrastText: 'var(--mui-palette-common-black)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
     light: {
       ...neonBlue,
@@ -54,9 +69,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: neonBlue[500],
       dark: neonBlue[600],
       contrastText: 'var(--mui-palette-common-white)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
   },
   royalBlue: {
@@ -66,9 +84,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: royalBlue[400],
       dark: royalBlue[500],
       contrastText: 'var(--mui-palette-common-black)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
     light: {
       ...royalBlue,
@@ -76,9 +97,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: royalBlue[500],
       dark: royalBlue[600],
       contrastText: 'var(--mui-palette-common-white)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
   },
   tomatoOrange: {
@@ -88,9 +112,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: tomatoOrange[400],
       dark: tomatoOrange[500],
       contrastText: 'var(--mui-palette-common-black)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
     light: {
       ...tomatoOrange,
@@ -98,9 +125,12 @@ const primarySchemes: Record<PrimaryColor, Record<ColorScheme, PaletteColorOptio
       main: tomatoOrange[500],
       dark: tomatoOrange[600],
       contrastText: 'var(--mui-palette-common-white)',
-      activated: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-      hovered: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-      selected: 'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+      activated:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+      hovered:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+      selected:
+        'rgba(var(--mui-palette-primary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
     },
   },
 };
@@ -109,11 +139,15 @@ interface Config {
   primaryColor: PrimaryColor;
 }
 
-export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorSystemOptions>> {
+export function colorSchemes(
+  config: Config,
+): Partial<Record<ColorScheme, ColorSystemOptions>> {
   let primary = primarySchemes[config.primaryColor];
 
   if (!primary) {
-    logger.warn(`No primary color found for ${config.primaryColor}. Using neonBlue instead.`);
+    logger.warn(
+      `No primary color found for ${config.primaryColor}. Using neonBlue instead.`,
+    );
     primary = primarySchemes.neonBlue;
   }
 
@@ -128,7 +162,7 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           paperChannel: '18 21 23',
           level1: 'var(--mui-palette-neutral-800)',
           level2: 'var(--mui-palette-neutral-700)',
-          level3: 'var(--mui-palette-neutral-600)',
+          level3: 'linear-gradient(180deg, #635BFF33, #7578FF33)',
         },
         common: { black: '#000000', white: '#ffffff' },
         divider: 'var(--mui-palette-neutral-700)',
@@ -139,9 +173,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: redOrange[400],
           dark: redOrange[500],
           contrastText: 'var(--mui-palette-common-black)',
-          activated: 'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         info: {
           ...shakespeare,
@@ -149,9 +186,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: shakespeare[400],
           dark: shakespeare[500],
           contrastText: 'var(--mui-palette-common-black)',
-          activated: 'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         neutral: { ...nevada },
         primary: primary.dark,
@@ -161,9 +201,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: nevada[200],
           dark: nevada[300],
           contrastText: 'var(--mui-palette-common-black)',
-          activated: 'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         success: {
           ...kepple,
@@ -171,9 +214,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: kepple[400],
           dark: kepple[500],
           contrastText: 'var(--mui-palette-common-black)',
-          activated: 'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         text: {
           primary: 'var(--mui-palette-neutral-100)',
@@ -188,9 +234,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: california[400],
           dark: california[500],
           contrastText: 'var(--mui-palette-common-black)',
-          activated: 'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         shadow: 'rgba(0, 0, 0, 0.5)',
         Avatar: { defaultBg: 'var(--mui-palette-neutral-200)' },
@@ -210,7 +259,7 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           paperChannel: '255 255 255',
           level1: 'var(--mui-palette-neutral-50)',
           level2: 'var(--mui-palette-neutral-100)',
-          level3: 'var(--mui-palette-neutral-200)',
+          level3: '',
         },
         common: { black: '#000000', white: '#ffffff' },
         divider: 'var(--mui-palette-neutral-200)',
@@ -221,9 +270,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: redOrange[500],
           dark: redOrange[600],
           contrastText: 'var(--mui-palette-common-white)',
-          activated: 'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-error-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         info: {
           ...shakespeare,
@@ -231,9 +283,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: shakespeare[500],
           dark: shakespeare[600],
           contrastText: 'var(--mui-palette-common-white)',
-          activated: 'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-info-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         neutral: { ...stormGrey },
         primary: primary.light,
@@ -243,9 +298,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: nevada[700],
           dark: nevada[800],
           contrastText: 'var(--mui-palette-common-white)',
-          activated: 'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-secondary-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         success: {
           ...kepple,
@@ -253,9 +311,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: kepple[500],
           dark: kepple[600],
           contrastText: 'var(--mui-palette-common-white)',
-          activated: 'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-success-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         text: {
           primary: 'var(--mui-palette-neutral-900)',
@@ -270,9 +331,12 @@ export function colorSchemes(config: Config): Partial<Record<ColorScheme, ColorS
           main: california[500],
           dark: california[600],
           contrastText: 'var(--mui-palette-common-white)',
-          activated: 'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-activatedOpacity))',
-          hovered: 'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-hoverOpacity))',
-          selected: 'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-selectedOpacity))',
+          activated:
+            'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-activatedOpacity))',
+          hovered:
+            'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-hoverOpacity))',
+          selected:
+            'rgba(var(--mui-palette-warning-mainChannel) / var(--mui-palette-action-selectedOpacity))',
         },
         shadow: 'rgba(0, 0, 0, 0.08)',
         Avatar: { defaultBg: 'var(--mui-palette-neutral-600)' },
