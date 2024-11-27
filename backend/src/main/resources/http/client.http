@@ -4,7 +4,7 @@
 
 POST http://localhost:8080/api/rag/load
 
-### POST request to load documents on pgvector
+### POST request to load questions on pgvector
 
 POST http://localhost:8080/api/rag/loadQuestions
 

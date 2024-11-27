@@ -22,7 +22,7 @@ class VectorStoreRepository(
         val sql =
             """
             SELECT string_agg(content, '') FROM vector_store WHERE metadata->>'type' = 'DOCUMENT'
-            and metadata->>'file_name' LIKE ? and (metadata->>'level')::integer <= ?;
+            and metadata->>'source' LIKE ? and (metadata->>'level')::integer <= ?;
             """.trimIndent()
         return jdbcTemplate.queryForObject(sql, String::class.java, "%$source%", level)
     }
