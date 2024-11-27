@@ -1,10 +1,10 @@
-import { ReactElement, useCallback, useContext } from 'react';
-import { ChatContext } from '../chat-context';
+import { ReactElement, useCallback } from 'react';
 import { MessageAdd } from './message-add';
 import type { MessageType } from '../types';
+import { useChat } from '@/hooks/use-chat';
 
-export function ComposeView(): ReactElement {
-  const { createMessage } = useContext(ChatContext);
+const ComposeView = (): ReactElement => {
+  const { createMessage } = useChat();
 
   const handleSendMessage = useCallback(
     async (type: MessageType, content: string) => {
@@ -14,4 +14,6 @@ export function ComposeView(): ReactElement {
   );
 
   return <MessageAdd onSend={handleSendMessage} />;
-}
+};
+
+export default ComposeView;
