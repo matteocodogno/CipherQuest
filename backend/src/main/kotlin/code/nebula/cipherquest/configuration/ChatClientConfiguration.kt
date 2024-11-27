@@ -64,4 +64,15 @@ class ChatClientConfiguration(
                 LoggingAdvisor(),
             ).build()
     }
+
+    @Bean
+    fun functionChatClient(): ChatClient {
+        val builder = ChatClient.builder(chatModel)
+
+        return builder
+            .defaultSystem(systemMessageResource)
+            .defaultAdvisors(
+                LoggingAdvisor(),
+            ).build()
+    }
 }

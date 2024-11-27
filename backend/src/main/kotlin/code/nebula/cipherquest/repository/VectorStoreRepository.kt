@@ -10,9 +10,21 @@ import java.time.OffsetDateTime
 class VectorStoreRepository(
     val jdbcTemplate: JdbcTemplate,
 ) {
-    fun existsDocumentWithFileName(source: String?): Boolean {
-        val sql = "SELECT EXISTS (SELECT 1 FROM vector_store WHERE metadata->>'file_name' = ?)"
+    fun existsDocumentWithSource(source: String?): Boolean {
+        val sql = "SELECT EXISTS (SELECT 1 FROM vector_store WHERE metadata->>'source' = ?)"
         return jdbcTemplate.queryForObject(sql, Boolean::class.java, source)
+    }
+
+    fun getDocumentByFilename(
+        source: String?,
+        level: Int?,
+    ): String {
+        val sql =
+            """
+            SELECT string_agg(content, '') FROM vector_store WHERE metadata->>'type' = 'DOCUMENT'
+            and metadata->>'source' LIKE ? and (metadata->>'level')::integer <= ?;
+            """.trimIndent()
+        return jdbcTemplate.queryForObject(sql, String::class.java, "%$source%", level)
     }
 
     fun getMessageHistoryByUserId(userId: String?): List<Message> {
