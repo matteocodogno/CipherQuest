@@ -12,18 +12,6 @@ import type { MessageType } from '../types';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
-import type { User } from '@/types/user';
-
-const user = {
-  id: 9834759384,
-  name: 'Sofia Rivers',
-  username: 'sofia.rivers',
-  level: 1,
-  coins: 25,
-  avatar: '/assets/avatar.png',
-  email: 'sofia@devias.io',
-  startedAt: new Date(),
-} satisfies User;
 
 export type MessageAddProps = {
   disabled?: boolean;
