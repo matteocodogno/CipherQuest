@@ -21,7 +21,7 @@ class VectorStoreService(
 
     fun search(query: String): List<Document> = vectorStore.similaritySearch(query)
 
-    fun existsDocumentWithFileName(filename: String) = vectorStoreRepository.existsDocumentWithFileName(filename)
+    fun existsDocumentWithSource(filename: String) = vectorStoreRepository.existsDocumentWithSource(filename)
 
     fun getDocumentByFilename(
         filename: String,

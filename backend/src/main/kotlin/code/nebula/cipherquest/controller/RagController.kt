@@ -27,7 +27,7 @@ class RagController(
             resourcePatternResolver
                 .getResources("classpath:documents/*")
                 .filterNot { resource ->
-                    vectorStoreService.existsDocumentWithFileName(resource.filename ?: "")
+                    vectorStoreService.existsDocumentWithSource(resource.filename ?: "")
                 }.flatMap { resource ->
                     TextReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
@@ -58,14 +58,14 @@ class RagController(
         val documents: List<Document> =
             LevelUpQuestions.levelUpQuestionList
                 .filterNot { q ->
-                    vectorStoreService.existsDocumentWithFileName(q.question)
+                    vectorStoreService.existsDocumentWithSource(q.question)
                 }.map { d ->
                     Document(
                         d.question,
                         mapOf<String, Any>(
                             "type" to DocumentType.QUESTION,
                             "level" to d.level,
-                            "filename" to d.question,
+                            "source" to d.question,
                         ),
                     )
                 }
