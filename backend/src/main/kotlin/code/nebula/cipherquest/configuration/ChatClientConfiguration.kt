@@ -1,10 +1,12 @@
 package code.nebula.cipherquest.configuration
 
+import code.nebula.cipherquest.advisor.LastMessageMemoryAppenderAdvisor
 import code.nebula.cipherquest.advisor.LevelUpAdvisor
 import code.nebula.cipherquest.advisor.LoggingAdvisor
 import code.nebula.cipherquest.advisor.SanitizeInputAdvisor
 import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
 import code.nebula.cipherquest.service.UserLevelService
+import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.VectorStoreChatMemoryAdvisor
 import org.springframework.ai.chat.model.ChatModel
@@ -16,9 +18,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 
 @Configuration
+@Suppress("LongParameterList")
 class ChatClientConfiguration(
     private val chatModel: ChatModel,
     private val vectorStore: VectorStore,
+    private val vectorStoreService: VectorStoreService,
     private val userLevelService: UserLevelService,
     @Value("\${overmind.ai.chat.history.max-size}")
     private val chatHistoryWindowSize: Int,
@@ -47,6 +51,8 @@ class ChatClientConfiguration(
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
                 LevelUpAdvisor(vectorStore, userLevelService),
+                VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
+                LastMessageMemoryAppenderAdvisor(vectorStoreService),
                 TitleQuestionAnswerAdvisor(
                     vectorStore,
                     SearchRequest
@@ -55,7 +61,6 @@ class ChatClientConfiguration(
                         .withSimilarityThreshold(similarityThreshold),
                     ragSystemText,
                 ),
-                VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
                 LoggingAdvisor(),
             ).build()
     }

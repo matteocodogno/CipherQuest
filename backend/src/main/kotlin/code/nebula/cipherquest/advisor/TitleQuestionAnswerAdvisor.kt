@@ -7,7 +7,6 @@ import org.springframework.ai.chat.client.advisor.api.CallAroundAdvisorChain
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.vectorstore.SearchRequest
 import org.springframework.ai.vectorstore.VectorStore
-import org.springframework.core.Ordered
 
 class TitleQuestionAnswerAdvisor(
     private val vectorStore: VectorStore,
@@ -24,9 +23,10 @@ class TitleQuestionAnswerAdvisor(
             reply to the user comment. If the answer is not in the context, inform
             the user that you can't answer the question.
         """
+        private const val ORDER_AFTER_CHAT_MEMORY = 10
     }
 
-    override fun getOrder(): Int = Ordered.HIGHEST_PRECEDENCE + 2
+    override fun getOrder(): Int = DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER + ORDER_AFTER_CHAT_MEMORY
 
     override fun aroundCall(
         advisedRequest: AdvisedRequest,

@@ -33,6 +33,7 @@ overmind:
       history:
         max-size: 10
 
+
 management:
   endpoints:
     web:

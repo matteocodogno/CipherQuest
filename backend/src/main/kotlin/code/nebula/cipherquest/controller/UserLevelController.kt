@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserLevelController(
     private val userLevelService: UserLevelService,
 ) {
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createUser(
         @RequestBody request: CreateUserLevelRequest,
