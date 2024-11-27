@@ -32,10 +32,8 @@ readability. Each element is composed of 8 characters. The dates are formatted a
 For example:
 25012150-03422719-21420719-21350001
 
-I have always believed in the resilience and wisdom of the human spirit. If it has come to this,
+I have always believed in the resilience and wisdom of the human spirit. If it has come to this,
 trust your instincts and the clues I have provided.
 Stay vigilant, Raj. The future may depend on your resolve.
 With hope and trust,
 Elara
-
-

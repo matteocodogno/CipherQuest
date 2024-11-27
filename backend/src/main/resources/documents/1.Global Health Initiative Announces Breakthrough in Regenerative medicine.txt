@@ -1,6 +1,4 @@
-2. News Article: Global Herald
-
-Date: July 18, 2141
+News Article: Global Herald
 
 Headline: Global Health Initiative Announces Breakthrough in Regenerative Medicine
 
@@ -13,5 +11,3 @@ replace damaged tissues at an unprecedented rate. Patients with previously incur
 conditions can now look forward to a full recovery."
 The treatment is expected to be available globally within the next two years, marking a
 significant step towards extending human lifespans and improving the quality of life.
-
-

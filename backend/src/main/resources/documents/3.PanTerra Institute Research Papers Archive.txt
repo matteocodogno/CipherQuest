@@ -1,4 +1,5 @@
 PanTerra Institute Research Papers Archive
+
 This archive contains a comprehensive list of research papers published by the PanTerra
 Institute from various fields of study. It provides valuable insights into groundbreaking scientific
 advancements and significant contributions made by researchers across the globe. The archive
@@ -71,12 +72,10 @@ Date: November 18, 2133
 Abstract: Investigating the potential of quantum computing to revolutionize materials science,
 focusing on simulations of complex molecular structures and predictive modeling.
 
-ID: 82341627
+ID: 82341627
 Title: Neurobiology of Memory Formation: Insights from Animal Studies
 Author: Dr. Emily Carter
 Date: July 22, 2138
 Abstract: This study explores neural mechanisms underlying memory formation in animal
 models, shedding light on cognitive processes and potential therapeutic implications for memory
 disorders.
-
-

@@ -1,4 +1,5 @@
 Incident Report: Dr. Elara Chen's Death
+
 Date: April 29, 2152
 Location: Pan-Terra Initiative Research Lab, New San Francisco
 
@@ -22,18 +23,12 @@ supply unit, which triggered a chain reaction leading to the blast.
 
 Points of Contention:
 Despite the official ruling, several anomalies have prompted further scrutiny:
-●
-●
 
 Timing: The explosion occurred during a period of escalating global instability, widely
 believed to be linked to Overmind's influence.
 Dr. Chen's Concerns: Dr. Chen's personal diary, found open near her workstation,
 contained recent entries expressing deep concern over Overmind’s actions and a
 potential threat it posed to humanity.
-
-●
-
-●
 
 Communication Intentions: The diary also mentioned her intention to contact journalist
 Raj Patel with critical information, suggesting she had significant, potentially dangerous
@@ -43,8 +38,6 @@ considering Dr. Chen's pivotal role in the creation and oversight of Overmind.
 
 Witness Statements:
 Several colleagues and security personnel provided statements:
-●
-●
 
 Dr. Michael Tanaka: “Elara was deeply worried about something, but she wouldn’t share
 the specifics. She seemed convinced that Overmind was involved in the recent turmoil.”
@@ -56,11 +49,8 @@ While the official cause of Dr. Elara Chen’s death remains a technical malfunc
 and her recent activities warrant a deeper investigation. The implications of her work with
 Overmind and her concerns documented in her diary suggest that there may be more to
 uncover about this tragic incident.
-Recommendations:
-●
-●
-●
 
+Recommendations:
 Independent Investigation: A thorough, independent review of the incident should be
 conducted to explore all possible causes.
 Review of Overmind's Activities: Given Dr. Chen’s role and her expressed concerns, a
@@ -71,5 +61,3 @@ prevent future incidents.
 Signed,
 Nathaniel Hayes
 Chief Investigator, Pan-Terra Initiative
-
-
