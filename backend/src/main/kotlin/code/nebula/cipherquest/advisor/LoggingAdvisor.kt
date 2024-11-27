@@ -10,7 +10,7 @@ import org.springframework.core.Ordered
 private val logger = KotlinLogging.logger {}
 
 class LoggingAdvisor : CallAroundAdvisor {
-    override fun getOrder(): Int = Ordered.LOWEST_PRECEDENCE
+    override fun getOrder(): Int = Ordered.LOWEST_PRECEDENCE - 1
 
     override fun getName(): String = javaClass.simpleName
 
