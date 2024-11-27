@@ -1,24 +1,18 @@
-import { ReactElement, ReactNode, useEffect, useRef } from 'react';
+import { PropsWithChildren, ReactElement, useEffect, useRef } from 'react';
 import ChatHeader from '../header/chat-header';
 import { MessageBox } from '../messages/message-box';
 import { Stack } from '@mui/system';
 import { useMessages } from '@/hooks/use-messages';
 
-export type ChatViewProps = {
-  children: ReactNode;
-};
-
-export const ChatView = ({ children }: ChatViewProps): ReactElement => {
+export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const { messages } = useMessages();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messages.length) {
-      if (!ref.current) {
-        return;
-      }
-      ref.current.scrollIntoView({ behavior: 'smooth' });
+    if (!ref.current) {
+      return;
     }
+    ref.current.scrollIntoView({ behavior: 'smooth' });
   }, [messages.length]);
 
   return (
@@ -26,11 +20,10 @@ export const ChatView = ({ children }: ChatViewProps): ReactElement => {
       sx={{
         width: '70%',
         minWidth: '600px',
-        paddingLeft: 7,
-        paddingRight: 7,
+        paddingX: 7,
         height: 'calc(100vh - 62px)',
       }}
-      flexDirection={'column'}
+      flexDirection='column'
       alignItems={'center'}
     >
       <ChatHeader />

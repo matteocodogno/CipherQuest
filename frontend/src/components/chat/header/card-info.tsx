@@ -19,12 +19,7 @@ const CardInfo = ({ svg, value }: CardInfoProps) => (
     gap={1}
     flexDirection={'row'}
   >
-    <Box
-      alt='Internal server error'
-      component='img'
-      src={svg}
-      sx={{ height: '24px', width: 'auto' }}
-    />
+    <Box component='img' src={svg} sx={{ height: '24px', width: 'auto' }} />
     <Typography>{value}</Typography>
   </Stack>
 );
