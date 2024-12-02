@@ -101,7 +101,8 @@ export const RulesView = (): ReactElement => {
 
         <Box
           sx={{
-            background: '#121517CC',
+            background: 'var(--mui-palette-background-paper)',
+            opacity: 0.9,
             borderRadius: '20px',
             display: 'flex',
             flexDirection: 'column',

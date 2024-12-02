@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Link from '@mui/material/Link';
-import type { Message } from './types';
+import type { Message } from '../types';
 import { ReactElement } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -29,7 +29,13 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
   const position = message.author.id === user.id ? 'right' : 'left';
 
   return (
-    <Box sx={{ alignItems: position === 'right' ? 'flex-end' : 'flex-start', flex: '0 0 auto', display: 'flex' }}>
+    <Box
+      sx={{
+        alignItems: position === 'right' ? 'flex-end' : 'flex-start',
+        flex: '0 0 auto',
+        display: 'flex',
+      }}
+    >
       <Stack
         direction={position === 'right' ? 'row-reverse' : 'row'}
         spacing={2}
@@ -47,14 +53,18 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
               px: 2,
               py: 1,
               ...(position === 'right' && {
-                bgcolor: 'var(--mui-palette-primary-main)',
-                color: 'var(--mui-palette-primary-contrastText)',
+                background: 'var(--mui-palette-background-level3)',
+                color: 'text.primary',
               }),
             }}
           >
             <Stack spacing={1}>
               <div>
-                <Link color='inherit' sx={{ cursor: 'pointer' }} variant='subtitle2'>
+                <Link
+                  color='inherit'
+                  sx={{ cursor: 'pointer' }}
+                  variant='caption'
+                >
                   {message.author.name}
                 </Link>
               </div>
@@ -74,7 +84,13 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
               ) : null}
             </Stack>
           </Card>
-          <Box sx={{ display: 'flex', justifyContent: position === 'right' ? 'flex-end' : 'flex-start', px: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: position === 'right' ? 'flex-end' : 'flex-start',
+              px: 2,
+            }}
+          >
             <Typography color='text.secondary' noWrap variant='caption'>
               {dayjs(message.createdAt).fromNow()}
             </Typography>
@@ -83,4 +99,4 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
       </Stack>
     </Box>
   );
-}
+};

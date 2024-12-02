@@ -2,8 +2,8 @@ import { ReactElement, ReactNode } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard.tsx';
 import Box from '@mui/material/Box';
 import { ChatProvider } from '@/components/chat/chat-provider.tsx';
-import { ChatView } from '@/components/chat/chat-view.tsx';
-import { Header } from '@/components/chat/header.tsx';
+import { ChatView } from './view/chat-view';
+import { Header } from './view/header';
 import { Message } from '@/components/chat/types';
 import { dayjs } from '@/lib/dayjs.ts';
 import { usePathname } from '@/hooks/use-pathname.ts';
@@ -65,7 +65,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            backgroundImage: `radial-gradient(155.97% 49.35% at 50% 50%, rgba(9, 10, 11, 0.30) 0%, rgba(9, 10, 11, 0.90) 100%), url("${background}")`,
+            backgroundImage: `linear-gradient(0deg, rgba(9, 10, 11, 0.9) 0%, rgba(9, 10, 11, 0.9) 100%), url("${background}")`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundSize: 'cover',
