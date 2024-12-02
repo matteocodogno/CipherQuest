@@ -12,6 +12,7 @@ export const paths = {
     rules: '/rules',
     // overview: '/game/overview',
   },
+  scoreboard: '/scoreboard',
   notAuthorized: '/errors/not-authorized',
   notFound: '/errors/not-found',
   internalServerError: '/errors/internal-server-error',

@@ -92,7 +92,7 @@ class UserLevelService(
                     score = userLevel.score.toInt(),
                     userId = userLevel.userId,
                     time =
-                        ChronoUnit.MINUTES
+                        ChronoUnit.SECONDS
                             .between(
                                 userLevel.createdAt,
                                 userLevel.terminatedAt
