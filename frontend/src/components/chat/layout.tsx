@@ -40,7 +40,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
   const background = backgroundMap[pathname] ?? '/assets/background.jpeg';
   const { user } = useUser();
   const messages = useGetChatHistory({
-    userId: user?.userId ?? '',
+    user,
   });
 
   return (

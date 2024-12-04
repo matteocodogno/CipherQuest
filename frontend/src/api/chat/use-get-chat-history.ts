@@ -1,25 +1,24 @@
 import { ChatHistory, SenderType } from './types';
 import { Message } from '@/components/chat/types';
+import { User } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
 
 interface GetChatHistoryProps {
-  userId?: string;
+  user?: User | null;
 }
 
-export const useGetChatHistory = ({ userId }: GetChatHistoryProps) => {
+export const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
   const { error, data } = useQuery({
-    queryKey: [`chat-${userId}`],
+    queryKey: [`chat-${user?.userId}`],
     queryFn: (): Promise<ChatHistory> =>
-      fetch(`/api/chat/${userId}`, {
+      fetch(`/api/chat/${user?.userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       }).then((res) => res.json()),
-    enabled: !!userId,
+    enabled: !!user,
   });
-
-  console.log({ data });
 
   if (error) {
     console.log(error);
@@ -28,9 +27,9 @@ export const useGetChatHistory = ({ userId }: GetChatHistoryProps) => {
 
   return (data ?? []).map((historyMessage) => {
     const name =
-      historyMessage.sender === SenderType.USER ? 'Human' : 'Overmind';
+      historyMessage.sender === SenderType.USER ? user?.username : 'Overmind';
     const authorId =
-      historyMessage.sender === SenderType.USER ? userId : '123456';
+      historyMessage.sender === SenderType.USER ? user?.userId : '123456';
     return {
       id: historyMessage.index,
       type: 'text',
