@@ -7,26 +7,17 @@ import type { Message } from '../types';
 import { ReactElement } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { User } from '@/types/user';
 import { dayjs } from '@/lib/dayjs';
-
-const user = {
-  id: 9834759384,
-  name: 'Sofia Rivers',
-  username: 'sofia.rivers',
-  level: 1,
-  coins: 25,
-  avatar: '/assets/avatar.png',
-  email: 'sofia@devias.io',
-  startedAt: new Date(),
-} satisfies User;
+import { useUser } from '@/hooks/use-user';
 
 export interface MessageBoxProps {
   message: Message;
 }
 
 export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
-  const position = message.author.id === user.id ? 'right' : 'left';
+  const { user } = useUser();
+
+  const position = message.author.id === user?.userId ? 'right' : 'left';
 
   return (
     <Box
