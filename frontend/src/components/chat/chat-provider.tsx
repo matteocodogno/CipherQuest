@@ -1,6 +1,11 @@
-import { ChatContext, ChatProviderProps, CreateMessageParams } from '@/components/chat/chat-context.tsx';
+import {
+  ChatContext,
+  ChatProviderProps,
+  CreateMessageParams,
+} from '@/components/chat/chat-context.tsx';
 import type { Contact, Message } from '@/components/chat/types';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useUser } from '@/hooks/use-user';
 
 export const ChatProvider = ({
   children,
@@ -12,16 +17,27 @@ export const ChatProvider = ({
   const [openDesktopSidebar, setOpenDesktopSidebar] = useState<boolean>(true);
   const [openMobileSidebar, setOpenMobileSidebar] = useState<boolean>(false);
 
+  const { user } = useUser();
+
   useEffect((): void => {
     setContacts(initialContacts);
-  }, [initialContacts]);
+    setMessages(initialMessages);
+  }, [initialContacts, initialMessages]);
 
   const handleCreateMessage = useCallback(
     (params: CreateMessageParams): void => {
+      if (!user) {
+        throw new Error('create message needs a valid user');
+      }
+
       const message = {
         id: `MSG-${Date.now()}`,
         type: params.type,
-        author: {id: 9834759384, name: 'Sofia Rivers', avatar: '/assets/avatar.png'},
+        author: {
+          id: user?.userId,
+          name: user?.username,
+          avatar: '/assets/avatar.png',
+        },
         content: params.content,
         createdAt: new Date(),
       } satisfies Message;
@@ -34,7 +50,7 @@ export const ChatProvider = ({
       // Dispatch messages update
       setMessages(updatedMessages);
     },
-    [messages],
+    [messages, user],
   );
 
   return (
@@ -52,4 +68,4 @@ export const ChatProvider = ({
       {children}
     </ChatContext.Provider>
   );
-}
+};
