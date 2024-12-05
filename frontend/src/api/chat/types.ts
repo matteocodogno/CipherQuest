@@ -1,6 +1,6 @@
 export enum SenderType {
   USER = 'USER',
-  ASSISTANT = 'ASSISTANT',
+  OVERMIND = 'OVERMIND',
 }
 
 export type ChatHistory = {
