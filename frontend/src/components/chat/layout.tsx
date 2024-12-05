@@ -39,7 +39,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
   const pathname = usePathname();
   const background = backgroundMap[pathname] ?? '/assets/background.jpeg';
   const { user } = useUser();
-  const messages = useGetChatHistory({
+  const { messages } = useGetChatHistory({
     user,
   });
 
