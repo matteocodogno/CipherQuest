@@ -18,6 +18,6 @@ export type Message = {
   id: string;
   type: MessageType;
   content: string;
-  author: { id: number; name: string; avatar?: string };
+  author: { id: string; name: string; avatar?: string };
   createdAt: Date;
 };

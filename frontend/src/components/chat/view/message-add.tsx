@@ -25,10 +25,6 @@ export const MessageAdd = ({
   const [content, setContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleAttach = useCallback(() => {
-    fileInputRef.current?.click();
-  }, []);
-
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value);
   }, []);
