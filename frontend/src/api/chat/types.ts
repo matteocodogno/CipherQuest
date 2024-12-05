@@ -9,3 +9,9 @@ export type ChatHistory = {
   sender: SenderType;
   timestamp: string;
 }[];
+
+export type ChatResponse = {
+  message: string;
+  level: number;
+  coins: number;
+};
