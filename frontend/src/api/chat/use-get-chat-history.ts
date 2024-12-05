@@ -8,7 +8,7 @@ interface GetChatHistoryProps {
   user?: User | null;
 }
 
-export const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
+const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
   const { isError, data, isLoading } = useQuery({
     queryKey: [`chat-${user?.userId}`],
     queryFn: (): Promise<ChatHistory> =>
@@ -49,3 +49,5 @@ export const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
 
   return { messages, isError, isLoading };
 };
+
+export default useGetChatHistory;

@@ -5,7 +5,7 @@ import { ChatProvider } from '@/components/chat/chat-provider.tsx';
 import { ChatView } from './view/chat-view';
 import { Header } from './view/header';
 import { dayjs } from '@/lib/dayjs.ts';
-import { useGetChatHistory } from '@/api/chat/use-get-chat-history';
+import useGetChatHistory from '@/api/chat/use-get-chat-history';
 import { usePathname } from '@/hooks/use-pathname.ts';
 import { useUser } from '@/hooks/use-user';
 
