@@ -7,6 +7,7 @@ data class BotMessage(
     val level: Int,
     val coins: Int,
     val terminatedAt: String?,
+    val info: Map<String, Any>?,
 ) {
     companion object {
         const val DEFAULT_LEVEL = 1
@@ -29,30 +30,35 @@ Good luck.
         fun build(
             message: String,
             userLevel: UserLevel,
+            map: MutableMap<String, Any>?,
         ): BotMessage =
             BotMessage(
                 message,
                 userLevel.level,
                 userLevel.coins,
                 userLevel.terminatedAt.toString(),
+                map,
             )
 
         fun buildDeadMessage(userLevel: UserLevel): BotMessage =
             build(
                 DEAD_MESSAGE,
                 userLevel,
+                null,
             )
 
         fun buildWinMessage(userLevel: UserLevel): BotMessage =
             build(
                 String.format(WIN_MESSAGE, userLevel.userId),
                 userLevel,
+                null,
             )
 
         fun buildGameOverMessage(userLevel: UserLevel): BotMessage =
             build(
                 String.format(GAME_OVER_MESSAGE, userLevel.userId),
                 userLevel,
+                null,
             )
     }
 }

@@ -5,6 +5,7 @@ import code.nebula.cipherquest.advisor.LevelUpAdvisor
 import code.nebula.cipherquest.advisor.LoggingAdvisor
 import code.nebula.cipherquest.advisor.SanitizeInputAdvisor
 import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
+import code.nebula.cipherquest.components.MessageContext
 import code.nebula.cipherquest.service.UserLevelService
 import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.ai.chat.client.ChatClient
@@ -20,6 +21,7 @@ import org.springframework.core.io.Resource
 @Configuration
 @Suppress("LongParameterList")
 class ChatClientConfiguration(
+    private val messageContext: MessageContext,
     private val chatModel: ChatModel,
     private val vectorStore: VectorStore,
     private val vectorStoreService: VectorStoreService,
@@ -50,7 +52,7 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
-                LevelUpAdvisor(vectorStore, userLevelService),
+                LevelUpAdvisor(vectorStore, userLevelService, messageContext),
                 VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
                 LastMessageMemoryAppenderAdvisor(vectorStoreService),
                 TitleQuestionAnswerAdvisor(
@@ -60,6 +62,7 @@ class ChatClientConfiguration(
                         .withTopK(requestLimitRag)
                         .withSimilarityThreshold(similarityThreshold),
                     ragSystemText,
+                    messageContext,
                 ),
                 LoggingAdvisor(),
             ).build()

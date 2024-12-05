@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.advisor
 
+import code.nebula.cipherquest.components.MessageContext
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service
 class LevelUpAdvisor(
     private val vectorStore: VectorStore,
     private val userLevelService: UserLevelService,
+    private val messageContext: MessageContext,
 ) : CallAroundAdvisor {
     companion object {
         private const val LEVEL_UP_THRESHOLD = 0.82
@@ -29,7 +31,9 @@ class LevelUpAdvisor(
         chain: CallAroundAdvisorChain,
     ): AdvisedResponse {
         val id = doGetConversationId(advisedRequest.adviseContext)
-        levelUp(id, advisedRequest.userText)
+        val result = levelUp(id, advisedRequest.userText)
+
+        messageContext.context["isLevelUp"] = result
 
         return chain.nextAroundCall(advisedRequest)
     }
@@ -37,7 +41,7 @@ class LevelUpAdvisor(
     fun levelUp(
         userId: String,
         query: String,
-    ) {
+    ): Boolean {
         val userLevel = userLevelService.getLevelByUser(userId)
 
         val matchedQuestionLevel =
@@ -57,7 +61,9 @@ class LevelUpAdvisor(
 
         if (matchedQuestionLevel == userLevel.level + 1) {
             userLevelService.increaseLevelTo(userId, matchedQuestionLevel)
+            return true
         }
+        return false
     }
 
     private fun doGetConversationId(context: Map<String, Any>) = context["chat_memory_conversation_id"].toString()
