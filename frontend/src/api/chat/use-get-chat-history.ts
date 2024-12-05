@@ -2,6 +2,7 @@ import { ChatHistory, SenderType } from './types';
 import { CHAT_URL } from './constants';
 import { Message } from '@/components/chat/types';
 import { User } from '@/types/user';
+import { generateMessage } from '@/utils/messages';
 import { useQuery } from '@tanstack/react-query';
 
 interface GetChatHistoryProps {
@@ -22,29 +23,25 @@ const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
   });
 
   const messages = (data ?? []).map((historyMessage) => {
-    const { name, authorId, avatar } =
+    const { name, authorId } =
       historyMessage.sender === SenderType.USER
         ? {
             name: user?.username,
             authorId: user?.userId,
-            avatar: '/assets/avatar.jpg',
           }
         : {
             name: 'Overmind',
             authorId: '00000',
-            avatar: '/assets/overmind.jpg',
           };
-    return {
+    return generateMessage({
       id: historyMessage.index,
       type: 'text',
       content: historyMessage.message,
-      author: {
-        id: authorId,
-        name: name,
-        avatar: avatar,
-      },
+      senderId: authorId,
+      senderName: name,
+      senderType: historyMessage.sender,
       createdAt: new Date(historyMessage.timestamp),
-    };
+    });
   }) as Message[];
 
   return { messages, isError, isLoading };
