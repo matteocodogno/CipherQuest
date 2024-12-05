@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 class LevelUpAdvisor(
     private val vectorStore: VectorStore,
     private val userLevelService: UserLevelService,
-    private val messageContext: MessageContext
+    private val messageContext: MessageContext,
 ) : CallAroundAdvisor {
     companion object {
         private const val LEVEL_UP_THRESHOLD = 0.82

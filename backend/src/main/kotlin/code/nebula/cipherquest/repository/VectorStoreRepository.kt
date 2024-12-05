@@ -3,13 +3,11 @@ package code.nebula.cipherquest.repository
 import code.nebula.cipherquest.models.dto.Info
 import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.models.dto.Sender
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.json.JSONObject
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
-import java.util.*
+import java.util.UUID
 
 @Repository
 class VectorStoreRepository(
@@ -20,7 +18,10 @@ class VectorStoreRepository(
         return jdbcTemplate.queryForObject(sql, Boolean::class.java, source)
     }
 
-    fun updateInfo(id: String, info: String): Boolean {
+    fun updateInfo(
+        id: String,
+        info: String,
+    ): Boolean {
         val sql = "UPDATE vector_store SET info = to_json(?::json) WHERE id = ?"
         return jdbcTemplate.update(sql, info, UUID.fromString(id)) > 0
     }
@@ -60,9 +61,10 @@ class VectorStoreRepository(
                     message = rs.getString("message"),
                     sender = Sender.valueOf(rs.getString("sender")),
                     timestamp = rs.getObject("timestamp", OffsetDateTime::class.java),
-                    info = rs.getString("info")?.let { json ->
-                        objectMapper.readValue(json, Info::class.java)
-                    } ?: Info()
+                    info =
+                        rs.getString("info")?.let { json ->
+                            objectMapper.readValue(json, Info::class.java)
+                        } ?: Info(),
                 )
             },
             userId,

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
+@Suppress("LongParameterList")
 class GameService(
     private val chatClient: ChatClient,
     private val functionChatClient: ChatClient,
@@ -25,7 +26,7 @@ class GameService(
     private val userLevelService: UserLevelService,
     private val functionCallbackContext: FunctionCallbackContext,
     private val messageContext: MessageContext,
-    private val vectorStoreService: VectorStoreService
+    private val vectorStoreService: VectorStoreService,
 ) {
     companion object {
         private const val CHAT_MEMORY_MAX_SIZE = 20

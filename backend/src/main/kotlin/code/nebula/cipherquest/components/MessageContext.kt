@@ -8,4 +8,3 @@ import org.springframework.web.context.annotation.RequestScope
 class MessageContext {
     val context: MutableMap<String, Any> = mutableMapOf()
 }
-

@@ -30,12 +30,14 @@ class VectorStoreService(
     ) = vectorStoreRepository
         .getDocumentByFilename(filename, level)
 
-    fun updateInfo(id: String, info: Map<String, Any>? ) {
+    fun updateInfo(
+        id: String,
+        info: Map<String, Any>?,
+    ) {
         vectorStoreRepository.updateInfo(id, JSONObject(info).toString())
     }
 
-    fun getLastMessage(userId: String): Message =
-        vectorStoreRepository.getMessageHistoryByUserId(userId).last()
+    fun getLastMessage(userId: String): Message = vectorStoreRepository.getMessageHistoryByUserId(userId).last()
 
     fun getMessageHistoryByUserId(userId: String): List<Message> =
         vectorStoreRepository.getMessageHistoryByUserId(userId).ifEmpty {

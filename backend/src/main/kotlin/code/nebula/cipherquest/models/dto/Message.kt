@@ -2,7 +2,7 @@ package code.nebula.cipherquest.models.dto
 
 import org.springframework.ai.chat.prompt.PromptTemplate
 import java.time.OffsetDateTime
-import java.util.*
+import java.util.UUID
 
 data class Message(
     val id: String,
@@ -26,7 +26,7 @@ data class Message(
                         .contents,
                 sender = Sender.ASSISTANT,
                 timestamp = OffsetDateTime.now(),
-                info = Info()
+                info = Info(),
             )
     }
 }
