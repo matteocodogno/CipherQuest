@@ -28,15 +28,11 @@ export const ChatProvider = ({
     setMessages(initialMessages);
   }, [initialContacts, initialMessages]);
 
-  const addOvermindThinking = () => {
-    const overmindThinking = generateMessage({
-      type: 'text',
-      senderType: SenderType.OVERMIND,
-      content: '......',
-    });
-    const updatedMessages = [...messages];
-    updatedMessages.push(overmindThinking);
-  };
+  const overmindThinking = generateMessage({
+    type: 'text',
+    senderType: SenderType.OVERMIND,
+    content: '......',
+  });
 
   const handleCreateMessage = useCallback(
     (params: CreateMessageParams): void => {
@@ -56,7 +52,7 @@ export const ChatProvider = ({
       });
 
       updatedMessages.push(userRequest);
-      addOvermindThinking();
+      updatedMessages.push(overmindThinking);
       setMessages(updatedMessages);
 
       sendRequest(
@@ -75,7 +71,7 @@ export const ChatProvider = ({
         },
       );
     },
-    [messages, sendRequest, user],
+    [messages, overmindThinking, sendRequest, user],
   );
 
   return (
