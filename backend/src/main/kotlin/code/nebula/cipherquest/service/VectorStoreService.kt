@@ -2,6 +2,7 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.repository.VectorStoreRepository
+import org.json.JSONObject
 import org.springframework.ai.chat.messages.MessageType
 import org.springframework.ai.document.Document
 import org.springframework.ai.transformer.splitter.TokenTextSplitter
@@ -29,6 +30,13 @@ class VectorStoreService(
     ) = vectorStoreRepository
         .getDocumentByFilename(filename, level)
 
+    fun updateInfo(id: String, info: Map<String, Any>? ) {
+        vectorStoreRepository.updateInfo(id, JSONObject(info).toString())
+    }
+
+    fun getLastMessage(userId: String): Message =
+        vectorStoreRepository.getMessageHistoryByUserId(userId).last()
+
     fun getMessageHistoryByUserId(userId: String): List<Message> =
         vectorStoreRepository.getMessageHistoryByUserId(userId).ifEmpty {
             val initialMessage =
@@ -36,7 +44,7 @@ class VectorStoreService(
 
             listOf(initialMessage).apply {
                 vectorStore.add(
-                    map { (_, message) ->
+                    map { (_, _, message) ->
                         Document(
                             message,
                             mapOf(

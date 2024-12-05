@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.advisor
 
+import code.nebula.cipherquest.components.MessageContext
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
@@ -12,6 +13,7 @@ class TitleQuestionAnswerAdvisor(
     private val vectorStore: VectorStore,
     private val searchRequest: SearchRequest = SearchRequest.defaults(),
     private val userTextAdvise: String = DEFAULT_USER_TEXT_ADVISE,
+    private val messageContext: MessageContext,
 ) : QuestionAnswerAdvisor(vectorStore, searchRequest, userTextAdvise) {
     companion object {
         private const val DEFAULT_USER_TEXT_ADVISE = """
@@ -54,12 +56,18 @@ class TitleQuestionAnswerAdvisor(
             context[RETRIEVED_DOCUMENTS] = documents
         }
 
+        messageContext.context["sources"] = documents.map {
+            it.metadata["source"].toString().split(".")
+                .getOrNull(1)
+                .orEmpty()
+        }.toList()
+
         // 3. Create the context from the documents.
         val documentContext =
             documents
                 ?.joinToString(
                     System.lineSeparator(),
-                ) { document -> "Title: ${document.metadata["file_name"]}\n${document.content}" }
+                ) { document -> "Title: ${document.metadata["source"]}\n${document.content}" }
 
         // 4. Advise the user parameters.
         return AdvisedRequest

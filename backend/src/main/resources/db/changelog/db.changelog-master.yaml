@@ -14,3 +14,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20241015140000-vector_store_created_at.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20241205100000-vector_store_info.sql
