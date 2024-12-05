@@ -30,9 +30,9 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
       <Stack
         direction={position === 'right' ? 'row-reverse' : 'row'}
         spacing={2}
+        maxWidth={position === 'right' ? '35%' : '70%'}
         sx={{
           alignItems: 'flex-start',
-          maxWidth: '500px',
           ml: position === 'right' ? 'auto' : 0,
           mr: position === 'left' ? 'auto' : 0,
         }}
@@ -41,8 +41,7 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Card
             sx={{
-              px: 2,
-              py: 1,
+              p: 2,
               ...(position === 'right' && {
                 background: 'var(--mui-palette-background-level3)',
                 color: 'text.primary',
@@ -69,7 +68,11 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
                 />
               ) : null}
               {message.type === 'text' ? (
-                <Typography color='inherit' variant='body1'>
+                <Typography
+                  color='inherit'
+                  variant='body1'
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
                   {message.content}
                 </Typography>
               ) : null}
