@@ -1,4 +1,5 @@
 import { ChatHistory, SenderType } from './types';
+import { CHAT_URL } from './constants';
 import { Message } from '@/components/chat/types';
 import { User } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
@@ -8,10 +9,10 @@ interface GetChatHistoryProps {
 }
 
 export const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
-  const { error, data } = useQuery({
+  const { isError, data, isLoading } = useQuery({
     queryKey: [`chat-${user?.userId}`],
     queryFn: (): Promise<ChatHistory> =>
-      fetch(`/api/chat/${user?.userId}`, {
+      fetch(`${CHAT_URL}/${user?.userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -20,16 +21,19 @@ export const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
     enabled: !!user,
   });
 
-  if (error) {
-    console.log(error);
-    return [];
-  }
-
-  return (data ?? []).map((historyMessage) => {
-    const name =
-      historyMessage.sender === SenderType.USER ? user?.username : 'Overmind';
-    const authorId =
-      historyMessage.sender === SenderType.USER ? user?.userId : '123456';
+  const messages = (data ?? []).map((historyMessage) => {
+    const { name, authorId, avatar } =
+      historyMessage.sender === SenderType.USER
+        ? {
+            name: user?.username,
+            authorId: user?.userId,
+            avatar: '/assets/avatar.jpg',
+          }
+        : {
+            name: 'Overmind',
+            authorId: '00000',
+            avatar: '/assets/overmind.jpg',
+          };
     return {
       id: historyMessage.index,
       type: 'text',
@@ -37,9 +41,11 @@ export const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
       author: {
         id: authorId,
         name: name,
-        avatar: '/assets/avatar.png',
+        avatar: avatar,
       },
       createdAt: new Date(historyMessage.timestamp),
     };
   }) as Message[];
+
+  return { messages, isError, isLoading };
 };

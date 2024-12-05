@@ -36,7 +36,7 @@ export const ChatProvider = ({
         author: {
           id: user?.userId,
           name: user?.username,
-          avatar: '/assets/avatar.png',
+          avatar: '/assets/avatar.jpg',
         },
         content: params.content,
         createdAt: new Date(),
