@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
+@Suppress("SwallowedException", "TooGenericExceptionCaught")
 class GameService(
     private val chatClient: ChatClient,
     private val functionChatClient: ChatClient,
