@@ -26,8 +26,9 @@ class VectorStoreService(
     fun getDocumentByFilename(
         filename: String,
         level: Int,
-    ) = vectorStoreRepository
-        .getDocumentByFilename(filename, level)
+    ): String? =
+        vectorStoreRepository
+            .getDocumentByFilename(filename, level)
 
     fun getMessageHistoryByUserId(userId: String): List<Message> =
         vectorStoreRepository.getMessageHistoryByUserId(userId).ifEmpty {

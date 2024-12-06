@@ -18,7 +18,7 @@ class VectorStoreRepository(
     fun getDocumentByFilename(
         source: String?,
         level: Int?,
-    ): String {
+    ): String? {
         val sql =
             """
             SELECT string_agg(content, '') FROM vector_store WHERE metadata->>'type' = 'DOCUMENT'
