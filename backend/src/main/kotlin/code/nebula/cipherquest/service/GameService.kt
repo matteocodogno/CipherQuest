@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
+@Suppress("SwallowedException", "TooGenericExceptionCaught")
 class GameService(
     private val chatClient: ChatClient,
     private val functionChatClient: ChatClient,
@@ -81,7 +82,12 @@ class GameService(
     private fun executeToolCalls(chatResponse: ChatResponse): String? =
         chatResponse.result.output.toolCalls?.firstNotNullOfOrNull { toolCall ->
             val callback: FunctionCallback = functionCallbackContext.getFunctionCallback(toolCall.name, null)
-            callback.call(toolCall.arguments())?.removeSurrounding("\"", "\"")
+
+            try {
+                callback.call(toolCall.arguments())?.removeSurrounding("\"", "\"")
+            } catch (e: NullPointerException) {
+                return null
+            }
         }
 
     private fun fallbackToChatClient(userToQuery: Pair<UserLevel, String>): String =
