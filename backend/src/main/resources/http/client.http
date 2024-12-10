@@ -1,4 +1,4 @@
-@userId = 7880653774
+@userId = 2943028272
 
 ### POST request to load documents on pgvector
 
@@ -13,8 +13,11 @@ POST http://127.0.0.1:8080/api/user
 Content-Type: application/json
 
 {
-    "username": "test12313123"
+    "username": "test"
 }
+
+### history
+GET http://localhost:8080/api/chat/{{userId}}
 
 ### GET the scoreboard
 
