@@ -27,8 +27,9 @@ class VectorStoreService(
     fun getDocumentByFilename(
         filename: String,
         level: Int,
-    ) = vectorStoreRepository
-        .getDocumentByFilename(filename, level)
+    ): String? =
+        vectorStoreRepository
+            .getDocumentByFilename(filename, level)
 
     fun updateInfo(
         id: String,

@@ -12,8 +12,8 @@ class GetDocumentFunctionConfiguration {
     fun getDocument(vectorStoreService: VectorStoreService): java.util.function.Function<Request, String?> =
         java.util.function.Function { req ->
             req.let { (filename, level) ->
-                vectorStoreService
-                    .getDocumentByFilename(filename, level)
+                val document = vectorStoreService.getDocumentByFilename(filename, level)
+                document ?: throw NullPointerException("Document not found for filename: $filename and level: $level")
             }
         }
 }
