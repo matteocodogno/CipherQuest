@@ -28,7 +28,7 @@ overmind:
   ai:
     rag:
       result-limit: 5
-      similarity-threshold: 0.72
+      similarity-threshold: 0.75
     chat:
       history:
         max-size: 10

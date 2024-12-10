@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.service
 
+import code.nebula.cipherquest.components.MessageContext
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.repository.entities.UserLevel
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
+@Suppress("LongParameterList")
 class GameService(
     private val chatClient: ChatClient,
     private val functionChatClient: ChatClient,
@@ -23,6 +25,8 @@ class GameService(
     private val winCondition: String,
     private val userLevelService: UserLevelService,
     private val functionCallbackContext: FunctionCallbackContext,
+    private val messageContext: MessageContext,
+    private val vectorStoreService: VectorStoreService,
 ) {
     companion object {
         private const val CHAT_MEMORY_MAX_SIZE = 20
@@ -109,7 +113,9 @@ class GameService(
         return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
-                return BotMessage.build(response, user)
+                val messageId = vectorStoreService.getLastMessage(userId).id
+                vectorStoreService.updateInfo(messageId, messageContext.context)
+                return BotMessage.build(response, user, messageContext.context)
             }
     }
 }
