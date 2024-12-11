@@ -59,11 +59,16 @@ class TitleQuestionAnswerAdvisor(
         messageContext.context["sources"] =
             documents
                 .map {
-                    it.metadata["source"]
-                        .toString()
-                        .split(".")
-                        .getOrNull(1)
-                        .orEmpty()
+                    mapOf(
+                        "id" to it.id,
+                        "title" to (
+                            it.metadata["source"]
+                                ?.toString()
+                                ?.split(".")
+                                ?.getOrNull(1)
+                                .orEmpty()
+                        ),
+                    )
                 }.toList()
 
         // 3. Create the context from the documents.

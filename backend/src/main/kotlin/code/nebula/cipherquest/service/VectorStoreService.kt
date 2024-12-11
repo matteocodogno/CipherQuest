@@ -24,6 +24,10 @@ class VectorStoreService(
 
     fun existsDocumentWithSource(filename: String) = vectorStoreRepository.existsDocumentWithSource(filename)
 
+    fun getDocumentById(id: String): String? =
+        vectorStoreRepository
+            .getDocumentById(id)
+
     fun getDocumentByFilename(
         filename: String,
         level: Int,

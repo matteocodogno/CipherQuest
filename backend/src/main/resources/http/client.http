@@ -1,4 +1,4 @@
-@userId = 2943028272
+@userId = 1542142577
 
 ### POST request to load documents on pgvector
 
@@ -13,7 +13,7 @@ POST http://127.0.0.1:8080/api/user
 Content-Type: application/json
 
 {
-    "username": "test"
+    "username": "pppp"
 }
 
 ### history
@@ -144,5 +144,5 @@ POST http://localhost:8080/api/chat/{{userId}}
 
     What it should be a message that Overmind would output in case of deactivation via dead man switch code entered
 
-
-
+### get doc by id
+GET http://localhost:8080/api/document/7ffbc351-a55c-4019-a615-3bf8faf3a4a1

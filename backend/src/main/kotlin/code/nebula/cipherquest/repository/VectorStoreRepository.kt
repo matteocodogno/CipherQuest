@@ -13,6 +13,11 @@ import java.util.UUID
 class VectorStoreRepository(
     val jdbcTemplate: JdbcTemplate,
 ) {
+    fun getDocumentById(id: String?): String {
+        val sql = "SELECT content FROM vector_store WHERE id = ?"
+        return jdbcTemplate.queryForObject(sql, String::class.java, UUID.fromString(id))
+    }
+
     fun existsDocumentWithSource(source: String?): Boolean {
         val sql = "SELECT EXISTS (SELECT 1 FROM vector_store WHERE metadata->>'source' = ?)"
         return jdbcTemplate.queryForObject(sql, Boolean::class.java, source)
