@@ -2,10 +2,10 @@ import { PropsWithChildren, ReactElement, useEffect, useRef } from 'react';
 import ChatHeader from '../header/chat-header';
 import { MessageBox } from '../messages/message-box';
 import { Stack } from '@mui/system';
-import { useMessages } from '@/hooks/use-messages';
+import { useChat } from '@/hooks/use-chat';
 
 export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
-  const { messages } = useMessages();
+  const { messages } = useChat();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
