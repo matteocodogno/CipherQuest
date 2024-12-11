@@ -3,8 +3,8 @@ import {
   ChatProviderProps,
   CreateMessageParams,
 } from '@/components/chat/chat-context.tsx';
-import type { Contact, Message } from '@/components/chat/types';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
+import type { Message } from '@/components/chat/types';
 import { SenderType } from '@/api/chat/types';
 import { generateMessage } from '@/utils/messages';
 import useSendRequest from '@/api/chat/use-send-request';
@@ -12,10 +12,8 @@ import { useUser } from '@/hooks/use-user';
 
 export const ChatProvider = ({
   children,
-  contacts: initialContacts = [],
   messages: initialMessages = [],
 }: ChatProviderProps): ReactElement => {
-  const [contacts, setContacts] = useState<Contact[]>([]);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [openDesktopSidebar, setOpenDesktopSidebar] = useState<boolean>(true);
   const [openMobileSidebar, setOpenMobileSidebar] = useState<boolean>(false);
@@ -24,9 +22,8 @@ export const ChatProvider = ({
   const { mutate: sendRequest } = useSendRequest();
 
   useEffect((): void => {
-    setContacts(initialContacts);
     setMessages(initialMessages);
-  }, [initialContacts, initialMessages]);
+  }, [initialMessages]);
 
   const overmindThinking = generateMessage({
     type: 'text',
@@ -77,7 +74,6 @@ export const ChatProvider = ({
   return (
     <ChatContext.Provider
       value={{
-        contacts,
         messages,
         createMessage: handleCreateMessage,
         openDesktopSidebar,

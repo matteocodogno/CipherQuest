@@ -1,5 +1,5 @@
-import type { Contact, Message, MessageType } from './types';
 import { Dispatch, ReactNode, SetStateAction, createContext } from 'react';
+import type { Message, MessageType } from './types';
 
 function noop(): void {
   return undefined;
@@ -11,7 +11,6 @@ export type CreateMessageParams = {
 };
 
 export type ChatContextValue = {
-  contacts: Contact[];
   messages: Message[];
   createMessage: (params: CreateMessageParams) => void;
   openDesktopSidebar: boolean;
@@ -21,7 +20,6 @@ export type ChatContextValue = {
 };
 
 export const ChatContext = createContext<ChatContextValue>({
-  contacts: [],
   messages: [],
   createMessage: noop,
   openDesktopSidebar: true,
@@ -32,7 +30,5 @@ export const ChatContext = createContext<ChatContextValue>({
 
 export type ChatProviderProps = {
   children: ReactNode;
-  contacts: Contact[];
   messages: Message[];
 };
-
