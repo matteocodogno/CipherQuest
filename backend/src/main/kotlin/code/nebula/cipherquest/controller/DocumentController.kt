@@ -12,7 +12,7 @@ class DocumentController(
     private val vectorStoreService: VectorStoreService,
 ) {
     @GetMapping("/{id}")
-    fun chat(
+    fun getDocument(
         @PathVariable id: String,
     ): String? = vectorStoreService.getDocumentById(id)
 }
