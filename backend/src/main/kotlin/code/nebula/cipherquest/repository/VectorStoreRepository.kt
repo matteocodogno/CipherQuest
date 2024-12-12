@@ -1,21 +1,30 @@
 package code.nebula.cipherquest.repository
 
+import code.nebula.cipherquest.exceptions.DocumentNotFoundException
 import code.nebula.cipherquest.models.dto.Info
 import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.models.dto.Sender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
 import java.util.UUID
 
 @Repository
+@Suppress("SwallowedException")
 class VectorStoreRepository(
     val jdbcTemplate: JdbcTemplate,
 ) {
-    fun getDocumentById(id: String?): String {
+    fun getDocumentById(id: String?): String? {
         val sql = "SELECT content FROM vector_store WHERE id = ?"
-        return jdbcTemplate.queryForObject(sql, String::class.java, UUID.fromString(id))
+        return try {
+            jdbcTemplate.queryForObject(sql, String::class.java, UUID.fromString(id))
+        } catch (e: EmptyResultDataAccessException) {
+            throw DocumentNotFoundException("Document with ID $id not found")
+        } catch (e: IllegalArgumentException) {
+            throw DocumentNotFoundException("Invalid UUID $id")
+        }
     }
 
     fun existsDocumentWithSource(source: String?): Boolean {
