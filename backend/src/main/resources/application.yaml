@@ -20,18 +20,18 @@ spring:
     virtual:
       enabled: true
 
-server:
-  servlet:
-    context-path: /api
-
 overmind:
   ai:
     rag:
-      result-limit: 5
+      result-limit: 3
       similarity-threshold: 0.75
     chat:
       history:
         max-size: 10
+
+server:
+  servlet:
+    context-path: /api
 
 
 management:
