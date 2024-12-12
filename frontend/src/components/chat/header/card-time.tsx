@@ -1,22 +1,21 @@
+import { differenceInMilliseconds, format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import CardInfo from './card-info';
 import { CardInfoVariant } from './constants';
-import { differenceInMilliseconds } from 'date-fns';
 
 interface CardTimeProps {
   time?: Date;
 }
 
 const calculateTime = (time?: Date): string => {
+  const offset = new Date().getTimezoneOffset();
   const currentDate = new Date();
   const startingDate = time ? new Date(time) : new Date();
   const differenceDate = new Date(
-    differenceInMilliseconds(currentDate, startingDate),
+    differenceInMilliseconds(currentDate, startingDate) + offset * 1000 * 60,
   );
 
-  const formattedDate = new Date(differenceDate).toTimeString();
-
-  return formattedDate.split(' ')[0];
+  return format(differenceDate, 'HH:mm:ss');
 };
 
 const CardTime = ({ time }: CardTimeProps) => {
@@ -31,7 +30,7 @@ const CardTime = ({ time }: CardTimeProps) => {
 
   return (
     <CardInfo
-      value={formattedTime ?? '00:00'}
+      value={formattedTime ?? '00:00:00'}
       svg={'/assets/time.svg'}
       variant={CardInfoVariant.TIME}
     />

@@ -18,13 +18,13 @@ const CardInfo = ({
       borderRadius: '20px',
       background: 'var(--mui-palette-background-level3)',
       flexDirection: 'row',
-      alignItems: 'start',
-      justifyContent: 'start',
+      alignItems: variant === CardInfoVariant.TIME ? 'start' : 'center',
+      justifyContent: variant === CardInfoVariant.TIME ? 'start' : 'center',
       padding: 2,
     }}
     gap={1}
     flexDirection={'row'}
-    minWidth={variant === CardInfoVariant.TIME ? '120px' : '60px'}
+    width={variant === CardInfoVariant.TIME ? '120px' : 'auto'}
   >
     <Box component='img' src={svg} sx={{ height: '24px', width: 'auto' }} />
     <Box justifyContent='center' alignItems='center'>
