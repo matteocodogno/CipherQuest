@@ -4,7 +4,7 @@ import {
   CreateMessageParams,
 } from '@/components/chat/chat-context.tsx';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import type { Message } from '@/components/chat/types';
+import { Message } from '@/components/chat/types';
 import { SenderType } from '@/api/chat/types';
 import { generateMessage } from '@/utils/messages';
 import useSendRequest from '@/api/chat/use-send-request';
@@ -18,7 +18,7 @@ export const ChatProvider = ({
   const [openDesktopSidebar, setOpenDesktopSidebar] = useState<boolean>(true);
   const [openMobileSidebar, setOpenMobileSidebar] = useState<boolean>(false);
 
-  const { user } = useUser();
+  const { user, setCoins, setLevel } = useUser();
   const { mutate: sendRequest } = useSendRequest();
 
   useEffect((): void => {
@@ -64,11 +64,13 @@ export const ChatProvider = ({
             updatedMessages.pop();
             updatedMessages.push(message);
             setMessages(updatedMessages);
+            setCoins?.(chatResponse.coins);
+            setLevel?.(chatResponse.level);
           },
         },
       );
     },
-    [messages, overmindThinking, sendRequest, user],
+    [messages, overmindThinking, sendRequest, setCoins, setLevel, user],
   );
 
   return (
