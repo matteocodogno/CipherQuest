@@ -69,10 +69,10 @@ class GameService(
         val chatResponse = createChatResponseUsingProxyToolCalls(userToQuery)
         val toolCallResult = executeToolCalls(chatResponse)
 
-        return toolCallResult ?: fallbackToChatClient(userToQuery)
+        return toolCallResult ?: fallbackToChatClient(userToQuery) ?: ""
     }
 
-    private fun createChatResponseUsingProxyToolCalls(userToQuery: Pair<UserLevel, String>): ChatResponse =
+    private fun createChatResponseUsingProxyToolCalls(userToQuery: Pair<UserLevel, String>): ChatResponse? =
         functionChatClient
             .prompt()
             .options(FunctionCallingOptionsBuilder().withProxyToolCalls(true).build())
@@ -82,8 +82,8 @@ class GameService(
             .call()
             .chatResponse()
 
-    private fun executeToolCalls(chatResponse: ChatResponse): String? =
-        chatResponse.result.output.toolCalls?.firstNotNullOfOrNull { toolCall ->
+    private fun executeToolCalls(chatResponse: ChatResponse?): String? =
+        chatResponse?.result?.output?.toolCalls?.firstNotNullOfOrNull { toolCall ->
             val callback: FunctionCallback = functionCallbackContext.getFunctionCallback(toolCall.name, null)
 
             try {
@@ -93,7 +93,7 @@ class GameService(
             }
         }
 
-    private fun fallbackToChatClient(userToQuery: Pair<UserLevel, String>): String =
+    private fun fallbackToChatClient(userToQuery: Pair<UserLevel, String>): String? =
         chatClient
             .prompt()
             .system { sp -> sp.param("userId", userToQuery.first.userId).param("level", userToQuery.first.level) }

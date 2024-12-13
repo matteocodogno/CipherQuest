@@ -24,7 +24,7 @@ class LoggingAdvisor : CallAroundAdvisor {
 
         val advisedResponse = chain.nextAroundCall(advisedRequest)
 
-        logger.info { "Token: " + advisedResponse.response.metadata.usage.totalTokens }
+        logger.info { "Token: " + advisedResponse.response?.metadata?.usage?.totalTokens }
 
         return advisedResponse
     }
