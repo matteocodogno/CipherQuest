@@ -17,8 +17,10 @@ export const ChatProvider = ({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [openDesktopSidebar, setOpenDesktopSidebar] = useState<boolean>(true);
   const [openMobileSidebar, setOpenMobileSidebar] = useState<boolean>(false);
+  const [coins, setLocalCoins] = useState<number>(0);
+  const [level, setLocalLevel] = useState<number>(0);
 
-  const { user, setCoins, setLevel } = useUser();
+  const { user } = useUser();
   const { mutate: sendRequest } = useSendRequest();
 
   useEffect((): void => {
@@ -55,7 +57,7 @@ export const ChatProvider = ({
       sendRequest(
         { user, message: content },
         {
-          onSuccess: (chatResponse) => {
+          onSuccess: async (chatResponse) => {
             const message = generateMessage({
               type: 'text',
               senderType: SenderType.OVERMIND,
@@ -64,19 +66,21 @@ export const ChatProvider = ({
             updatedMessages.pop();
             updatedMessages.push(message);
             setMessages(updatedMessages);
-            setCoins?.(chatResponse.coins);
-            setLevel?.(chatResponse.level);
+            setLocalCoins(chatResponse.coins);
+            setLocalLevel(chatResponse.level);
           },
         },
       );
     },
-    [messages, overmindThinking, sendRequest, setCoins, setLevel, user],
+    [messages, overmindThinking, sendRequest, user],
   );
 
   return (
     <ChatContext.Provider
       value={{
         messages,
+        coins,
+        level,
         createMessage: handleCreateMessage,
         openDesktopSidebar,
         setOpenDesktopSidebar,

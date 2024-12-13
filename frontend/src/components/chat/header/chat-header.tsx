@@ -2,9 +2,11 @@ import { Box } from '@mui/system';
 import CardInfo from './card-info';
 import CardTime from './card-time';
 import { Typography } from '@mui/material';
+import { useChat } from '@/hooks/use-chat';
 import { useUser } from '@/hooks/use-user';
 
 const ChatHeader = () => {
+  const { coins, level } = useChat();
   const { user } = useUser();
 
   return (
@@ -33,14 +35,8 @@ const ChatHeader = () => {
         gap={2}
       >
         <CardTime time={user?.startedAt} />
-        <CardInfo
-          svg='/assets/money.svg'
-          value={user?.coins?.toString() ?? '0'}
-        />
-        <CardInfo
-          svg='/assets/star.svg'
-          value={user?.level?.toString() ?? '0'}
-        />
+        <CardInfo svg='/assets/money.svg' value={coins.toString() ?? '0'} />
+        <CardInfo svg='/assets/star.svg' value={level.toString() ?? '0'} />
       </Box>
     </Box>
   );

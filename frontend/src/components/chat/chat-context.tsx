@@ -12,6 +12,8 @@ export type CreateMessageParams = {
 
 export type ChatContextValue = {
   messages: Message[];
+  coins: number;
+  level: number;
   createMessage: (params: CreateMessageParams) => void;
   openDesktopSidebar: boolean;
   setOpenDesktopSidebar: Dispatch<SetStateAction<boolean>>;
@@ -21,6 +23,8 @@ export type ChatContextValue = {
 
 export const ChatContext = createContext<ChatContextValue>({
   messages: [],
+  coins: 0,
+  level: 0,
   createMessage: noop,
   openDesktopSidebar: true,
   setOpenDesktopSidebar: noop,

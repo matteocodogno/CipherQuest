@@ -30,7 +30,7 @@ const CardTime = ({ time }: CardTimeProps) => {
 
   return (
     <CardInfo
-      value={formattedTime ?? '00:00:00'}
+      value={formattedTime ?? '--:--:--'}
       svg={'/assets/time.svg'}
       variant={CardInfoVariant.TIME}
     />
