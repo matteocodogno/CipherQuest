@@ -7,26 +7,17 @@ import type { Message } from '../types';
 import { ReactElement } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { User } from '@/types/user';
 import { dayjs } from '@/lib/dayjs';
-
-const user = {
-  id: 9834759384,
-  name: 'Sofia Rivers',
-  username: 'sofia.rivers',
-  level: 1,
-  coins: 25,
-  avatar: '/assets/avatar.png',
-  email: 'sofia@devias.io',
-  startedAt: new Date(),
-} satisfies User;
+import { useUser } from '@/hooks/use-user';
 
 export interface MessageBoxProps {
   message: Message;
 }
 
 export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
-  const position = message.author.id === user.id ? 'right' : 'left';
+  const { user } = useUser();
+
+  const position = message.author.id === user?.userId ? 'right' : 'left';
 
   return (
     <Box
@@ -39,9 +30,9 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
       <Stack
         direction={position === 'right' ? 'row-reverse' : 'row'}
         spacing={2}
+        maxWidth={position === 'right' ? '35%' : '70%'}
         sx={{
           alignItems: 'flex-start',
-          maxWidth: '500px',
           ml: position === 'right' ? 'auto' : 0,
           mr: position === 'left' ? 'auto' : 0,
         }}
@@ -50,8 +41,7 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Card
             sx={{
-              px: 2,
-              py: 1,
+              p: 2,
               ...(position === 'right' && {
                 background: 'var(--mui-palette-background-level3)',
                 color: 'text.primary',
@@ -78,7 +68,11 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
                 />
               ) : null}
               {message.type === 'text' ? (
-                <Typography color='inherit' variant='body1'>
+                <Typography
+                  color='inherit'
+                  variant='body1'
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
                   {message.content}
                 </Typography>
               ) : null}

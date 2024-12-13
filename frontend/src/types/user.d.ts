@@ -1,5 +1,5 @@
 export interface User {
-  id: number;
+  userId: string;
   level: number;
   username: string;
   coins: number;

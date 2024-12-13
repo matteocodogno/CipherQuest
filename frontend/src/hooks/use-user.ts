@@ -1,4 +1,7 @@
-import { UserContext, UserContextValue } from '@/contexts/auth/custom/user-context.tsx';
+import {
+  UserContext,
+  UserContextValue,
+} from '@/contexts/auth/custom/user-context.tsx';
 import { useContext } from 'react';
 
 export const useUser = (): UserContextValue => {
@@ -9,4 +12,4 @@ export const useUser = (): UserContextValue => {
   }
 
   return context;
-}
+};
