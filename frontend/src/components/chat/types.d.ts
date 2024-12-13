@@ -6,4 +6,5 @@ export type Message = {
   content: string;
   author: { id: string; name: string; avatar?: string };
   createdAt: Date;
+  isLevelUp: boolean;
 };

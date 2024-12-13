@@ -7,11 +7,12 @@ export const MessageLevelUp = (): ReactElement => {
     <Stack direction={'row-reverse'} spacing={2}>
       <Card
         sx={{
-          p: 2,
+          px: 2,
+          py: 1,
           backgroundColor: 'transparent',
-          border: '1px solid #15B79F',
+          border: '1px solid var(--mui-palette-success-main)',
           borderRadius: '8px',
-          width: '360px',
+          width: '300px',
         }}
       >
         <Stack direction={'row'} gap={1}>
@@ -21,7 +22,7 @@ export const MessageLevelUp = (): ReactElement => {
             sx={{ height: '24px', width: 'auto' }}
           />
           <Typography
-            color='#15B79F'
+            color='var(--mui-palette-success-main)'
             variant='body1'
             style={{ whiteSpace: 'pre-wrap' }}
           >

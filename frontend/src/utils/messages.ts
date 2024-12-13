@@ -9,6 +9,7 @@ interface CreateMessageProps {
   senderId?: string;
   senderName?: string;
   createdAt?: Date;
+  isLevelUp?: boolean;
 }
 
 export const generateMessage = ({
@@ -19,6 +20,7 @@ export const generateMessage = ({
   senderId = '000000',
   senderName = 'Overmind',
   createdAt = new Date(),
+  isLevelUp = false,
 }: CreateMessageProps): Message => {
   const avatar =
     senderType === SenderType.USER
@@ -35,6 +37,7 @@ export const generateMessage = ({
     },
     content,
     createdAt,
+    isLevelUp,
   } satisfies Message;
 
   return message;
