@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import Link from '@mui/material/Link';
+
 import type { Message } from '../types';
 import MessageLevelUp from './message-level-up';
 import { ReactElement } from 'react';
@@ -10,12 +10,18 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { dayjs } from '@/lib/dayjs';
 import { useUser } from '@/hooks/use-user';
+import Link from '@mui/material/Link';
+import { Button } from '@mui/material';
 
 export interface MessageBoxProps {
   message: Message;
+  showModal: () => void;
 }
 
-export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
+export const MessageBox = ({
+  message,
+  showModal,
+}: MessageBoxProps): ReactElement => {
   const { user } = useUser();
 
   const position = message.author.id === user?.userId ? 'right' : 'left';
@@ -75,13 +81,30 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
                   />
                 ) : null}
                 {message.type === 'text' ? (
-                  <Typography
-                    color='inherit'
-                    variant='body1'
-                    style={{ whiteSpace: 'pre-wrap' }}
+                  <Stack
+                    sx={{
+                      alignItems: 'flex-start',
+                    }}
+                    gap={1}
                   >
-                    {message.content}
-                  </Typography>
+                    <Typography
+                      color='inherit'
+                      variant='body1'
+                      style={{ whiteSpace: 'pre-wrap' }}
+                    >
+                      {message.content}
+                    </Typography>
+                    <Stack sx={{ flexDirection: 'row' }} alignItems={'center'}>
+                      <Typography
+                        color='inherit'
+                        variant='body1'
+                        style={{ whiteSpace: 'pre-wrap' }}
+                      >
+                        Sources:
+                      </Typography>
+                      <Button onClick={showModal}>Navigate</Button>
+                    </Stack>
+                  </Stack>
                 ) : null}
               </Stack>
             </Card>
