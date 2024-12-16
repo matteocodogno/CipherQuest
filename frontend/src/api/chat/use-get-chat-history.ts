@@ -1,6 +1,7 @@
-import { ChatHistory, SenderType } from './types';
 import { CHAT_URL } from './constants';
+import { ChatHistorySchema } from './schema';
 import { Message } from '@/components/chat/types';
+import { SenderType } from './types';
 import { User } from '@/types/user';
 import { generateMessage } from '@/utils/messages';
 import { useQuery } from '@tanstack/react-query';
@@ -12,13 +13,15 @@ interface GetChatHistoryProps {
 const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
   const { isError, data, isLoading } = useQuery({
     queryKey: [`chat-${user?.userId}`],
-    queryFn: (): Promise<ChatHistory> =>
+    queryFn: () =>
       fetch(`${CHAT_URL}/${user?.userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-      }).then((res) => res.json()),
+      })
+        .then((res) => res.json())
+        .then((data) => ChatHistorySchema.parse(data)),
     enabled: !!user,
   });
 
@@ -34,7 +37,7 @@ const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
             authorId: '00000',
           };
     return generateMessage({
-      id: historyMessage.index,
+      id: historyMessage.index.toString(),
       type: 'text',
       content: historyMessage.message,
       senderId: authorId,
