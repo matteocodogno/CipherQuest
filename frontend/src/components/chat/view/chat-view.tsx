@@ -6,6 +6,9 @@ import { useChat } from '@/hooks/use-chat';
 
 export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const { messages } = useChat();
+  const lastMessage =
+    messages.length > 0 ? messages[messages.length - 1].content : '';
+
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,7 +16,7 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
       return;
     }
     ref.current.scrollIntoView({ behavior: 'smooth' });
-  }, [messages.length]);
+  }, [messages.length, lastMessage]);
 
   return (
     <>
