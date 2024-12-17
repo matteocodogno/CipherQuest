@@ -44,7 +44,7 @@ const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
       senderName: name,
       senderType: historyMessage.sender,
       createdAt: new Date(historyMessage.timestamp),
-      isLevelUp: historyMessage.info.isLevelUp,
+      info: historyMessage.info,
     });
   }) as Message[];
 

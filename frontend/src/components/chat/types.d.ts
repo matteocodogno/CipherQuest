@@ -6,5 +6,10 @@ export type Message = {
   content: string;
   author: { id: string; name: string; avatar?: string };
   createdAt: Date;
+  info: MessageInfo;
+};
+
+export type MessageInfo = {
   isLevelUp: boolean;
+  sources: { id: string; title: string }[];
 };
