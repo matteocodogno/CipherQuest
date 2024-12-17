@@ -9,7 +9,6 @@ import {
 } from 'react';
 import ChatHeader from '../header/chat-header';
 import { MessageBox } from '../messages/message-box';
-import SourceDialog from '../dialog/source-dialog';
 import { useChat } from '@/hooks/use-chat';
 
 export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
@@ -17,7 +16,6 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const lastMessage =
     messages.length > 0 ? messages[messages.length - 1] : undefined;
   const [isLevelUp, setLevelUp] = useState<boolean>();
-  const [showDialog, setModal] = useState<boolean>(false);
 
   const messageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -28,24 +26,15 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
     }
     messageRef.current.scrollIntoView({ behavior: 'smooth' });
 
-    setLevelUp(lastMessage?.isLevelUp);
+    setLevelUp(lastMessage?.info.isLevelUp);
 
-    if (lastMessage?.isLevelUp) {
+    if (lastMessage?.info.isLevelUp) {
       setTimeout(() => {
         //TODO: Add vanish animation
         setLevelUp(false);
       }, 3000);
     }
   }, [messages.length, lastMessage]);
-
-  const handleCloseSource = useCallback(() => {
-    console.log('close dialog');
-    setModal(false);
-  }, []);
-
-  const handleShowSource = useCallback(() => {
-    setModal(true);
-  }, []);
 
   const showLevelUp = useCallback((): ReactElement => {
     const chatHeader = headerRef.current?.getBoundingClientRect();
@@ -85,37 +74,12 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
         }}
         gap={2}
       >
-        <ChatHeader ref={headerRef} />
-        <Stack
-          padding={4}
-          direction={'column'}
-          flex={1}
-          alignSelf={'stretch'}
-          sx={{
-            overflowY: 'auto',
-            scrollbarWidth: 0,
-            '::-webkit-scrollbar': {
-              display: 'none',
-            },
-          }}
-          gap={2}
-        >
-          {messages.map((message) => (
-            <MessageBox
-              message={message}
-              key={message.id}
-              showModal={handleShowSource}
-            />
-          ))}
-          <div ref={messageRef} />
-        </Stack>
-        {children}
+        {messages.map((message) => (
+          <MessageBox message={message} key={message.id} />
+        ))}
+        <div ref={messageRef} />
       </Stack>
-      <SourceDialog
-        content='test'
-        showDialog={showDialog}
-        closeDialog={handleCloseSource}
-      />
+      {children}
     </>
   );
 };
