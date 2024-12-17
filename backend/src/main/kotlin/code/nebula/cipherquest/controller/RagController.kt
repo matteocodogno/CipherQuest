@@ -2,6 +2,7 @@ package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.LevelUpQuestions
+import code.nebula.cipherquest.service.RedactedQuestions
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
@@ -66,6 +67,30 @@ class RagController(
                             "type" to DocumentType.QUESTION,
                             "level" to d.level,
                             "source" to d.question,
+                        ),
+                    )
+                }
+
+        if (documents.isNotEmpty()) {
+            logger.info { "Loading ${documents.size} questions" }
+            vectorStoreService.loadDocument(documents)
+        } else {
+            logger.info { "No new questions to load" }
+        }
+    }
+
+    @PostMapping("/loadRedacted")
+    fun loadRedacted() {
+        val documents: List<Document> =
+            RedactedQuestions.redactedQuestionsList
+                .filterNot { q ->
+                    vectorStoreService.existsDocumentWithSource(q)
+                }.map { d ->
+                    Document(
+                        d,
+                        mapOf<String, Any>(
+                            "type" to DocumentType.REDACTED,
+                            "source" to d,
                         ),
                     )
                 }
