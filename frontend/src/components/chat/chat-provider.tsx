@@ -40,10 +40,6 @@ export const ChatProvider = ({
     content: '......',
   });
 
-  const saveCoinsAndLevel = useCallback(() => {
-    saveGameSessionInfo({ coins, level });
-  }, [coins, level]);
-
   const handleCreateMessage = useCallback(
     (params: CreateMessageParams): void => {
       if (!user) {
@@ -80,12 +76,15 @@ export const ChatProvider = ({
             setMessages(updatedMessages);
             setLocalCoins(chatResponse.coins);
             setLocalLevel(chatResponse.level);
-            saveCoinsAndLevel();
+            saveGameSessionInfo({
+              coins: chatResponse.coins,
+              level: chatResponse.level,
+            });
           },
         },
       );
     },
-    [messages, overmindThinking, saveCoinsAndLevel, sendRequest, user],
+    [messages, overmindThinking, sendRequest, user],
   );
 
   return (
