@@ -1,16 +1,22 @@
+import { ReactElement, useCallback } from 'react';
 import AccordionItem from './accordion-item';
 import { AccordionMenu } from './constants';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import { Play } from '@phosphor-icons/react';
-import { ReactElement } from 'react';
-import { RouterLink } from '@/components/core/link.tsx';
 import Typography from '@mui/material/Typography';
+import { paths } from '@/paths';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/hooks/use-user.ts';
 
 export const RulesView = (): ReactElement => {
   const { user } = useUser();
+  const navigate = useNavigate();
+
+  const navigateToChat = useCallback(() => {
+    navigate(paths.game.chat, { replace: true });
+  }, [navigate]);
 
   return (
     <Box
@@ -86,8 +92,7 @@ export const RulesView = (): ReactElement => {
             </Typography>
           </Box>
           <Button
-            component={RouterLink}
-            href='/'
+            onClick={navigateToChat}
             variant='contained'
             color='primary'
             endIcon={<Play />}

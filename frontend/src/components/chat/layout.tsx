@@ -2,8 +2,8 @@ import { ReactElement, ReactNode } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard.tsx';
 import Box from '@mui/material/Box';
 import { ChatProvider } from '@/components/chat/chat-provider.tsx';
-import { ChatView } from './view/chat-view';
 import { Header } from './view/header';
+import { Stack } from '@mui/system';
 import { dayjs } from '@/lib/dayjs.ts';
 import useGetChatHistory from '@/api/chat/use-get-chat-history';
 import { usePathname } from '@/hooks/use-pathname.ts';
@@ -32,7 +32,7 @@ const contacts = [
 
 const backgroundMap: Record<string, string> = {
   '/rules': '/assets/rules-background.jpeg',
-  '/': '/assets/chat-background.jpeg',
+  '/chat': '/assets/chat-background.jpeg',
 };
 
 export function Layout({ children }: LayoutProps): ReactElement {
@@ -59,7 +59,18 @@ export function Layout({ children }: LayoutProps): ReactElement {
           }}
         >
           <Header />
-          <ChatView>{children}</ChatView>
+          <Stack
+            sx={{
+              width: '70%',
+              minWidth: '600px',
+              paddingX: 7,
+              height: 'calc(100vh - 62px)',
+            }}
+            flexDirection='column'
+            alignItems={'center'}
+          >
+            {children}
+          </Stack>
         </Box>
       </ChatProvider>
     </AuthGuard>

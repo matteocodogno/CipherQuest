@@ -16,16 +16,7 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   }, [messages.length]);
 
   return (
-    <Stack
-      sx={{
-        width: '70%',
-        minWidth: '600px',
-        paddingX: 7,
-        height: 'calc(100vh - 62px)',
-      }}
-      flexDirection='column'
-      alignItems={'center'}
-    >
+    <>
       <ChatHeader />
       <Stack
         padding={4}
@@ -47,6 +38,6 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
         <div ref={ref} />
       </Stack>
       {children}
-    </Stack>
+    </>
   );
 };
