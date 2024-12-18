@@ -14,7 +14,7 @@ export const routes: RouteObject[] = [
     ),
     children: [
       {
-        index: true,
+        path: 'chat',
         lazy: async () => {
           const { Page } = await import('@/pages/game/chat');
           return { Component: Page };

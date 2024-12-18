@@ -10,7 +10,7 @@ export const paths = {
   },
   game: {
     rules: '/rules',
-    // overview: '/game/overview',
+    chat: '/chat',
   },
   notAuthorized: '/errors/not-authorized',
   notFound: '/errors/not-found',
