@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
   },
 }));
 
@@ -28,7 +28,6 @@ const SourceDialog = ({
       onClose={closeDialog}
       aria-labelledby='customized-dialog-title'
       open={showDialog}
-      fullWidth
       maxWidth={'lg'}
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id='customized-dialog-title'>
@@ -46,8 +45,8 @@ const SourceDialog = ({
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent>
-        <Typography gutterBottom>{source}</Typography>
+      <DialogContent sx={{ alignItems: 'center' }}>
+        <Typography style={{ whiteSpace: 'pre-wrap' }}>{source}</Typography>
       </DialogContent>
     </BootstrapDialog>
   );
