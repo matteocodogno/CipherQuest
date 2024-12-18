@@ -59,37 +59,25 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   return (
     <>
       {isLevelUp && showLevelUp()}
+      <ChatHeader ref={headerRef} />
       <Stack
+        padding={4}
+        direction={'column'}
+        flex={1}
+        alignSelf={'stretch'}
         sx={{
-          width: '70%',
-          minWidth: '600px',
-          paddingX: 7,
-          height: 'calc(100vh - 62px)',
+          overflowY: 'auto',
+          scrollbarWidth: 0,
+          '::-webkit-scrollbar': {
+            display: 'none',
+          },
         }}
-        flexDirection='column'
-        alignItems={'center'}
+        gap={2}
       >
-        <ChatHeader ref={headerRef} />
-        <Stack
-          padding={4}
-          direction={'column'}
-          flex={1}
-          alignSelf={'stretch'}
-          sx={{
-            overflowY: 'auto',
-            scrollbarWidth: 0,
-            '::-webkit-scrollbar': {
-              display: 'none',
-            },
-          }}
-          gap={2}
-        >
-          {messages.map((message) => (
-            <MessageBox message={message} key={message.id} />
-          ))}
-          <div ref={messageRef} />
-        </Stack>
-        {children}
+        {messages.map((message) => (
+          <MessageBox message={message} key={message.id} />
+        ))}
+        <div ref={messageRef} />
       </Stack>
       {children}
     </>
