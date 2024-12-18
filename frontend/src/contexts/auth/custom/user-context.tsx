@@ -19,8 +19,6 @@ export type UserContextValue = {
   error: string | null;
   isLoading: boolean;
   checkSession?: () => Promise<void>;
-  setCoins?: (x: number) => Promise<void>;
-  setLevel?: (x: number) => Promise<void>;
   setStartingTime?: (x: Date) => Promise<void>;
 };
 
@@ -73,32 +71,6 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
     return;
   }, []);
 
-  const setLevel = useCallback(async (level: number): Promise<void> => {
-    authClient.updateUserProperty('level', level);
-
-    const { user, error } = await authClient.getUser();
-    if (error) {
-      return;
-    }
-
-    setState({ user, error: null, isLoading: false });
-
-    return;
-  }, []);
-
-  const setCoins = useCallback(async (coins: number): Promise<void> => {
-    authClient.updateUserProperty('coins', coins);
-
-    const { user, error } = await authClient.getUser();
-    if (error) {
-      return;
-    }
-
-    setState({ user, error: null, isLoading: false });
-
-    return;
-  }, []);
-
   useEffect(() => {
     checkSession().catch((err: unknown) => {
       logger.error(err);
@@ -109,7 +81,11 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
 
   return (
     <UserContext.Provider
-      value={{ ...state, checkSession, setCoins, setLevel, setStartingTime }}
+      value={{
+        ...state,
+        checkSession,
+        setStartingTime,
+      }}
     >
       {children}
     </UserContext.Provider>
