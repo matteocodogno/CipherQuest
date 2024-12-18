@@ -1,4 +1,4 @@
-import { CHAT_URL } from './constants';
+import { CHAT_URL } from '../constants';
 import { ChatHistorySchema } from './schema';
 import { Message } from '@/components/chat/types';
 import { SenderType } from './types';
