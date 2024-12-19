@@ -1,12 +1,21 @@
+import { ForwardRefRenderFunction, forwardRef } from 'react';
 import { Box } from '@mui/system';
 import CardInfo from './card-info';
+import CardTime from './card-time';
 import { Typography } from '@mui/material';
+import { useChat } from '@/hooks/use-chat';
 import { useUser } from '@/hooks/use-user';
 
-const ChatHeader = () => {
+const ChatHeader: ForwardRefRenderFunction<HTMLDivElement, object> = (
+  _props,
+  ref,
+) => {
+  const { coins, level } = useChat();
   const { user } = useUser();
+
   return (
     <Box
+      ref={ref}
       sx={{
         background: 'var(--mui-palette-background-paper)',
         borderRadius: '20px',
@@ -30,12 +39,12 @@ const ChatHeader = () => {
         }}
         gap={2}
       >
-        <CardInfo svg='/assets/time.svg' value='88:88' />
-        <CardInfo svg='/assets/money.svg' value='88' />
-        <CardInfo svg='/assets/star.svg' value='8' />
+        <CardTime time={user?.startedAt} />
+        <CardInfo svg='/assets/money.svg' value={coins.toString() ?? '0'} />
+        <CardInfo svg='/assets/star.svg' value={level.toString() ?? '0'} />
       </Box>
     </Box>
   );
 };
 
-export default ChatHeader;
+export default forwardRef(ChatHeader);

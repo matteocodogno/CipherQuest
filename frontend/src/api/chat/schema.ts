@@ -1,0 +1,21 @@
+import { SenderType } from './types';
+import { z } from 'zod';
+
+const InfoSchema = z.object({ isLevelUp: z.boolean() });
+
+export const ChatHistorySchema = z.array(
+  z.object({
+    index: z.number(),
+    message: z.string(),
+    sender: z.enum([SenderType.USER, SenderType.OVERMIND]),
+    timestamp: z.string(),
+    info: InfoSchema,
+  }),
+);
+
+export const ChatResponseSchema = z.object({
+  message: z.string(),
+  level: z.number(),
+  coins: z.number(),
+  info: InfoSchema,
+});

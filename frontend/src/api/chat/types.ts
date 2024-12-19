@@ -1,17 +1,4 @@
 export enum SenderType {
   USER = 'USER',
-  OVERMIND = 'OVERMIND',
+  OVERMIND = 'ASSISTANT',
 }
-
-export type ChatHistory = {
-  index: string;
-  message: string;
-  sender: SenderType;
-  timestamp: string;
-}[];
-
-export type ChatResponse = {
-  message: string;
-  level: number;
-  coins: number;
-};

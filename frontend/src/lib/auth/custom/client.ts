@@ -1,4 +1,5 @@
 import type { User } from '@/types/user';
+import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
 
 export type SignUpParams = {
@@ -6,19 +7,21 @@ export type SignUpParams = {
   firstName?: string;
   lastName?: string;
   email?: string;
-}
+};
 
 export type SignInWithPasswordParams = {
   username: string;
-}
+};
 
-export const getRandomArbitrary = (min: number, max: number) => Math.ceil(Math.random() * (max - min) + min);
+export const getRandomArbitrary = (min: number, max: number) =>
+  Math.ceil(Math.random() * (max - min) + min);
 
 const authClientBuilder = () => ({
   signUp: async (params: SignUpParams): Promise<{ error?: string }> => {
     const user = await signUpApi(params);
 
     localStorage.setItem('user', JSON.stringify(user));
+    initializeGameSessionInfo();
 
     return {};
   },
@@ -46,8 +49,9 @@ const authClientBuilder = () => ({
 
   isLogged: async (): Promise<boolean> => Boolean(localStorage.getItem('user')),
 
-  signOut: async (): Promise<{error?: string}> => {
+  signOut: async (): Promise<{ error?: string }> => {
     localStorage.removeItem('user');
+    localStorage.removeItem('game_session');
     return {};
   },
 });

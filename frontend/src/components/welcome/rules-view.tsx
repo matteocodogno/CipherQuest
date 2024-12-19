@@ -3,7 +3,6 @@ import AccordionItem from './accordion-item';
 import { AccordionMenu } from './constants';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-
 import { Play } from '@phosphor-icons/react';
 import Typography from '@mui/material/Typography';
 import { paths } from '@/paths';
@@ -11,12 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/hooks/use-user.ts';
 
 export const RulesView = (): ReactElement => {
-  const { user } = useUser();
+  const { user, setStartingTime } = useUser();
   const navigate = useNavigate();
 
   const navigateToChat = useCallback(() => {
     navigate(paths.game.chat, { replace: true });
-  }, [navigate]);
+    setStartingTime?.(new Date());
+  }, [navigate, setStartingTime]);
 
   return (
     <Box

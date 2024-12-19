@@ -1,5 +1,5 @@
 import { CHAT_URL } from './constants';
-import { ChatResponse } from './types';
+import { ChatResponseSchema } from './schema';
 import { User } from '@/types/user';
 import { useMutation } from '@tanstack/react-query';
 
@@ -10,14 +10,16 @@ interface SendRequestProps {
 
 const useSendRequest = () =>
   useMutation({
-    mutationFn: ({ user, message }: SendRequestProps): Promise<ChatResponse> =>
+    mutationFn: ({ user, message }: SendRequestProps) =>
       fetch(`${CHAT_URL}/${user?.userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: message,
-      }).then((res) => res.json()),
+      })
+        .then((res) => res.json())
+        .then((data) => ChatResponseSchema.parse(data)),
   });
 
 export default useSendRequest;

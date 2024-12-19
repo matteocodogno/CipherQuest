@@ -3,8 +3,9 @@ import {
   ChatProviderProps,
   CreateMessageParams,
 } from '@/components/chat/chat-context.tsx';
-import type { Contact, Message } from '@/components/chat/types';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { getGameSessionInfo, saveGameSessionInfo } from '@/lib/game/localStore';
+import { Message } from '@/components/chat/types';
 import { SenderType } from '@/api/chat/types';
 import { generateMessage } from '@/utils/messages';
 import useSendRequest from '@/api/chat/use-send-request';
@@ -12,21 +13,26 @@ import { useUser } from '@/hooks/use-user';
 
 export const ChatProvider = ({
   children,
-  contacts: initialContacts = [],
   messages: initialMessages = [],
 }: ChatProviderProps): ReactElement => {
-  const [contacts, setContacts] = useState<Contact[]>([]);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [openDesktopSidebar, setOpenDesktopSidebar] = useState<boolean>(true);
   const [openMobileSidebar, setOpenMobileSidebar] = useState<boolean>(false);
+  const [coins, setLocalCoins] = useState<number>(0);
+  const [level, setLocalLevel] = useState<number>(0);
 
   const { user } = useUser();
   const { mutate: sendRequest } = useSendRequest();
 
   useEffect((): void => {
-    setContacts(initialContacts);
     setMessages(initialMessages);
-  }, [initialContacts, initialMessages]);
+
+    const gameSession = getGameSessionInfo();
+    if (gameSession) {
+      setLocalCoins(gameSession.coins);
+      setLocalLevel(gameSession.level);
+    }
+  }, [initialMessages]);
 
   const overmindThinking = generateMessage({
     type: 'text',
@@ -58,15 +64,22 @@ export const ChatProvider = ({
       sendRequest(
         { user, message: content },
         {
-          onSuccess: (chatResponse) => {
+          onSuccess: async (chatResponse) => {
             const message = generateMessage({
               type: 'text',
               senderType: SenderType.OVERMIND,
               content: chatResponse.message,
+              isLevelUp: chatResponse.info.isLevelUp,
             });
             updatedMessages.pop();
             updatedMessages.push(message);
             setMessages(updatedMessages);
+            setLocalCoins(chatResponse.coins);
+            setLocalLevel(chatResponse.level);
+            saveGameSessionInfo({
+              coins: chatResponse.coins,
+              level: chatResponse.level,
+            });
           },
         },
       );
@@ -77,8 +90,9 @@ export const ChatProvider = ({
   return (
     <ChatContext.Provider
       value={{
-        contacts,
         messages,
+        coins,
+        level,
         createMessage: handleCreateMessage,
         openDesktopSidebar,
         setOpenDesktopSidebar,
