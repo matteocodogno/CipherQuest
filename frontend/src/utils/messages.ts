@@ -1,4 +1,4 @@
-import { Message, MessageType } from '@/components/chat/types';
+import { Message, MessageInfo, MessageType } from '@/components/chat/types';
 import { SenderType } from '@/api/chat/types';
 
 interface CreateMessageProps {
@@ -9,7 +9,7 @@ interface CreateMessageProps {
   senderId?: string;
   senderName?: string;
   createdAt?: Date;
-  isLevelUp?: boolean;
+  info?: MessageInfo;
 }
 
 export const generateMessage = ({
@@ -20,7 +20,7 @@ export const generateMessage = ({
   senderId = '000000',
   senderName = 'Overmind',
   createdAt = new Date(),
-  isLevelUp = false,
+  info = { isLevelUp: false, sources: [] },
 }: CreateMessageProps): Message => {
   const avatar =
     senderType === SenderType.USER
@@ -37,7 +37,7 @@ export const generateMessage = ({
     },
     content,
     createdAt,
-    isLevelUp,
+    info,
   } satisfies Message;
 
   return message;

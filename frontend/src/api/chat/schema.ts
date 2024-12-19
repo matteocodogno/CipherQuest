@@ -1,7 +1,14 @@
 import { SenderType } from './types';
 import { z } from 'zod';
 
-const InfoSchema = z.object({ isLevelUp: z.boolean() });
+const SourceSchema = z.array(z.object({ id: z.string(), title: z.string() }));
+
+const InfoSchema = z
+  .object({
+    isLevelUp: z.boolean(),
+    sources: SourceSchema,
+  })
+  .nullable();
 
 export const ChatHistorySchema = z.array(
   z.object({

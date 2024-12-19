@@ -1,4 +1,4 @@
-import { CHAT_URL } from './constants';
+import { CHAT_URL } from '../constants';
 import { ChatResponseSchema } from './schema';
 import { User } from '@/types/user';
 import { useMutation } from '@tanstack/react-query';

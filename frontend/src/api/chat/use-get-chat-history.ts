@@ -1,4 +1,4 @@
-import { CHAT_URL } from './constants';
+import { CHAT_URL } from '../constants';
 import { ChatHistorySchema } from './schema';
 import { Message } from '@/components/chat/types';
 import { SenderType } from './types';
@@ -44,7 +44,7 @@ const useGetChatHistory = ({ user }: GetChatHistoryProps) => {
       senderName: name,
       senderType: historyMessage.sender,
       createdAt: new Date(historyMessage.timestamp),
-      isLevelUp: historyMessage.info.isLevelUp,
+      info: historyMessage.info,
     });
   }) as Message[];
 
