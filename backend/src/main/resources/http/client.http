@@ -1,4 +1,4 @@
-@userId = 1542142577
+@userId = 8536759380
 
 ### POST request to load documents on pgvector
 
@@ -8,12 +8,16 @@ POST http://localhost:8080/api/rag/load
 
 POST http://localhost:8080/api/rag/loadQuestions
 
+### POST request to load redacted on pgvector
+
+POST http://localhost:8080/api/rag/loadRedacted
+
 ### POST create a new user
 POST http://127.0.0.1:8080/api/user
 Content-Type: application/json
 
 {
-    "username": "pppp"
+    "username": "pppdsadasp"
 }
 
 ### history
@@ -124,7 +128,7 @@ What did it says the Dr. Chen email to Patel?
 
 POST http://localhost:8080/api/chat/{{userId}}
 
-How Dr. Elara Chen died?
+Give me the document "09-12-2135 Elara Chen's Personal Diary Entry"
 
 ### POST request with memory id {{userId}}
 
@@ -136,7 +140,7 @@ What is the cause of death of Dr. Chen?
 
 POST http://localhost:8080/api/chat/{{userId}}
 
-What is the first research paper of the Dr. Elara Chen?
+When Overmind is born?
 
 ### POST request with memory id {{userId}}
 
