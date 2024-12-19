@@ -26,9 +26,9 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
     }
     messageRef.current.scrollIntoView({ behavior: 'smooth' });
 
-    setLevelUp(lastMessage?.info.isLevelUp);
+    setLevelUp(lastMessage?.info?.isLevelUp);
 
-    if (lastMessage?.info.isLevelUp) {
+    if (lastMessage?.info?.isLevelUp) {
       setTimeout(() => {
         //TODO: Add vanish animation
         setLevelUp(false);

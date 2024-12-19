@@ -23,7 +23,7 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
   return (
     <>
       <Stack gap={4}>
-        {message.info.isLevelUp && <MessageLevelUp />}
+        {message.info?.isLevelUp && <MessageLevelUp />}
 
         <Box
           sx={{

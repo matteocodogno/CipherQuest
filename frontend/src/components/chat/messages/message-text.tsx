@@ -13,6 +13,7 @@ const MessageText = ({ message }: MessageTextProps) => {
   const [showDialog, setModal] = useState<boolean>(false);
   const [currentSource, setSource] = useState<string>('');
   const { mutate: getSource } = useGetSource();
+  const sources = message.info === null ? [] : message.info.sources;
 
   const handleCloseSource = useCallback(() => {
     setModal(false);
@@ -52,7 +53,7 @@ const MessageText = ({ message }: MessageTextProps) => {
         >
           {message.content}
         </Typography>
-        {message.info.sources.length > 0 && (
+        {sources.length > 0 && (
           <Stack sx={{ flexDirection: 'row' }} alignItems={'top'}>
             <Typography
               color='inherit'
@@ -62,7 +63,7 @@ const MessageText = ({ message }: MessageTextProps) => {
               Sources:
             </Typography>
             <Stack>
-              {message.info.sources.map((source) => (
+              {sources.map((source) => (
                 <Link
                   key={source.id}
                   sx={{ marginLeft: 1, cursor: 'pointer' }}
