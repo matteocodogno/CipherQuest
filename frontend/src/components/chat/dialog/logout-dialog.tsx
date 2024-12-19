@@ -6,11 +6,10 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface LogoutDialogProps {
-  showDialog: boolean;
   handleClose: () => void;
 }
 
-const LogoutDialog = ({ showDialog, handleClose }: LogoutDialogProps) => {
+const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
   const navigate = useNavigate();
   const logoutAction = useCallback(async () => {
     await authClient.signOut();
@@ -22,7 +21,6 @@ const LogoutDialog = ({ showDialog, handleClose }: LogoutDialogProps) => {
     <>
       <ContentDialog
         title={'Do you want to end the game?'}
-        showDialog={showDialog}
         closeDialog={handleClose}
       >
         <Stack gap={4}>

@@ -15,14 +15,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 interface ContentDialogProps {
   children: ReactNode;
   title: string;
-  showDialog: boolean;
+  showDialog?: boolean;
   closeDialog: () => void;
 }
 
 const ContentDialog = ({
   children,
   title,
-  showDialog,
+  showDialog = true,
   closeDialog,
 }: ContentDialogProps) => {
   return (

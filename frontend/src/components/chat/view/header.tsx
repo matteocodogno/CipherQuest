@@ -53,18 +53,20 @@ export const Header = (): ReactElement => {
           </Button>
         </Stack>
       )}
-      <LogoutDialog
-        showDialog={showLogout}
-        handleClose={() => {
-          setShowLogout(false);
-        }}
-      />{' '}
-      <RulesDialog
-        showDialog={showRules}
-        handleClose={() => {
-          setShowRules(false);
-        }}
-      />
+      {showLogout && (
+        <LogoutDialog
+          handleClose={() => {
+            setShowLogout(false);
+          }}
+        />
+      )}
+      {showRules && (
+        <RulesDialog
+          handleClose={() => {
+            setShowRules(false);
+          }}
+        />
+      )}
     </Box>
   );
 };
