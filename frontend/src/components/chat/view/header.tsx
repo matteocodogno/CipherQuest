@@ -1,12 +1,14 @@
 import { Button, Divider } from '@mui/material';
+import { ReactElement, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DynamicLogo } from '@/components/core/logo.tsx';
-import { ReactElement } from 'react';
+import LogoutDialog from '../dialog/logout-dialog';
 import { Stack } from '@mui/system';
 import { useUser } from '@/hooks/use-user';
 
 export const Header = (): ReactElement => {
   const { user } = useUser();
+  const [showLogout, setShowLogout] = useState<boolean>(false);
 
   return (
     <Box
@@ -38,11 +40,20 @@ export const Header = (): ReactElement => {
             variant='text'
             endIcon={<Box component='img' src={'/assets/logout.svg'} />}
             sx={{ color: 'var(--mui-palette-error-dark)' }}
+            onClick={() => {
+              setShowLogout(true);
+            }}
           >
             End mission
           </Button>
         </Stack>
       )}
+      <LogoutDialog
+        showDialog={showLogout}
+        handleClose={() => {
+          setShowLogout(false);
+        }}
+      />
     </Box>
   );
 };
