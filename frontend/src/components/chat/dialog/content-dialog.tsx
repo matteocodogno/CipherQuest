@@ -14,12 +14,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 interface ContentDialogProps {
   children: ReactNode;
+  title: string;
   showDialog: boolean;
   closeDialog: () => void;
 }
 
 const ContentDialog = ({
   children,
+  title,
   showDialog,
   closeDialog,
 }: ContentDialogProps) => {
@@ -31,7 +33,7 @@ const ContentDialog = ({
       maxWidth={'lg'}
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id='customized-dialog-title'>
-        Source
+        {title}
       </DialogTitle>
       <IconButton
         aria-label='close'

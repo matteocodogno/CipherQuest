@@ -13,7 +13,11 @@ const SourceDialog = ({
   closeDialog,
 }: SourceDialogProps) => {
   return (
-    <ContentDialog showDialog={showDialog} closeDialog={closeDialog}>
+    <ContentDialog
+      title='Source'
+      showDialog={showDialog}
+      closeDialog={closeDialog}
+    >
       <Typography style={{ whiteSpace: 'pre-wrap' }}>{source}</Typography>
     </ContentDialog>
   );
