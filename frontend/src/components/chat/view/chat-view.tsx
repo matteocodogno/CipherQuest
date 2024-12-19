@@ -58,8 +58,8 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
 
   return (
     <>
-      {isLevelUp && showLevelUp()}
       <ChatHeader ref={headerRef} />
+      {isLevelUp && showLevelUp()}
       <Stack
         padding={4}
         direction={'column'}
