@@ -1,7 +1,8 @@
 import {
   ChangeEvent,
+  ForwardRefRenderFunction,
   KeyboardEvent,
-  ReactElement,
+  forwardRef,
   useCallback,
   useRef,
   useState,
@@ -13,15 +14,16 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 
-export type MessageAddProps = {
+type MessageAddProps = {
   disabled?: boolean;
   onSend?: (type: MessageType, content: string) => void;
 };
 
-export const MessageAdd = ({
-  disabled = false,
-  onSend,
-}: MessageAddProps): ReactElement => {
+const MessageAdd: ForwardRefRenderFunction<HTMLDivElement, MessageAddProps> = (
+  props,
+  ref,
+) => {
+  const { disabled, onSend } = props;
   const [content, setContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -49,11 +51,11 @@ export const MessageAdd = ({
 
   return (
     <Stack
+      ref={ref}
       direction='row'
       spacing={2}
       sx={{
         alignItems: 'center',
-        py: 1,
         flexShrink: 0,
         alignSelf: 'stretch',
       }}
@@ -93,3 +95,5 @@ export const MessageAdd = ({
     </Stack>
   );
 };
+
+export default forwardRef(MessageAdd);
