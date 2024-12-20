@@ -1,0 +1,16 @@
+.react-quill .ql-toolbar {
+    color: #ffffff; 
+}
+
+.react-quill .ql-toolbar button {
+  color: #ffffff;      /* Testo pulsanti */
+}
+
+.react-quill .ql-toolbar button:hover {
+  background: #635BFF; /* Hover pulsanti */
+}
+
+.react-quill .ql-toolbar button.ql-active {
+  color: #635BFF;
+ 
+}
