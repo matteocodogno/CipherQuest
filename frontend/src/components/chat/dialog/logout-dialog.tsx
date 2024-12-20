@@ -45,7 +45,7 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
               sx={{
                 color: 'text.primary',
                 backgroundColor: 'var(--mui-palette-error-dark)',
-                '&:hover': { bgcolor: 'var(--mui-palette-error-main)' },
+                '&:hover': { bgcolor: 'var(--mui-palette-error-hovered)' },
               }}
               onClick={logoutAction}
             >
