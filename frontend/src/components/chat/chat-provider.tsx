@@ -4,7 +4,7 @@ import {
   CreateMessageParams,
 } from '@/components/chat/chat-context.tsx';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { getGameSessionInfo, saveGameSessionInfo } from '@/lib/game/localStore';
+import { getGameSessionInfo, saveCoinsAndLevel } from '@/lib/game/localStore';
 import { Message } from '@/components/chat/types';
 import { SenderType } from '@/api/chat/types';
 import { generateMessage } from '@/utils/messages';
@@ -76,7 +76,7 @@ export const ChatProvider = ({
             setMessages(updatedMessages);
             setLocalCoins(chatResponse.coins);
             setLocalLevel(chatResponse.level);
-            saveGameSessionInfo({
+            saveCoinsAndLevel({
               coins: chatResponse.coins,
               level: chatResponse.level,
             });
