@@ -1,12 +1,12 @@
 import CloseIcon from '@mui/icons-material/Close';
-import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import { Dialog as MUIDialog } from '@mui/material';
 import { ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(MUIDialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(4),
   },
@@ -15,14 +15,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 interface ContentDialogProps {
   children: ReactNode;
   title: string;
-  showDialog: boolean;
+  showDialog?: boolean;
   closeDialog: () => void;
 }
 
-const ContentDialog = ({
+const Dialog = ({
   children,
   title,
-  showDialog,
+  showDialog = true,
   closeDialog,
 }: ContentDialogProps) => {
   return (
@@ -52,4 +52,4 @@ const ContentDialog = ({
   );
 };
 
-export default ContentDialog;
+export default Dialog;

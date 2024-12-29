@@ -69,7 +69,7 @@ export const ChatProvider = ({
               type: 'text',
               senderType: SenderType.OVERMIND,
               content: chatResponse.message,
-              info: chatResponse.info,
+              info: chatResponse.info ?? undefined,
             });
             updatedMessages.pop();
             updatedMessages.push(message);

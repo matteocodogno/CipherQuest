@@ -1,0 +1,23 @@
+.react-quill .ql-toolbar *:not(.ql-picker-item) {
+  stroke: #ffffff !important;
+}
+
+.react-quill .ql-toolbar .ql-picker-label {
+  color: #ffffff !important;
+}
+
+.react-quill .ql-toolbar button *:hover {
+  color: #635BFF !important;
+}
+
+.react-quill .ql-toolbar button * {
+  color: #ffffff !important;      /* Testo pulsanti */
+}
+
+.react-quill .ql-toolbar button:hover {
+  background: #635BFF; /* Hover pulsanti */
+}
+
+.react-quill .ql-toolbar button.ql-active svg > * {
+  stroke: #635BFF !important;
+}

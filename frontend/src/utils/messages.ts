@@ -27,7 +27,7 @@ export const generateMessage = ({
       ? '/assets/avatar.jpg'
       : '/assets/overmind.jpg';
 
-  const message = {
+  return {
     id,
     type,
     author: {
@@ -39,6 +39,4 @@ export const generateMessage = ({
     createdAt,
     info,
   } satisfies Message;
-
-  return message;
 };

@@ -1,10 +1,14 @@
-import { ReactElement, useCallback } from 'react';
-import { MessageAdd } from './message-add';
+import { ReactElement, useCallback, useState } from 'react';
+import MessageAdd from './message-add';
 import type { MessageType } from '../types';
+import NotesButton from '@/components/chat/view/notes-button.tsx';
+import NotesDialog from '../dialog/notes-dialog';
 import { useChat } from '@/hooks/use-chat';
 
 const ComposeView = (): ReactElement => {
   const { createMessage } = useChat();
+  const [showNotes, setShowNotes] = useState<boolean>(false);
+
 
   const handleSendMessage = useCallback(
     async (type: MessageType, content: string) => {
@@ -13,7 +17,16 @@ const ComposeView = (): ReactElement => {
     [createMessage],
   );
 
-  return <MessageAdd onSend={handleSendMessage} />;
+  return (
+    <>
+      <MessageAdd onSend={handleSendMessage} />
+      <NotesButton handleClick={() => setShowNotes(true)} />
+      <NotesDialog
+        handleClose={() => setShowNotes(false)}
+        showDialog={showNotes}
+      />
+    </>
+  );
 };
 
 export default ComposeView;
