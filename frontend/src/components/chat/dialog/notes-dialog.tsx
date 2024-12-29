@@ -3,7 +3,7 @@ import './notes-dialog.css';
 import { getGameNotes, saveGameNotes } from '@/lib/game/localStore';
 import { useCallback, useState } from 'react';
 import { Box } from '@mui/system';
-import ContentDialog from './content-dialog';
+import Dialog from '@/components/core/dialog.tsx';
 import ReactQuill from 'react-quill';
 import useOnMount from '@mui/utils/useOnMount';
 
@@ -29,7 +29,7 @@ const NotesDialog = ({ handleClose, showDialog }: NotesDialogProps) => {
   }, [content, handleClose]);
 
   return (
-    <ContentDialog
+    <Dialog
       title='Notes'
       closeDialog={saveNotes}
       showDialog={showDialog}
@@ -44,7 +44,7 @@ const NotesDialog = ({ handleClose, showDialog }: NotesDialogProps) => {
           className='react-quill'
         />
       </Box>
-    </ContentDialog>
+    </Dialog>
   );
 };
 

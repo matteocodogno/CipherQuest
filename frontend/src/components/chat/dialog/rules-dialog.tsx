@@ -1,6 +1,6 @@
 import AccordionItem from '@/components/welcome/accordion-item';
 import { AccordionMenu } from '@/components/welcome/constants';
-import ContentDialog from './content-dialog';
+import Dialog from '@/components/core/dialog.tsx';
 
 interface LogoutDialogProps {
   handleClose: () => void;
@@ -8,15 +8,11 @@ interface LogoutDialogProps {
 
 const RulesDialog = ({ handleClose }: LogoutDialogProps) => {
   return (
-    <>
-      <ContentDialog title={'Mission rules'} closeDialog={handleClose}>
-        <>
-          {AccordionMenu.map((item) => (
-            <AccordionItem key={item.title} item={item} />
-          ))}
-        </>
-      </ContentDialog>
-    </>
+    <Dialog title={'Mission rules'} closeDialog={handleClose}>
+      {AccordionMenu.map((item) => (
+        <AccordionItem key={item.title} item={item} />
+      ))}
+    </Dialog>
   );
 };
 

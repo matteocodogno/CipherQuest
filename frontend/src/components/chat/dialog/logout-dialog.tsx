@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
-import ContentDialog from './content-dialog';
+import Dialog from '@/components/core/dialog.tsx';
 import { authClient } from '@/lib/auth/custom/client';
 import { paths } from '@/paths';
 import { useCallback } from 'react';
@@ -19,7 +19,7 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
 
   return (
     <>
-      <ContentDialog
+      <Dialog
         title={'Do you want to end the game?'}
         closeDialog={handleClose}
       >
@@ -53,7 +53,7 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
             </Button>
           </Stack>
         </Stack>
-      </ContentDialog>
+      </Dialog>
     </>
   );
 };

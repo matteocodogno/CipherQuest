@@ -1,3 +1,4 @@
+import { BookOpenText, SignOut } from '@phosphor-icons/react'
 import { Button, Divider } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import Box from '@mui/material/Box';
@@ -33,7 +34,7 @@ export const Header = (): ReactElement => {
         >
           <Button
             variant='text'
-            endIcon={<Box component='img' src={'/assets/mission-rules.svg'} />}
+            endIcon={<BookOpenText />}
             onClick={() => {
               setShowRules(true);
             }}
@@ -43,7 +44,7 @@ export const Header = (): ReactElement => {
           <Divider orientation='vertical' variant='middle' flexItem />
           <Button
             variant='text'
-            endIcon={<Box component='img' src={'/assets/logout.svg'} />}
+            endIcon={<SignOut />}
             sx={{ color: 'var(--mui-palette-error-dark)' }}
             onClick={() => {
               setShowLogout(true);

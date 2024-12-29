@@ -1,12 +1,4 @@
-import {
-  ChangeEvent,
-  ForwardRefRenderFunction,
-  KeyboardEvent,
-  forwardRef,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useRef, useState } from 'react';
 import { ArrowUp } from '@phosphor-icons/react';
 import Button from '@mui/material/Button';
 import type { MessageType } from '../types';
@@ -19,11 +11,10 @@ type MessageAddProps = {
   onSend?: (type: MessageType, content: string) => void;
 };
 
-const MessageAdd: ForwardRefRenderFunction<HTMLDivElement, MessageAddProps> = (
-  props,
-  ref,
+const MessageAdd = (
+  props: MessageAddProps,
 ) => {
-  const { disabled, onSend } = props;
+  const {disabled, onSend} = props;
   const [content, setContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -42,7 +33,7 @@ const MessageAdd: ForwardRefRenderFunction<HTMLDivElement, MessageAddProps> = (
 
   const handleKeyUp = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
-      if (event.code === 'Enter') {
+      if (event.code==='Enter') {
         handleSend();
       }
     },
@@ -51,7 +42,6 @@ const MessageAdd: ForwardRefRenderFunction<HTMLDivElement, MessageAddProps> = (
 
   return (
     <Stack
-      ref={ref}
       direction='row'
       spacing={2}
       sx={{
@@ -72,28 +62,24 @@ const MessageAdd: ForwardRefRenderFunction<HTMLDivElement, MessageAddProps> = (
         }}
         value={content}
       />
-      <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
-        <Tooltip title='Send'>
-          <span>
-            <Button
-              color='primary'
-              disabled={!content || disabled}
-              onClick={handleSend}
-              sx={{
-                bgcolor: 'var(--mui-palette-primary-main)',
-                color: 'text.primary',
-                '&:hover': { bgcolor: 'var(--mui-palette-primary-dark)' },
-              }}
-              endIcon={<ArrowUp />}
-            >
-              Send
-            </Button>
-          </span>
-        </Tooltip>
-      </Stack>
-      <input hidden ref={fileInputRef} type='file' />
+      <Tooltip title='Send'>
+        <Button
+          color='primary'
+          disabled={!content || disabled}
+          onClick={handleSend}
+          sx={{
+            bgcolor: 'var(--mui-palette-primary-main)',
+            color: 'text.primary',
+            '&:hover': {bgcolor: 'var(--mui-palette-primary-dark)'},
+          }}
+          endIcon={<ArrowUp/>}
+        >
+          Send
+        </Button>
+      </Tooltip>
+      <input hidden ref={fileInputRef} type='file'/>
     </Stack>
   );
 };
 
-export default forwardRef(MessageAdd);
+export default MessageAdd;

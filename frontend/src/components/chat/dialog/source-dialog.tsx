@@ -1,4 +1,4 @@
-import ContentDialog from './content-dialog';
+import Dialog from '@/components/core/dialog.tsx';
 import Typography from '@mui/material/Typography';
 
 interface SourceDialogProps {
@@ -13,13 +13,13 @@ const SourceDialog = ({
   closeDialog,
 }: SourceDialogProps) => {
   return (
-    <ContentDialog
+    <Dialog
       title='Source'
       showDialog={showDialog}
       closeDialog={closeDialog}
     >
       <Typography style={{ whiteSpace: 'pre-wrap' }}>{source}</Typography>
-    </ContentDialog>
+    </Dialog>
   );
 };
 
