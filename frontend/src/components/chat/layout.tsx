@@ -1,8 +1,8 @@
 import { ReactElement, ReactNode } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard.tsx';
 import Box from '@mui/material/Box';
-import { ChatProvider } from '@/components/chat/chat-provider.tsx';
-import { Header } from './view/header';
+import { ChatProvider } from '@/contexts/chat/chat-provider.tsx';
+import { Header } from './header.tsx';
 import { Stack } from '@mui/system';
 import useGetChatHistory from '@/api/chat/use-get-chat-history';
 import { usePathname } from '@/hooks/use-pathname.ts';
@@ -38,6 +38,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundSize: 'cover',
+            overflow: 'hidden',
           }}
         >
           <Header />
@@ -47,6 +48,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
               minWidth: '600px',
               paddingX: 7,
               height: 'calc(100vh - 62px)',
+              overflowY: 'scroll',
             }}
             flexDirection='column'
             alignItems={'center'}

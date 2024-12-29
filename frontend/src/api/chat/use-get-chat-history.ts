@@ -1,6 +1,6 @@
 import { CHAT_URL } from '../constants';
 import { ChatHistorySchema } from './schema';
-import { Message } from '@/components/chat/types';
+import { Message } from '@/contexts/chat/types';
 import { SenderType } from './types';
 import { User } from '@/types/user';
 import { generateMessage } from '@/utils/messages';

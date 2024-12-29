@@ -1,5 +1,5 @@
-import AccordionItem from '@/components/welcome/accordion-item';
-import { AccordionMenu } from '@/components/welcome/constants';
+import AccordionItem from '@/components/core/accordion-item.tsx';
+import { AccordionMenu } from '@/components/chat/constants.ts';
 import Dialog from '@/components/core/dialog.tsx';
 
 interface LogoutDialogProps {

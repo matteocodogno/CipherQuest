@@ -1,4 +1,4 @@
-import { Message, MessageInfo, MessageType } from '@/components/chat/types';
+import { Message, MessageInfo, MessageType } from '@/contexts/chat/types';
 import { SenderType } from '@/api/chat/types';
 
 interface CreateMessageProps {

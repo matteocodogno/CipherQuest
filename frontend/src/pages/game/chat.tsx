@@ -1,5 +1,5 @@
 import { ChatView } from '@/components/chat/view/chat-view';
-import ComposeView from '@/components/chat/view/compose';
+import ComposeView from '@/components/chat/view/compose-view.tsx';
 import { Helmet } from 'react-helmet-async';
 import { Metadata } from '@/types/metadata';
 import { ReactElement } from 'react';

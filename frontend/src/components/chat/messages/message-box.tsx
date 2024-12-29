@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { Link } from '@mui/material';
-import type { Message } from '../types';
+import type { Message } from '../../../contexts/chat/types';
 import MessageLevelUp from './message-level-up';
 import MessageText from './message-text';
 import { ReactElement } from 'react';

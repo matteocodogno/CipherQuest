@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Metadata } from '@/types/metadata';
 import { ReactElement } from 'react';
-import { RulesView } from '@/components/welcome/rules-view';
+import { RulesView } from '@/components/chat/view/rules-view.tsx';
 import { config } from '@/config.ts';
 
 const metadata = {

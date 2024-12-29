@@ -1,14 +1,13 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import { useCallback, useRef } from 'react';
-import { AccordionMenu } from './constants';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const AccordionItem = ({ item }: { item: (typeof AccordionMenu)[number] }) => {
+type AccordionItemProps = {
+  title: string;
+  content: string;
+}
+
+const AccordionItem = ({ item }: { item: AccordionItemProps }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleOnchange = useCallback((expanded: boolean) => {

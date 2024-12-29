@@ -2,14 +2,14 @@ import {
   ChatContext,
   ChatProviderProps,
   CreateMessageParams,
-} from '@/components/chat/chat-context.tsx';
+} from '@/contexts/chat/chat-context.tsx';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { getGameSessionInfo, saveGameSessionInfo } from '@/lib/game/localStore';
-import { Message } from '@/components/chat/types';
-import { SenderType } from '@/api/chat/types';
-import { generateMessage } from '@/utils/messages';
-import useSendRequest from '@/api/chat/use-send-request';
-import { useUser } from '@/hooks/use-user';
+import { getGameSessionInfo, saveGameSessionInfo } from '@/lib/game/localStore.ts';
+import { Message } from '@/contexts/chat/types';
+import { SenderType } from '@/api/chat/types.ts';
+import { generateMessage } from '@/utils/messages.ts';
+import useSendRequest from '@/api/chat/use-send-request.ts';
+import { useUser } from '@/hooks/use-user.ts';
 
 export const ChatProvider = ({
   children,

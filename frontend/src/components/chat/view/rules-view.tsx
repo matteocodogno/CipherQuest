@@ -1,11 +1,11 @@
 import { ReactElement, useCallback } from 'react';
-import AccordionItem from './accordion-item';
-import { AccordionMenu } from './constants';
+import AccordionItem from '../../core/accordion-item.tsx';
+import { AccordionMenu } from '../constants.ts';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Play } from '@phosphor-icons/react';
 import Typography from '@mui/material/Typography';
-import { paths } from '@/paths';
+import { paths } from '@/paths.ts';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/hooks/use-user.ts';
 

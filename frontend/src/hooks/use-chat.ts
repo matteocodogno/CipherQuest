@@ -1,4 +1,4 @@
-import { ChatContext, ChatContextValue } from '@/components/chat/chat-context';
+import { ChatContext, ChatContextValue } from '@/contexts/chat/chat-context.tsx';
 import { useContext } from 'react';
 
 export const useChat = (): ChatContextValue => {

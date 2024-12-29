@@ -3,10 +3,10 @@ import { Button, Divider } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DynamicLogo } from '@/components/core/logo.tsx';
-import LogoutDialog from '../dialog/logout-dialog';
-import RulesDialog from '../dialog/rules-dialog';
+import LogoutDialog from './dialog/logout-dialog.tsx';
+import RulesDialog from './dialog/rules-dialog.tsx';
 import { Stack } from '@mui/system';
-import { useUser } from '@/hooks/use-user';
+import { useUser } from '@/hooks/use-user.ts';
 
 export const Header = (): ReactElement => {
   const { user } = useUser();

@@ -1,6 +1,6 @@
 import { Link, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { Message } from '../types';
+import { Message } from '../../../contexts/chat/types';
 import SourceDialog from '../dialog/source-dialog';
 import { Stack } from '@mui/system';
 import useGetSource from '@/api/source/use-get-source';
