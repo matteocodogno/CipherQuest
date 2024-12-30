@@ -66,7 +66,7 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
                       {message.author.name}
                     </Link>
                   </div>
-                  {message.type === 'image' ? (
+                  {message.type === 'image' && typeof message.content === 'string' ? (
                     <CardMedia
                       image={message.content}
                       onClick={() => {

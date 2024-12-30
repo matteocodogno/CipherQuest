@@ -21,11 +21,10 @@ const ChatHeader: ForwardRefRenderFunction<HTMLDivElement, object> = (
         borderRadius: '20px',
         display: 'flex',
         flexDirection: 'row',
-        p: 3,
         alignItems: 'center',
         flexShrink: 0,
         alignSelf: 'stretch',
-        height: '104px',
+        p: 3,
       }}
     >
       <Typography variant='h4'>{user?.username}</Typography>

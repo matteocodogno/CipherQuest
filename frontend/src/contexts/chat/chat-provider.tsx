@@ -5,6 +5,7 @@ import {
 } from '@/contexts/chat/chat-context.tsx';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { getGameSessionInfo, saveGameSessionInfo } from '@/lib/game/localStore.ts';
+import Loader from '@/components/loader';
 import { Message } from '@/contexts/chat/types';
 import { SenderType } from '@/api/chat/types.ts';
 import { generateMessage } from '@/utils/messages.ts';
@@ -37,7 +38,7 @@ export const ChatProvider = ({
   const overmindThinking = generateMessage({
     type: 'text',
     senderType: SenderType.OVERMIND,
-    content: '......',
+    content: (<Loader />),
   });
 
   const handleCreateMessage = useCallback(

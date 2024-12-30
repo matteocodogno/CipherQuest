@@ -1,10 +1,11 @@
 import { Message, MessageInfo, MessageType } from '@/contexts/chat/types';
+import { ReactElement } from 'react';
 import { SenderType } from '@/api/chat/types';
 
 interface CreateMessageProps {
   id?: string;
   type?: MessageType;
-  content: string;
+  content: string | ReactElement;
   senderType: SenderType;
   senderId?: string;
   senderName?: string;
