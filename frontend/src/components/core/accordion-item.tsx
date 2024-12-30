@@ -41,7 +41,7 @@ const AccordionItem = ({ item }: { item: AccordionItemProps }) => {
       </AccordionSummary>
       <AccordionDetails>
         <Typography variant='body1' color='text.secondary'>
-          {item.content}
+          <div dangerouslySetInnerHTML={{ __html: item.content }}></div>
         </Typography>
         <div ref={ref}></div>
       </AccordionDetails>
