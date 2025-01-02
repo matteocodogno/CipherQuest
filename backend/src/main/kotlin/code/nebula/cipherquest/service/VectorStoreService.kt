@@ -63,4 +63,22 @@ class VectorStoreService(
                 )
             }
         }
+
+    fun saveMessage(
+        userId: String,
+        message: String,
+        messageType: MessageType,
+    ) {
+        vectorStore.add(
+            listOf(
+                Document(
+                    message,
+                    mapOf(
+                        "conversationId" to userId,
+                        "messageType" to messageType.name,
+                    ),
+                ),
+            ),
+        )
+    }
 }

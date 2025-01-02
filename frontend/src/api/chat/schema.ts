@@ -7,6 +7,7 @@ const InfoSchema = z
   .object({
     isLevelUp: z.boolean(),
     sources: SourceSchema,
+    status: z.string(),
   })
   .nullable();
 

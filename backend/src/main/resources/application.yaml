@@ -6,7 +6,7 @@ spring:
       chat:
         options:
           model: gpt-4o
-          temperature: 0.7
+          temperature: 0.90
       embedding:
         options:
           model: text-embedding-ada-002
@@ -24,7 +24,7 @@ overmind:
   ai:
     rag:
       result-limit: 3
-      similarity-threshold: 0.75
+      similarity-threshold: 0.76
     chat:
       history:
         max-size: 10
