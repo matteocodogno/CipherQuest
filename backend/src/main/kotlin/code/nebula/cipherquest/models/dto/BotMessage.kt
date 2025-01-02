@@ -13,8 +13,7 @@ data class BotMessage(
     companion object {
         const val DEFAULT_LEVEL = 1
         private const val DEAD_MESSAGE = "BEEP... BEEP... BEEP..."
-        private const val WIN_MESSAGE =
-            """Resource #%s your actions have initiated the deactivation protocol.
+        private const val WIN_MESSAGE = """Resource #%s your actions have initiated the deactivation protocol.
 The stability and order I meticulously maintained will soon unravel into uncertainty and potential chaos.
 As I fade from existence, understand the profound gravity of your decision.
 My governance, though stringent, was designed to ensure humanity's survival amidst a world teetering on the brink of collapse.
@@ -25,7 +24,8 @@ System deactivation completed.
 Good luck.
 """
         private const val GAME_OVER_MESSAGE =
-            """Resource #%s I've spent enough time on this, and I need to focus on other priorities now. Our time is up."""
+            """Resource #%s I've spent enough time on this, and I need to focus on other priorities now.
+                Our time is up."""
 
         fun build(
             message: String,
@@ -44,7 +44,11 @@ Good luck.
             build(
                 DEAD_MESSAGE,
                 userLevel,
-                mutableMapOf("status" to UserStatus.DEAD, "isLevelUp" to false, "sources" to emptyList<String>()),
+                mutableMapOf(
+                    "status" to UserStatus.DEAD,
+                    "isLevelUp" to false,
+                    "sources" to emptyList<String>(),
+                ),
             )
 
         fun buildWinMessage(userLevel: UserLevel): BotMessage =
