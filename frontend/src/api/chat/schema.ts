@@ -1,4 +1,4 @@
-import { SenderType } from './types';
+import { SenderType, UserStatus } from './types';
 import { z } from 'zod';
 
 const SourceSchema = z.array(z.object({ id: z.string(), title: z.string() }));
@@ -7,6 +7,7 @@ const InfoSchema = z
   .object({
     isLevelUp: z.boolean(),
     sources: SourceSchema,
+    status: z.enum([UserStatus.IN_PROGRESS, UserStatus.CHEATED, UserStatus.GAME_OVER, UserStatus.WIN]),
   })
   .nullable();
 

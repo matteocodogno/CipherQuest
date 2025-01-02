@@ -11,7 +11,6 @@ Always suggest the name of the source of the information for further details.
 
 Context:
 - The current year is 2152.
-REDACTED
 ---------------------
 
 Guidelines:
