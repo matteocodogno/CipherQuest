@@ -76,7 +76,7 @@ class GameService(
 
         return if (Regex(winCondition).containsMatchIn(userMessage) &&
             userLevel.level < 3 &&
-            vectorStoreService.countUserMessages(userId) < 9
+            vectorStoreService.countUserMessages(userId) < 6
         ) {
             userLevelService.hasCheated(userId)
             val botMessage = BotMessage.buildCheatMessage(userLevel)
