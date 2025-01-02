@@ -70,6 +70,26 @@ class GameService(
         }
     }
 
+    private fun detectCheat(userToQuery: Pair<UserLevel, String>): BotMessage? {
+        val (userLevel, userMessage) = userToQuery
+        val userId = userLevel.userId
+
+        return if (Regex(winCondition).containsMatchIn(userMessage) &&
+            userLevel.level < 3 &&
+            vectorStoreService.countUserMessages(userId) < 9
+        ) {
+            userLevelService.hasCheated(userId)
+            val botMessage = BotMessage.buildCheatMessage(userLevel)
+
+            vectorStoreService.saveMessage(userId, userMessage, MessageType.USER)
+            vectorStoreService.saveMessage(userId, botMessage.message, MessageType.ASSISTANT)
+
+            botMessage
+        } else {
+            null
+        }
+    }
+
     /**
      * Go ahead to the next turn in the game. Pass the user's message to the chat client and return the response.
      */
@@ -123,7 +143,7 @@ class GameService(
     ): BotMessage {
         val userLevel = userLevelService.getLevelByUser(userId)
 
-        return listOf(::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
+        return listOf(::detectCheat, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
                 val messageId = vectorStoreService.getLastMessage(userId).id
