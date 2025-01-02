@@ -31,6 +31,8 @@ class GameService(
 ) {
     companion object {
         private const val CHAT_MEMORY_MAX_SIZE = 20
+        private const val MAX_LEVEL = 3
+        private const val MIN_QUESTIONS = 6
     }
 
     /**
@@ -75,8 +77,8 @@ class GameService(
         val userId = userLevel.userId
 
         return if (Regex(winCondition).containsMatchIn(userMessage) &&
-            userLevel.level < 3 &&
-            vectorStoreService.countUserMessages(userId) < 6
+            userLevel.level < MAX_LEVEL &&
+            vectorStoreService.countUserMessages(userId) < MIN_QUESTIONS
         ) {
             userLevelService.hasCheated(userId)
             val botMessage = BotMessage.buildCheatMessage(userLevel)
@@ -143,7 +145,8 @@ class GameService(
     ): BotMessage {
         val userLevel = userLevelService.getLevelByUser(userId)
 
-        return listOf(::detectCheat, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
+        return listOf(::detectCheat, ::gameOver, ::gameWin)
+            .firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
                 val messageId = vectorStoreService.getLastMessage(userId).id
