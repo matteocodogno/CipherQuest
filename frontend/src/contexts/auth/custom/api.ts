@@ -22,6 +22,10 @@ export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
     body: JSON.stringify(data),
   });
 
+  if (response.status === 500) {
+    throw new Error('Internal Server Error: The server encountered an issue.');
+  }
+
   const jsonResponse = await response.json();
   const user = UserLevel.parse(jsonResponse);
   logger.debug('signIn', user);
