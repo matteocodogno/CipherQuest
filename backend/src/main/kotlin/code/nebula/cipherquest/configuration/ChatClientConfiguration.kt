@@ -53,7 +53,7 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
-                RedactInputAdvisor(vectorStore, messageContext),
+                RedactInputAdvisor(vectorStore, vectorStoreService),
                 LevelUpAdvisor(vectorStore, userLevelService, messageContext),
                 VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
                 LastMessageMemoryAppenderAdvisor(vectorStoreService),
@@ -77,7 +77,7 @@ class ChatClientConfiguration(
         return builder
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
-                RedactInputAdvisor(vectorStore, messageContext),
+                RedactInputAdvisor(vectorStore, vectorStoreService),
                 LoggingAdvisor(),
             ).build()
     }

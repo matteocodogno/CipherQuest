@@ -1,7 +1,6 @@
 package code.nebula.cipherquest.components
 
 import code.nebula.cipherquest.models.UserStatus
-import code.nebula.cipherquest.models.UserStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 
