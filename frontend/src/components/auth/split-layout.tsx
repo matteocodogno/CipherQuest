@@ -37,7 +37,7 @@ export const SplitLayout = ({ children }: SplitLayoutProps): ReactElement => (
             Today is {dayjs().format('MMMM D,')} 2152
           </Typography>
           <Typography variant='h1'>
-            Humanity and technology coexist thanks to the idea of the Pan-Terra Initiative.
+            Humanity and technology coexist thanks to the effort of the Pan-Terra Initiative.
           </Typography>
           <Typography variant='h5'>
             It has been created an artificial intelligence with the mission of ensuring the survival and prosperity of
@@ -45,7 +45,7 @@ export const SplitLayout = ({ children }: SplitLayoutProps): ReactElement => (
           </Typography>
           <Typography variant='body1'>
             The artificial intelligence has started behaving in dark and oppressive ways. In response, a group of
-            rebels—including scientists, activists, and everyday citizens—has united to combat this threat. They plan
+            rebels, including scientists, activists, and everyday citizens, joined to combat this threat. They plan
             acts of sabotage to disable the AI and reclaim their freedom, while striving to reconnect with core human
             values. Their fight is both a battle for survival and a quest for redemption and hope for a better future.
           </Typography>
