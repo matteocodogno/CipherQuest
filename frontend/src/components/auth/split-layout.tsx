@@ -34,7 +34,7 @@ export const SplitLayout = ({ children }: SplitLayoutProps): ReactElement => (
       <Stack spacing={4} sx={{ maxWidth: '700px' }}>
         <Stack spacing={1}>
           <Typography variant='h5'>
-            Today is {dayjs().format('MMMM D, YYYY')}
+            Today is {dayjs().format('MMMM D,')} 2152
           </Typography>
           <Typography variant='h1'>
             Humanity and technology coexist thanks to the idea of the Pan-Terra Initiative.
