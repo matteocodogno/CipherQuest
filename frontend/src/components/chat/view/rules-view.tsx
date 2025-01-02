@@ -60,11 +60,11 @@ export const RulesView = (): ReactElement => {
             We need your help to bring down Overmind!
           </Typography>
           <Typography variant='h5'>
-            After years of hunting, we&lsquo;ve finally tracked down an Overmind
+            After years of searching, we&lsquo;ve finally tracked down an Overmind
             terminal with lower defenses.
             <br />
-            Your mission is to access the terminal and uncover how to dismantle
-            this tyrant using insider information.
+            Your mission is to access it and uncover a way to shut down 
+            this oppressor using the information at your disposal.
           </Typography>
         </Box>
         <Box
@@ -87,7 +87,7 @@ export const RulesView = (): ReactElement => {
           >
             <Typography variant='h6'>Are you ready?</Typography>
             <Typography variant='body1'>
-              If you exit the mission, it will no longer be possible to resume
+              If you quit the mission, it will no longer be possible to resume
               the game session.
             </Typography>
           </Box>
@@ -100,7 +100,7 @@ export const RulesView = (): ReactElement => {
               color: 'text.primary',
             }}
           >
-            Enter the terminal
+            Enter the Terminal
           </Button>
         </Box>
 
@@ -119,7 +119,7 @@ export const RulesView = (): ReactElement => {
           }}
         >
           <Typography variant='h6'>
-            What should you know before to start the mission:
+            What should you know before starting the mission:
           </Typography>
           {AccordionMenu.map((item) => (
             <AccordionItem key={item.title} item={item} />

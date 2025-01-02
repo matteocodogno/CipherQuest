@@ -14,7 +14,7 @@ const NotesButton = ({ handleClick }: { handleClick: () => void}) => (
     }}
     onClick={handleClick}
   >
-    Block note
+    Block notes
     <Notepad size={24} />
   </Fab>
 );

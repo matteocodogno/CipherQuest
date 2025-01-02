@@ -20,13 +20,12 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
   return (
     <>
       <Dialog
-        title={'Do you want to end the game?'}
+        title={'Do you want to end the mission?'}
         closeDialog={handleClose}
       >
         <Stack gap={4}>
           <Typography>
-            If you exit the game it will no longer be possible to recover what
-            you have done up to now.
+            If you exit the game, your progress will be permanently lost and cannot be recovered.
           </Typography>
           <Stack
             direction={'row'}
@@ -49,7 +48,7 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
               }}
               onClick={logoutAction}
             >
-              Yes, end game
+              Yes, I understand.
             </Button>
           </Stack>
         </Stack>
