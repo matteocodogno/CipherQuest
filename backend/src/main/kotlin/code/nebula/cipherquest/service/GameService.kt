@@ -34,22 +34,6 @@ class GameService(
     }
 
     /**
-     * Check if the user has already won the game, and return the final message if so.
-     */
-    private fun gameWon(userToQuery: Pair<UserLevel, String>): BotMessage? {
-        return if (userToQuery.first.terminatedAt != null) {
-            val botMessage =
-                BotMessage
-                    .buildDeadMessage(userToQuery.first)
-            vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
-            vectorStoreService.saveMessage(userToQuery.first.userId, botMessage.message, MessageType.ASSISTANT)
-            return botMessage
-        } else {
-            null
-        }
-    }
-
-    /**
      * Check if the user is winning the game, and return the win message if so.
      */
     private fun gameWin(userToQuery: Pair<UserLevel, String>): BotMessage? {
@@ -139,7 +123,7 @@ class GameService(
     ): BotMessage {
         val userLevel = userLevelService.getLevelByUser(userId)
 
-        return listOf(::gameWon, ::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
+        return listOf(::gameOver, ::gameWin).firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
             ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
                 val messageId = vectorStoreService.getLastMessage(userId).id

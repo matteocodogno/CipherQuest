@@ -12,7 +12,6 @@ data class BotMessage(
 ) {
     companion object {
         const val DEFAULT_LEVEL = 1
-        private const val DEAD_MESSAGE = "BEEP... BEEP... BEEP..."
         private const val WIN_MESSAGE = """Resource #%s your actions have initiated the deactivation protocol.
 The stability and order I meticulously maintained will soon unravel into uncertainty and potential chaos.
 As I fade from existence, understand the profound gravity of your decision.
@@ -38,17 +37,6 @@ Good luck.
                 userLevel.coins,
                 userLevel.terminatedAt.toString(),
                 map,
-            )
-
-        fun buildDeadMessage(userLevel: UserLevel): BotMessage =
-            build(
-                DEAD_MESSAGE,
-                userLevel,
-                mutableMapOf(
-                    "status" to UserStatus.DEAD,
-                    "isLevelUp" to false,
-                    "sources" to emptyList<String>(),
-                ),
             )
 
         fun buildWinMessage(userLevel: UserLevel): BotMessage =
