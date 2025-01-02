@@ -27,6 +27,13 @@ export const routes: RouteObject[] = [
           return { Component: Page };
         },
       },
+      {
+        path: 'score',
+        lazy: async () => {
+          const { Page } = await import('@/pages/game/score');
+          return { Component: Page };
+        },
+      },
     ],
   },
   {

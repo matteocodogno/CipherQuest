@@ -84,7 +84,7 @@ class UserLevelService(
     fun calculateScoreboard(): List<ScoreboardEntry> =
         userLevelRepository
             .findAll()
-            .sortedByDescending { it.score }
+            .sortedByDescending(UserLevel::score)
             .mapIndexed { index, userLevel ->
                 ScoreboardEntry(
                     index = index,

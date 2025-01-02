@@ -1,3 +1,4 @@
+import { AuthGuard } from '@/components/auth/auth-guard.tsx';
 import { ChatProvider } from '@/contexts/chat/chat-provider.tsx';
 import { ChatView } from '@/components/chat/view/chat-view';
 import ComposeView from '@/components/chat/view/compose-view.tsx';
@@ -19,7 +20,7 @@ export const Page = (): ReactElement => {
   });
 
   return (
-    <>
+    <AuthGuard>
       <Helmet>
         <title>{metadata.title}</title>
       </Helmet>
@@ -27,6 +28,6 @@ export const Page = (): ReactElement => {
         <ChatView />
         <ComposeView />
       </ChatProvider>
-    </>
+    </AuthGuard>
   );
 };

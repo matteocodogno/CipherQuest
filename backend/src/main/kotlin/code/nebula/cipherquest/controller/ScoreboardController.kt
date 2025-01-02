@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController
 class ScoreboardController(
     private val userLevelService: UserLevelService,
 ) {
-    @GetMapping("/")
+    @GetMapping
     fun getScoreboard(): List<ScoreboardEntry> = userLevelService.calculateScoreboard()
 }

@@ -57,7 +57,14 @@ export const SignInForm = (): ReactElement => {
 
   return (
     <>
-      <Button variant='outlined' color='primary' endIcon={<Trophy />} style={{ marginBottom: '290px' }}>
+      <Button
+        component={RouterLink}
+        href={paths.game.score}
+        variant='outlined'
+        color='primary'
+        endIcon={<Trophy />}
+        style={{ marginBottom: '290px' }}
+      >
         Go to scoreboard
       </Button>
 

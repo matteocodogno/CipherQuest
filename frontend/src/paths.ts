@@ -11,6 +11,7 @@ export const paths = {
   game: {
     rules: '/rules',
     chat: '/chat',
+    score: '/score',
   },
   notAuthorized: '/errors/not-authorized',
   notFound: '/errors/not-found',
