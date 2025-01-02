@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.advisor
 
+import code.nebula.cipherquest.components.MessageContext
 import code.nebula.cipherquest.models.DocumentType
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 @Service
 class RedactInputAdvisor(
     private val vectorStore: VectorStore,
+    private val messageContext: MessageContext,
 ) : CallAroundAdvisor {
     companion object {
         private const val SIMILARITY_THRESHOLD = 0.95
