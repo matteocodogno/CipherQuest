@@ -4,4 +4,5 @@ enum class UserStatus {
     IN_PROGRESS,
     WIN,
     GAME_OVER,
+    CHEATED,
 }
