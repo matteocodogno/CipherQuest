@@ -16,5 +16,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException::class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    fun handleUsernameAlreadyExistsException(ex: DataIntegrityViolationException): String = ex.message ?: "Username already exists"
+    fun handleUsernameAlreadyExistsException(ex: DataIntegrityViolationException): String =
+        ex.message
+            ?: "Username already exists"
 }
