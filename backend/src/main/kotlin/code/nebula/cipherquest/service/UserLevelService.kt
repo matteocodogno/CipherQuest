@@ -39,6 +39,11 @@ class UserLevelService(
         return user
     }
 
+    private fun setScoreCheated(user: UserLevel): UserLevel {
+        user.score = -1
+        return user
+    }
+
     fun createUserLevel(request: CreateUserLevelRequest): UserLevel =
         userLevelRepository.save(
             UserLevel(
@@ -81,9 +86,16 @@ class UserLevelService(
             .also(::calculateScore)
             .let(userLevelRepository::save)
 
+    fun hasCheated(userId: String): UserLevel =
+        getLevelByUser(userId)
+            .apply { terminatedAt = OffsetDateTime.now() }
+            .also(::setScoreCheated)
+            .let(userLevelRepository::save)
+
     fun calculateScoreboard(): List<ScoreboardEntry> =
         userLevelRepository
             .findAll()
+            .filter { it.score > 0 }
             .sortedByDescending(UserLevel::score)
             .mapIndexed { index, userLevel ->
                 ScoreboardEntry(

@@ -84,4 +84,15 @@ class VectorStoreRepository(
             userId,
         )
     }
+
+    fun countUserMessages(id: String): Int {
+        val sql =
+            """
+                SELECT COUNT(*)
+                FROM vector_store
+                WHERE metadata->>'conversationId' = ? and metadata->>'messageType' = 'USER'
+            """
+
+        return jdbcTemplate.queryForObject(sql, Int::class.java, id)
+    }
 }

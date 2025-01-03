@@ -22,6 +22,8 @@ class VectorStoreService(
 
     fun search(query: String): List<Document> = vectorStore.similaritySearch(query)
 
+    fun countUserMessages(id: String): Int = vectorStoreRepository.countUserMessages(id)
+
     fun existsDocumentWithSource(filename: String) = vectorStoreRepository.existsDocumentWithSource(filename)
 
     fun getDocumentById(id: String): String? =
