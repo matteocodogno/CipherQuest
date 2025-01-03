@@ -1,3 +1,4 @@
+import { GameStatus } from '@/api/chat/types';
 import { ReactElement } from 'react';
 
 export type MessageType = 'text' | 'image';
@@ -14,4 +15,5 @@ export type Message = {
 export type MessageInfo = {
   isLevelUp: boolean;
   sources: { id: string; title: string }[];
+  status?: GameStatus;
 };
