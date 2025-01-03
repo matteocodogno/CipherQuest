@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.controller
 
+import code.nebula.cipherquest.controller.request.Score
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,5 +19,5 @@ class ScoreboardController(
     @GetMapping("/{id}")
     fun getScore(
         @PathVariable id: String,
-    ): Long = userLevelService.getLevelByUser(id).score
+    ): Score = Score(userLevelService.getLevelByUser(id).score.toInt())
 }
