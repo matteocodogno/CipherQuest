@@ -18,14 +18,21 @@ import PageHeader from '@/components/core/Headings/page-header.tsx';
 import { RouterLink } from '@/components/core/link.tsx';
 import Typography from '@mui/material/Typography';
 import useGetScoreboard from '@/api/score/use-get-scoreboard.ts';
+import { useUser } from '@/hooks/use-user';
 
 const ScoreBreadcrumb = () => {
   const theme = useTheme();
+  const { user } = useUser();
+
+  const { path: path, title } =
+    user === null
+      ? { path: '/auth/custom/sign-in', title: 'back to login' }
+      : { path: '/chat', title: 'back to chat' };
 
   return (
     <Breadcrumbs>
       <RouterLink
-        href='/auth/custom/sign-in'
+        href={path}
         style={{
           display: 'flex',
           gap: 8,
@@ -35,7 +42,7 @@ const ScoreBreadcrumb = () => {
         }}
       >
         <ArrowLeft />
-        <Typography variant='body1'>back to login</Typography>
+        <Typography variant='body1'>{title}</Typography>
       </RouterLink>
     </Breadcrumbs>
   );
