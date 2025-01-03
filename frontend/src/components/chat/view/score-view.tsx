@@ -24,17 +24,18 @@ const ScoreBreadcrumb = () => {
 
   return (
     <Breadcrumbs>
-      <RouterLink href='/auth/sign-in' style={{
-        display: 'flex',
-        gap: 8,
-        alignItems: 'center',
-        textDecoration: 'none',
-        color: theme.palette.neutral['400'],
-      }}>
+      <RouterLink
+        href='/auth/custom/sign-in'
+        style={{
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+          textDecoration: 'none',
+          color: theme.palette.neutral['400'],
+        }}
+      >
         <ArrowLeft />
-        <Typography variant='body1' >
-          back to login
-        </Typography>
+        <Typography variant='body1'>back to login</Typography>
       </RouterLink>
     </Breadcrumbs>
   );
@@ -46,7 +47,7 @@ const TableCellHeader = styled(TableCell)(() => ({
   },
 }));
 
-const GradientTableRow = styled(TableRow)(({ index }: { index: number}) => ({
+const GradientTableRow = styled(TableRow)(({ index }: { index: number }) => ({
   '&.MuiTableRow-root': {
     background: Match.value(index).pipe(
       Match.when(0, () => 'var(--mui-palette-background-level2)'),
@@ -99,7 +100,6 @@ export const ScoreView = (): ReactElement => {
     );
   }
 
-
   return (
     <Box
       style={{
@@ -110,10 +110,7 @@ export const ScoreView = (): ReactElement => {
         width: '100%',
       }}
     >
-      <PageHeader
-        title={'Scoreboard'}
-        breadcrumb={(<ScoreBreadcrumb />)}
-      />
+      <PageHeader title={'Scoreboard'} breadcrumb={<ScoreBreadcrumb />} />
       <Card
         style={{
           display: 'flex',
@@ -125,9 +122,15 @@ export const ScoreView = (): ReactElement => {
         <CardHeader title='Rewards 🤑' />
         <CardContent>
           <Typography variant='body1'>
-            🥇 Prize for the first place: <strong>LEGO Star Wars TIE Interceptor 🧱</strong><br/>
-            🥈 Prize for the second place: <strong>WellD Stormtech backpack 🎒</strong><br/>
-            🥉 Prize for the third place: <strong>WellD Carhart backpack 🎒</strong><br/>
+            🥇 Prize for the first place:{' '}
+            <strong>LEGO Star Wars TIE Interceptor 🧱</strong>
+            <br />
+            🥈 Prize for the second place:{' '}
+            <strong>WellD Stormtech backpack 🎒</strong>
+            <br />
+            🥉 Prize for the third place:{' '}
+            <strong>WellD Carhart backpack 🎒</strong>
+            <br />
           </Typography>
         </CardContent>
       </Card>
