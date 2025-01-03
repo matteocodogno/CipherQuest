@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Avatar, Stack, Typography } from '@mui/material';
 import { GameStatus } from '@/api/chat/types';
 import { ScoreBoardButtonVariant } from '@/components/core/types';
 import ScoreboardButton from '@/components/core/scoreboard-button';
@@ -26,7 +26,8 @@ const MessageEndGame = ({ status, score }: MessageEndGameProps) => {
   return (
     <Stack
       sx={{
-        marginY: '200px',
+        marginTop: '100px',
+        marginBottom: '200px',
         alignItems: 'center',
       }}
       gap={2}
