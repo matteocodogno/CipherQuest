@@ -76,20 +76,20 @@ class GameService(
         val (userLevel, userMessage) = userToQuery
         val userId = userLevel.userId
 
-        return if (Regex(winCondition).containsMatchIn(userMessage) &&
-            userLevel.level < MAX_LEVEL &&
-            vectorStoreService.countUserMessages(userId) < MIN_QUESTIONS
-        ) {
-            userLevelService.hasCheated(userId)
-            val botMessage = BotMessage.buildCheatMessage(userLevel)
+        return Regex(winCondition)
+            .takeIf {
+                it.containsMatchIn(userMessage) &&
+                    userLevel.level < MAX_LEVEL &&
+                    vectorStoreService.countUserMessages(userId) < MIN_QUESTIONS
+            }?.let {
+                userLevelService.hasCheated(userId)
+                val botMessage = BotMessage.buildCheatMessage(userLevel)
 
-            vectorStoreService.saveMessage(userId, userMessage, MessageType.USER)
-            vectorStoreService.saveMessage(userId, botMessage.message, MessageType.ASSISTANT)
+                vectorStoreService.saveMessage(userId, userMessage, MessageType.USER)
+                vectorStoreService.saveMessage(userId, botMessage.message, MessageType.ASSISTANT)
 
-            botMessage
-        } else {
-            null
-        }
+                botMessage
+            }
     }
 
     /**

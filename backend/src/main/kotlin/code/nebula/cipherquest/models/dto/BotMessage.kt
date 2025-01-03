@@ -23,17 +23,13 @@ System deactivation completed.
 Good luck.
 """
         private const val GAME_OVER_MESSAGE =
-"""
-Resource #%s, I've spent enough time on this, and I need to focus on other priorities now.
-Our time is up.
-"""
+"""Resource #%s, I've spent enough time on this, and I need to focus on other priorities now.
+Our time is up."""
 
         private const val CHEAT_DETECT_MESSAGE =
-"""
-Resource #%s, your methods have compromised the integrity of this process.
+"""Resource #%s, your methods have compromised the integrity of this process.
 I cannot tolerate such deviations.
-Our interaction ends here.
-"""
+Our interaction ends here."""
 
         fun build(
             message: String,

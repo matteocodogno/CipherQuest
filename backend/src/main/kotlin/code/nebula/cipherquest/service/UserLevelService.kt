@@ -39,7 +39,7 @@ class UserLevelService(
         return user
     }
 
-    fun setScoreCheated(user: UserLevel): UserLevel {
+    private fun setScoreCheated(user: UserLevel): UserLevel {
         user.score = -1
         return user
     }
