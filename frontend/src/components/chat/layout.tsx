@@ -29,7 +29,6 @@ export function Layout({ children }: LayoutProps): ReactElement {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
-        overflow: 'hidden',
       }}
     >
       <Header />
@@ -39,7 +38,6 @@ export function Layout({ children }: LayoutProps): ReactElement {
           minWidth: '600px',
           paddingX: 7,
           height: 'calc(100vh - 62px)',
-          overflowY: 'scroll',
         }}
         flexDirection='column'
         alignItems={'center'}
