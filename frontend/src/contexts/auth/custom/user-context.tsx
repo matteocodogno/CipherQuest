@@ -20,6 +20,7 @@ export type UserContextValue = {
   isLoading: boolean;
   checkSession?: () => Promise<void>;
   setStartingTime?: (x: Date) => Promise<void>;
+  signOut?: () => Promise<void>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -59,16 +60,42 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
   }, []);
 
   const setStartingTime = useCallback(async (time: Date): Promise<void> => {
-    authClient.updateUserProperty('startedAt', time);
+    try {
+      authClient.updateUserProperty('startedAt', time);
 
-    const { user, error } = await authClient.getUser();
-    if (error) {
-      return;
+      const { user, error } = await authClient.getUser();
+
+      if (error) {
+        logger.error(error);
+        setState({
+          user: null,
+          error: 'Something went wrong!',
+          isLoading: false,
+        });
+        return;
+      }
+
+      setState({ user, error: null, isLoading: false });
+    } catch (err) {
+      logger.error('Error set starting time', err);
+      setState({
+        user: null,
+        error: 'Something went wrong!',
+        isLoading: false,
+      });
     }
 
-    setState({ user, error: null, isLoading: false });
-
     return;
+  }, []);
+
+  const signOut = useCallback(async (): Promise<void> => {
+    try {
+      await authClient.signOut();
+    } catch (err) {
+      logger.error('Error logout session', err);
+    } finally {
+      setState({ user: null, error: null, isLoading: false });
+    }
   }, []);
 
   useEffect(() => {
@@ -85,6 +112,7 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
         ...state,
         checkSession,
         setStartingTime,
+        signOut,
       }}
     >
       {children}
