@@ -1,9 +1,9 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Dialog from '@/components/core/dialog.tsx';
-import { authClient } from '@/lib/auth/custom/client';
 import { paths } from '@/paths';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '@/hooks/use-user';
 
 interface LogoutDialogProps {
   handleClose: () => void;
@@ -11,11 +11,12 @@ interface LogoutDialogProps {
 
 const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
   const navigate = useNavigate();
+  const { signOut } = useUser();
   const logoutAction = useCallback(async () => {
-    await authClient.signOut();
+    await signOut?.();
     handleClose();
     navigate(paths.auth.custom.signIn, { replace: true });
-  }, [handleClose, navigate]);
+  }, [handleClose, navigate, signOut]);
 
   return (
     <>
@@ -25,7 +26,8 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
       >
         <Stack gap={4}>
           <Typography>
-            If you exit the game, your progress will be permanently lost and cannot be recovered.
+            If you exit the game, your progress will be permanently lost and
+            cannot be recovered.
           </Typography>
           <Stack
             direction={'row'}
