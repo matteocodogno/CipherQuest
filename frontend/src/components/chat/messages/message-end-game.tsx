@@ -17,7 +17,7 @@ const MessageEndGame = ({ status, score }: MessageEndGameProps) => {
       case GameStatus.GAME_OVER:
         return 'You are out of coins!';
       case GameStatus.CHEATED:
-        return 'Mmmmh... it seems like you are a saboteur and this confirms to me that humanity still needs me! Bye';
+        return 'Mmmmh...your methods have compromised the integrity of this process. Our interaction ends here. Bye';
       default:
         return 'You were unable to deactivate Overmind! try again';
     }
