@@ -9,13 +9,14 @@ import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { RouterLink } from '@/components/core/link';
+import SignInDescription from './sign-in-description';
 import { Trophy } from '@phosphor-icons/react';
 import { authClient } from '@/lib/auth/custom/client';
 import { paths } from '@/paths';
+import useIsMobile from '@/hooks/use-is-mobile';
 import { useUser } from '@/hooks/use-user';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 
 const schema = zod.object({
   username: zod.string().min(3, { message: 'Username is required' }),
@@ -27,6 +28,7 @@ const defaultValues = { username: '' } satisfies Values;
 
 export const SignInForm = (): ReactElement => {
   const { checkSession } = useUser();
+  const isMobile = useIsMobile();
 
   const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -52,21 +54,31 @@ export const SignInForm = (): ReactElement => {
       // Refresh the auth state
       await checkSession?.();
     },
-    [checkSession, setError]
+    [checkSession, setError],
   );
 
   return (
     <>
-      <Button
-        component={RouterLink}
-        href={paths.game.score}
-        variant='outlined'
-        color='primary'
-        endIcon={<Trophy />}
-        style={{ marginBottom: '290px' }}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          px: isMobile ? 3 : 0,
+          py: isMobile ? 4 : 0,
+        }}
       >
-        Go to scoreboard
-      </Button>
+        <Button
+          component={RouterLink}
+          href={paths.game.score}
+          variant='outlined'
+          color='primary'
+          endIcon={<Trophy />}
+          style={{ marginBottom: isMobile ? '24px' : '290px' }}
+        >
+          Go to scoreboard
+        </Button>
+      </Box>
 
       <Box
         style={{
@@ -75,15 +87,29 @@ export const SignInForm = (): ReactElement => {
           alignItems: 'flex-start',
           alignSelf: 'stretch',
         }}
-        gap={11}
+        gap={isMobile ? 4 : 11}
       >
-        <Box style={{ margin: 'auto' }}>
-          <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-block', fontSize: 0 }}>
-            <DynamicLogo colorDark='light' colorLight='dark' height={96} width={366} />
+        <Box sx={{ margin: 'auto' }}>
+          <Box
+            component={RouterLink}
+            href={paths.home}
+            sx={{
+              display: 'inline-block',
+              fontSize: 0,
+            }}
+          >
+            <DynamicLogo
+              colorDark='light'
+              colorLight='dark'
+              height={96}
+              width={366}
+            />
           </Box>
         </Box>
+        {isMobile && <SignInDescription />}
         <Box
-          style={{
+          sx={{
+            p: isMobile ? 3 : 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
@@ -93,7 +119,7 @@ export const SignInForm = (): ReactElement => {
         >
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <Box
-              style={{
+              sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
@@ -104,17 +130,29 @@ export const SignInForm = (): ReactElement => {
               <Controller
                 control={control}
                 name='username'
-
                 render={({ field }) => (
                   <FormControl error={Boolean(errors.username)} fullWidth>
                     <InputLabel>What would you like to be called?</InputLabel>
-                    <OutlinedInput {...field} type='username' placeholder='Username' />
-                    {errors.username ? <FormHelperText>{errors.username.message}</FormHelperText> : null}
+                    <OutlinedInput
+                      {...field}
+                      type='username'
+                      placeholder='Username'
+                    />
+                    {errors.username ? (
+                      <FormHelperText>{errors.username.message}</FormHelperText>
+                    ) : null}
                   </FormControl>
                 )}
               />
-              {errors.root ? <Alert color='error'>{errors.root.message}</Alert> : null}
-              <Button disabled={isPending} type='submit' variant='contained' fullWidth>
+              {errors.root ? (
+                <Alert color='error'>{errors.root.message}</Alert>
+              ) : null}
+              <Button
+                disabled={isPending}
+                type='submit'
+                variant='contained'
+                fullWidth
+              >
                 Join the rebels 🚀
               </Button>
             </Box>
@@ -123,4 +161,4 @@ export const SignInForm = (): ReactElement => {
       </Box>
     </>
   );
-}
+};
