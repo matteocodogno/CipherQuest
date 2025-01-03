@@ -85,7 +85,7 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
           <MessageBox message={message} key={message.id} />
         ))}
         {gameStatus !== undefined && gameStatus !== GameStatus.IN_PROGRESS && (
-          <MessageEndGame status={gameStatus} score={0} /* TODO: add score */ />
+          <MessageEndGame status={gameStatus} />
         )}
         <div ref={messageRef} />
       </Stack>
