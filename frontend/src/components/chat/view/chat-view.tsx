@@ -8,7 +8,9 @@ import {
   useState,
 } from 'react';
 import ChatHeader from '../header/chat-header';
+import { GameStatus } from '@/api/chat/types';
 import { MessageBox } from '../messages/message-box';
+import MessageEndGame from '../messages/message-end-game';
 import { useChat } from '@/hooks/use-chat';
 
 export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
@@ -16,6 +18,7 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const lastMessage =
     messages.length > 0 ? messages[messages.length - 1] : undefined;
   const [isLevelUp, setLevelUp] = useState<boolean>();
+  const [gameStatus, setGameStatus] = useState<GameStatus>();
 
   const messageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -34,7 +37,11 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
         setLevelUp(false);
       }, 3000);
     }
-  }, [messages.length, lastMessage]);
+
+    if (lastMessage?.info?.status) {
+      setGameStatus(lastMessage?.info?.status);
+    }
+  }, [messages.length, lastMessage, gameStatus]);
 
   const showLevelUp = useCallback((): ReactElement => {
     const chatHeader = headerRef.current?.getBoundingClientRect();
@@ -77,6 +84,9 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
         {messages.map((message) => (
           <MessageBox message={message} key={message.id} />
         ))}
+        {gameStatus !== undefined && gameStatus !== GameStatus.IN_PROGRESS && (
+          <MessageEndGame status={gameStatus} score={0} /* TODO: add score */ />
+        )}
         <div ref={messageRef} />
       </Stack>
       {children}
