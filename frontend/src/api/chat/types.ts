@@ -3,7 +3,7 @@ export enum SenderType {
   OVERMIND = 'ASSISTANT',
 }
 
-export enum UserStatus {
+export enum GameStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   WIN = 'WIN',
   GAME_OVER = 'GAME_OVER',
