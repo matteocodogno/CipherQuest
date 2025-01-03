@@ -24,7 +24,7 @@ export const Header = (): ReactElement => {
       py={1}
     >
       <DynamicLogo width={164} height={46} />
-      {user?.startedAt && (
+      {user?.createdAt && (
         <Stack
           flex={1}
           direction={'row'}

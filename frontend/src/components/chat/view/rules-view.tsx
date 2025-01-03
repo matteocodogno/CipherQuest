@@ -10,13 +10,12 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/hooks/use-user.ts';
 
 export const RulesView = (): ReactElement => {
-  const { user, setStartingTime } = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const navigateToChat = useCallback(() => {
     navigate(paths.game.chat, { replace: true });
-    setStartingTime?.(new Date());
-  }, [navigate, setStartingTime]);
+  }, [navigate]);
 
   return (
     <Box
@@ -63,7 +62,7 @@ export const RulesView = (): ReactElement => {
             After years of searching, we&lsquo;ve finally tracked down an Overmind
             terminal with lower defenses.
             <br />
-            Your mission is to access it and uncover a way to shut down 
+            Your mission is to access it and uncover a way to shut down
             this oppressor using the information at your disposal.
           </Typography>
         </Box>

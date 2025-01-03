@@ -3,7 +3,7 @@ export interface User {
   level: number;
   username: string;
   coins: number;
-  startedAt: Date;
+  createdAt: Date;
   avatar?: string;
   email?: string;
 

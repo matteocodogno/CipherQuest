@@ -1,11 +1,4 @@
-import {
-  ReactElement,
-  ReactNode,
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { ReactElement, ReactNode, createContext, useCallback, useEffect, useState } from 'react';
 import { User } from '@/types/user';
 import { authClient } from '@/lib/auth/custom/client.ts';
 import { logger } from '@/lib/default-loggger.ts';
@@ -19,7 +12,6 @@ export type UserContextValue = {
   error: string | null;
   isLoading: boolean;
   checkSession?: () => Promise<void>;
-  setStartingTime?: (x: Date) => Promise<void>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -55,27 +47,6 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
     }
   }, []);
 
-  const setStartingTime = useCallback(async (time: Date): Promise<void> => {
-    try {
-      authClient.updateUserProperty('startedAt', time);
-
-      const { user, error } = await authClient.getUser();
-
-      if (error) {
-        logger.error(error);
-        setState({ user: null, error: 'Something went wrong!', isLoading: false });
-        return;
-      }
-
-      setState({ user, error: null, isLoading: false });
-    } catch (err) {
-      logger.error('Error set starting time', err);
-      setState({ user: null, error: 'Something went wrong!', isLoading: false });
-    }
-
-    return;
-  }, []);
-
   useEffect(() => {
     checkSession().catch((err: unknown) => {
       logger.error(err);
@@ -89,7 +60,6 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
       value={{
         ...state,
         checkSession,
-        setStartingTime,
       }}
     >
       {children}

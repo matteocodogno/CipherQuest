@@ -38,7 +38,7 @@ const ChatHeader: ForwardRefRenderFunction<HTMLDivElement, object> = (
         }}
         gap={2}
       >
-        <CardTime time={user?.startedAt} />
+        <CardTime time={user?.createdAt} />
         <CardInfo svg='/assets/money.svg' value={coins.toString() ?? '0'} />
         <CardInfo svg='/assets/star.svg' value={level.toString() ?? '0'} />
       </Box>
