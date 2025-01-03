@@ -5,4 +5,6 @@ import org.springframework.data.repository.ListCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserLevelRepository : ListCrudRepository<UserLevel, String>
+interface UserLevelRepository : ListCrudRepository<UserLevel, String> {
+    fun findFirstByUsername(username: String): UserLevel?
+}

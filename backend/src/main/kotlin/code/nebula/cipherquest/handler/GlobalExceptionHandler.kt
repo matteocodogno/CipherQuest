@@ -1,7 +1,7 @@
 package code.nebula.cipherquest.handler
 
 import code.nebula.cipherquest.exceptions.DocumentNotFoundException
-import org.springframework.dao.DataIntegrityViolationException
+import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -14,9 +14,9 @@ class GlobalExceptionHandler {
     fun handleDocumentNotFoundException(e: DocumentNotFoundException): ResponseEntity<String> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
 
-    @ExceptionHandler(DataIntegrityViolationException::class)
+    @ExceptionHandler(UserAlreadyExistsException::class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    fun handleUsernameAlreadyExistsException(ex: DataIntegrityViolationException): String =
+    fun handleUsernameAlreadyExistsException(ex: UserAlreadyExistsException): String =
         ex.message
             ?: "Username already exists"
 }
