@@ -9,10 +9,11 @@ import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { RouterLink } from '@/components/core/link';
-import { ScoreBoardButtonVariant } from '../core/types';
-import ScoreboardButton from '../core/scoreboard-button';
+import SignInDescription from './sign-in-description';
+import { Trophy } from '@phosphor-icons/react';
 import { authClient } from '@/lib/auth/custom/client';
 import { paths } from '@/paths';
+import useIsMobile from '@/hooks/use-is-mobile';
 import { useUser } from '@/hooks/use-user';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,6 +28,7 @@ const defaultValues = { username: '' } satisfies Values;
 
 export const SignInForm = (): ReactElement => {
   const { checkSession } = useUser();
+  const isMobile = useIsMobile();
 
   const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -57,7 +59,27 @@ export const SignInForm = (): ReactElement => {
 
   return (
     <>
-      <ScoreboardButton variant={ScoreBoardButtonVariant.OUTLINED} />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          px: isMobile ? 3 : 0,
+          py: isMobile ? 4 : 0,
+        }}
+      >
+        <Button
+          component={RouterLink}
+          href={paths.game.score}
+          variant='outlined'
+          color='primary'
+          endIcon={<Trophy />}
+          style={{ marginBottom: isMobile ? '24px' : '290px' }}
+        >
+          Go to scoreboard
+        </Button>
+      </Box>
+
       <Box
         style={{
           display: 'flex',
@@ -66,13 +88,16 @@ export const SignInForm = (): ReactElement => {
           alignSelf: 'stretch',
           marginTop: '290px',
         }}
-        gap={11}
+        gap={isMobile ? 4 : 11}
       >
-        <Box style={{ margin: 'auto' }}>
+        <Box sx={{ margin: 'auto' }}>
           <Box
             component={RouterLink}
             href={paths.home}
-            sx={{ display: 'inline-block', fontSize: 0 }}
+            sx={{
+              display: 'inline-block',
+              fontSize: 0,
+            }}
           >
             <DynamicLogo
               colorDark='light'
@@ -82,8 +107,10 @@ export const SignInForm = (): ReactElement => {
             />
           </Box>
         </Box>
+        {isMobile && <SignInDescription />}
         <Box
-          style={{
+          sx={{
+            p: isMobile ? 3 : 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
@@ -93,7 +120,7 @@ export const SignInForm = (): ReactElement => {
         >
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <Box
-              style={{
+              sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
