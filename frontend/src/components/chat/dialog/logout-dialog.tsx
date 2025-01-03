@@ -1,22 +1,36 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Dialog from '@/components/core/dialog.tsx';
-import { paths } from '@/paths';
+import { authClient } from '@/lib/auth/custom/client.ts';
+import { logger } from '@/lib/default-loggger.ts';
+import { toast } from '@/components/core/toaster.tsx';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '@/hooks/use-user';
+import { useUser } from '@/hooks/use-user.ts';
 
 interface LogoutDialogProps {
   handleClose: () => void;
 }
 
 const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
-  const navigate = useNavigate();
-  const { signOut } = useUser();
-  const logoutAction = useCallback(async () => {
-    await signOut?.();
-    handleClose();
-    navigate(paths.auth.custom.signIn, { replace: true });
-  }, [handleClose, navigate, signOut]);
+  const { checkSession } = useUser();
+
+  const handleSignOut = useCallback(async () => {
+    try {
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        logger.error('Sign out error', error);
+        toast.error('Something went wrong, unable to sign out');
+        return;
+      }
+
+      // Refresh the auth state
+      await checkSession?.();
+      // After refresh, GuestGuard will handle the redirect
+    } catch (err) {
+      logger.error('Sign out error', err);
+      toast.error('Something went wrong, unable to sign out');
+    }
+  }, [checkSession]);
 
   return (
     <>
@@ -48,7 +62,7 @@ const LogoutDialog = ({ handleClose }: LogoutDialogProps) => {
                 backgroundColor: 'var(--mui-palette-error-dark)',
                 '&:hover': { bgcolor: 'var(--mui-palette-error-hovered)' },
               }}
-              onClick={logoutAction}
+              onClick={handleSignOut}
             >
               Yes, I understand.
             </Button>
