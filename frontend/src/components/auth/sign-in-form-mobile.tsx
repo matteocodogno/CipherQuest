@@ -3,14 +3,14 @@ import Button from '@mui/material/Button';
 import { DynamicLogo } from '@/components/core/logo';
 import { ReactElement } from 'react';
 import { RouterLink } from '@/components/core/link';
-import SignInDescription from '../sign-in-description';
-import { SignInForm } from '../sign-in-form';
+import SignInDescription from './sign-in-description';
+import { SignInForm } from './sign-in-form';
 import { Trophy } from '@phosphor-icons/react';
 import { paths } from '@/paths';
 
 const SignInMobile = (): ReactElement => {
   return (
-    <>
+    <Box>
       <Box
         sx={{
           display: 'flex',
@@ -59,21 +59,25 @@ const SignInMobile = (): ReactElement => {
           </Box>
         </Box>
         <SignInDescription />
-        <Box
-          sx={{
-            background: 'var(--mui-palette-background-paper)',
-            borderRadius: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'stretch',
-            p: 3,
-          }}
-        >
-          <SignInForm />
-        </Box>
       </Box>
-    </>
+      <Box
+        sx={{
+          background: 'var(--mui-palette-background-paper)',
+          borderTopLeftRadius: '20px',
+          borderTopRightRadius: '20px',
+          px: 3,
+          paddingTop: 2,
+          paddingBottom: 5,
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'sticky',
+          bottom: 0,
+        }}
+        marginBottom={1}
+      >
+        <SignInForm />
+      </Box>
+    </Box>
   );
 };
 
