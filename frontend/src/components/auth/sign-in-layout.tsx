@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import { ReactElement } from 'react';
 import SignInDescription from './sign-in-description';
-import { SignInForm } from './sign-in-form';
+import SignInFormContainer from './sign-in-form-container';
+import SignInMobile from './mobile/sign-in-form-mobile';
 import useIsMobile from '@/hooks/use-is-mobile';
 
 export const SignInLayout = (): ReactElement => {
@@ -16,7 +17,7 @@ export const SignInLayout = (): ReactElement => {
       }}
     >
       {isMobile ? (
-        <SignInForm />
+        <SignInMobile />
       ) : (
         <Box
           sx={{
@@ -43,7 +44,7 @@ export const SignInLayout = (): ReactElement => {
               boxShadow: 'var(--mui-shadows-8)',
             }}
           >
-            <SignInForm />
+            <SignInFormContainer />
           </Box>
         </Box>
       )}
