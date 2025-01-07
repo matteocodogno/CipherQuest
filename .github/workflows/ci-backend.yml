@@ -72,4 +72,5 @@ jobs:
         with:
           push: true
           tags: dockerhub.welld.io/welld/cipher-quest/backend:latest
+          platforms: linux/amd64,linux/arm64
           context: "{{defaultContext}}:backend"
