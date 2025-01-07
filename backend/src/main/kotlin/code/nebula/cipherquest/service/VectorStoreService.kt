@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.dto.Message
+import code.nebula.cipherquest.models.dto.Source
 import code.nebula.cipherquest.repository.VectorStoreRepository
 import org.json.JSONObject
 import org.springframework.ai.chat.messages.MessageType
@@ -36,6 +37,10 @@ class VectorStoreService(
     ): String? =
         vectorStoreRepository
             .getDocumentByFilename(filename, level)
+
+    fun getAllDiaryPages(level: Int): List<Source>? =
+        vectorStoreRepository
+            .getAllDiaryPages(level)
 
     fun updateInfo(
         id: String,

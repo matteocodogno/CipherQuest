@@ -4,6 +4,7 @@ import code.nebula.cipherquest.exceptions.DocumentNotFoundException
 import code.nebula.cipherquest.models.dto.Info
 import code.nebula.cipherquest.models.dto.Message
 import code.nebula.cipherquest.models.dto.Sender
+import code.nebula.cipherquest.models.dto.Source
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
@@ -50,6 +51,30 @@ class VectorStoreRepository(
             and metadata->>'source' LIKE ? and (metadata->>'level')::integer <= ?;
             """.trimIndent()
         return jdbcTemplate.queryForObject(sql, String::class.java, "%$source%", level)
+    }
+
+    fun getAllDiaryPages(level: Int?): List<Source> {
+        val sql =
+            """
+            SELECT id, metadata->>'source' as title FROM vector_store
+            WHERE metadata->>'type' = 'DIARY'
+            and (metadata->>'level')::integer <= ?;
+            """.trimIndent()
+        return jdbcTemplate.query(
+            sql,
+            { rs, _ ->
+                Source(
+                    id = rs.getString("id"),
+                    title =
+                        rs
+                            .getString("title")
+                            .split(".")
+                            .getOrNull(1)
+                            .orEmpty(),
+                )
+            },
+            level,
+        )
     }
 
     fun getMessageHistoryByUserId(userId: String?): List<Message> {
