@@ -21,7 +21,7 @@ export const RulesView = (): ReactElement => {
           alignItems: 'center',
         }}
         flex={1}
-        paddingBottom={64}
+        paddingBottom={'64px'}
       >
         <Box
           sx={{
@@ -32,8 +32,8 @@ export const RulesView = (): ReactElement => {
           }}
           gap={5}
           px={3}
-          width={'90%'}
-          height={'90%'}
+          width={isMobile ? 'auto' : '90%'}
+          height={isMobile ? 'auto' : '90%'}
         >
           <Box
             style={{
@@ -44,16 +44,16 @@ export const RulesView = (): ReactElement => {
             }}
             gap={3}
           >
-            <Typography variant='h1'>
+            <Typography variant={isMobile ? 'h3' : 'h1'}>
               Here you are, <u>{user?.username}</u>!
             </Typography>
-            <Typography variant='h5'>
+            <Typography variant={isMobile ? 'body1' : 'h5'}>
               You&lsquo;re now part of the rebellion, you&lsquo;re an activist
               in this uprising.
               <br />
               We need your help to bring down Overmind!
             </Typography>
-            <Typography variant='h5'>
+            <Typography variant={isMobile ? 'body1' : 'h5'}>
               After years of searching, we&lsquo;ve finally tracked down an
               Overmind terminal with lower defenses.
               <br />
