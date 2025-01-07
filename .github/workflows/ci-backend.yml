@@ -71,6 +71,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: dockerhub.welld.io/welld/cipher-quest/backend:latest
-          platforms: linux/amd64,linux/arm64
-          context: "{{defaultContext}}:backend"
+          tags: welld/cipher-quest/backend:latest
+          context: ./backend
