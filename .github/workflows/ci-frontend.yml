@@ -1,4 +1,4 @@
-name: CI github actions
+name: CI Frontend
 
 on:
   push:
