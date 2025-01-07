@@ -53,3 +53,21 @@ jobs:
       - run: |
           cd backend
           ./mvnw --batch-mode --update-snapshots test
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: dockerhub.welld.io
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: welld/cipher-quest/backend:latest
+          file: Dockerfile-backend
