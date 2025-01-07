@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import { ReactElement } from 'react';
 import SignInDescription from './sign-in-description';
 import SignInFormContainer from './sign-in-form-container';
-import SignInMobile from './mobile/sign-in-form-mobile';
+import SignInMobile from './sign-in-form-mobile';
 import useIsMobile from '@/hooks/use-is-mobile';
 
 export const SignInLayout = (): ReactElement => {
