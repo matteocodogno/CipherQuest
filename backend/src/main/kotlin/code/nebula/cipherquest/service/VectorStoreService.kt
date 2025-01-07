@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 
 @Service
+@Suppress("TooManyFunctions")
 class VectorStoreService(
     val vectorStore: VectorStore,
     val vectorStoreRepository: VectorStoreRepository,
