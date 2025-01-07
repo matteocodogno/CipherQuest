@@ -1,9 +1,8 @@
 import { ReactElement, useCallback } from 'react';
-import AccordionItem from '../../core/accordion-item.tsx';
-import { AccordionMenu } from '../constants.ts';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Play } from '@phosphor-icons/react';
+import Rules from '../rules.tsx';
 import Typography from '@mui/material/Typography';
 import { paths } from '@/paths.ts';
 import { useNavigate } from 'react-router-dom';
@@ -59,11 +58,11 @@ export const RulesView = (): ReactElement => {
             We need your help to bring down Overmind!
           </Typography>
           <Typography variant='h5'>
-            After years of searching, we&lsquo;ve finally tracked down an Overmind
-            terminal with lower defenses.
+            After years of searching, we&lsquo;ve finally tracked down an
+            Overmind terminal with lower defenses.
             <br />
-            Your mission is to access it and uncover a way to shut down
-            this oppressor using the information at your disposal.
+            Your mission is to access it and uncover a way to shut down this
+            oppressor using the information at your disposal.
           </Typography>
         </Box>
         <Box
@@ -120,9 +119,7 @@ export const RulesView = (): ReactElement => {
           <Typography variant='h6'>
             What should you know before starting the mission:
           </Typography>
-          {AccordionMenu.map((item) => (
-            <AccordionItem key={item.title} item={item} />
-          ))}
+          <Rules />
         </Box>
       </Box>
     </Box>
