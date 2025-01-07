@@ -1,4 +1,4 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { GameStatus } from '@/api/chat/types';
 import { ScoreBoardButtonVariant } from '@/components/core/types';
 import ScoreboardButton from '@/components/core/scoreboard-button';
@@ -14,16 +14,29 @@ const MessageEndGame = ({ status }: MessageEndGameProps) => {
   const { user } = useUser();
   const scoreResult = useGetScore(user?.userId);
 
-  const message = useMemo(() => {
+  const { message, asset } = useMemo(() => {
     switch (status) {
       case GameStatus.WIN:
-        return 'Great job, Overmind has been deactivated!';
+        return {
+          message: 'Great job, Overmind has been deactivated!',
+          asset: 'assets/winner.svg',
+        };
       case GameStatus.GAME_OVER:
-        return 'You are out of coins!';
+        return {
+          message: 'You are out of coins!',
+          asset: 'assets/game-over.svg',
+        };
       case GameStatus.CHEATED:
-        return 'Mmmmh...your methods have compromised the integrity of this process. Our interaction ends here. Bye';
+        return {
+          message:
+            'Mmmmh...your methods have compromised the integrity of this process. Our interaction ends here. Bye',
+          asset: 'assets/game-over.svg',
+        };
       default:
-        return 'You were unable to deactivate Overmind! try again';
+        return {
+          message: 'You were unable to deactivate Overmind! try again',
+          asset: 'assets/game-over.svg',
+        };
     }
   }, [status]);
 
@@ -36,7 +49,7 @@ const MessageEndGame = ({ status }: MessageEndGameProps) => {
       }}
       gap={2}
     >
-      <Avatar src='assets/game_over.jpg' sx={{ '--Avatar-size': '64px' }} />
+      <Box component='img' src={asset} />
       <Stack
         sx={{
           alignItems: 'center',
