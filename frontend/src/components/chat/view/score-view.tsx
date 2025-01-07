@@ -18,6 +18,7 @@ import PageHeader from '@/components/core/Headings/page-header.tsx';
 import { RouterLink } from '@/components/core/link.tsx';
 import Typography from '@mui/material/Typography';
 import useGetScoreboard from '@/api/score/use-get-scoreboard.ts';
+import useIsMobile from '@/hooks/use-is-mobile';
 import { useUser } from '@/hooks/use-user';
 
 const ScoreBreadcrumb = () => {
@@ -67,6 +68,7 @@ const GradientTableRow = styled(TableRow)(({ index }: { index: number }) => ({
 
 export const ScoreView = (): ReactElement => {
   const { isError, isLoading, data, error } = useGetScoreboard();
+  const isMobile = useIsMobile();
 
   const firstThree = useMemo(() => data?.slice(0, 3), [data]);
   const fourToEight = useMemo(() => data?.slice(3, 8), [data]);
@@ -109,12 +111,14 @@ export const ScoreView = (): ReactElement => {
 
   return (
     <Box
-      style={{
+      sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        gap: 48,
+        gap: 6,
         width: '100%',
+        px: isMobile ? 2 : 0,
+        paddingBottom: 8,
       }}
     >
       <PageHeader title={'Scoreboard'} breadcrumb={<ScoreBreadcrumb />} />
