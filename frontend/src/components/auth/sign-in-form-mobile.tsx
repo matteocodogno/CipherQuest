@@ -8,7 +8,6 @@ import { SignInForm } from './sign-in-form';
 import StickyBox from '../core/sticky-box';
 import { Trophy } from '@phosphor-icons/react';
 import { paths } from '@/paths';
-import StickyBox from '../core/sticky-box';
 
 const SignInMobile = (): ReactElement => {
   return (
