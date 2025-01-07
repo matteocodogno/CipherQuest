@@ -1,4 +1,4 @@
-import { BookOpenText, SignOut } from '@phosphor-icons/react'
+import { BookOpenText, SignOut } from '@phosphor-icons/react';
 import { Button, Divider } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import Box from '@mui/material/Box';
@@ -6,9 +6,11 @@ import { DynamicLogo } from '@/components/core/logo.tsx';
 import LogoutDialog from './dialog/logout-dialog.tsx';
 import RulesDialog from './dialog/rules-dialog.tsx';
 import { Stack } from '@mui/system';
+import useIsMobile from '@/hooks/use-is-mobile.ts';
 import { useUser } from '@/hooks/use-user.ts';
 
 export const Header = (): ReactElement => {
+  const isMobile = useIsMobile();
   const { user } = useUser();
   const [showLogout, setShowLogout] = useState<boolean>(false);
   const [showRules, setShowRules] = useState<boolean>(false);
@@ -23,7 +25,13 @@ export const Header = (): ReactElement => {
       px={3}
       py={1}
     >
-      <DynamicLogo width={164} height={46} />
+      <Box sx={{ alignContent: 'flex-start' }}>
+        <DynamicLogo
+          width={isMobile ? 46 : 164}
+          height={46}
+          showIconLogo={isMobile}
+        />
+      </Box>
       {user?.createdAt && (
         <Stack
           flex={1}
@@ -39,9 +47,11 @@ export const Header = (): ReactElement => {
               setShowRules(true);
             }}
           >
-            Mission rules
+            {isMobile ? '' : 'Mission rules'}
           </Button>
-          <Divider orientation='vertical' variant='middle' flexItem />
+          {!isMobile && (
+            <Divider orientation='vertical' variant='middle' flexItem />
+          )}
           <Button
             variant='text'
             endIcon={<SignOut />}
@@ -50,7 +60,7 @@ export const Header = (): ReactElement => {
               setShowLogout(true);
             }}
           >
-            End mission
+            {isMobile ? '' : 'End mission'}
           </Button>
         </Stack>
       )}
