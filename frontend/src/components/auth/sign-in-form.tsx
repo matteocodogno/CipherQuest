@@ -3,6 +3,7 @@ import { ReactElement, useCallback, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { Flag } from '@phosphor-icons/react';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
@@ -135,8 +136,12 @@ export const SignInForm = (): ReactElement => {
             type='submit'
             variant='contained'
             fullWidth
+            endIcon={<Flag />}
+            sx={{
+              color: 'text.primary',
+            }}
           >
-            Join the rebels 🚀
+            Join the rebels
           </Button>
         </Box>
       </form>
