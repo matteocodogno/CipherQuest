@@ -1,7 +1,8 @@
 import { ReactElement, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import { Header } from './header.tsx';
-import { Stack } from '@mui/system';
+import { Stack } from '@mui/material';
+import useIsMobile from '@/hooks/use-is-mobile.ts';
 import { usePathname } from '@/hooks/use-pathname.ts';
 
 type LayoutProps = {
@@ -17,6 +18,7 @@ const backgroundMap: Record<string, string> = {
 export function Layout({ children }: LayoutProps): ReactElement {
   const pathname = usePathname();
   const background = backgroundMap[pathname] ?? '/assets/background.jpeg';
+  const isMobile = useIsMobile();
 
   return (
     <Box
@@ -34,9 +36,9 @@ export function Layout({ children }: LayoutProps): ReactElement {
       <Header />
       <Stack
         sx={{
-          width: '70%',
-          minWidth: '600px',
-          paddingX: 7,
+          width: isMobile ? '100%' : '70%',
+          minWidth: isMobile ? '200px' : '600px',
+          paddingX: isMobile ? 0 : 7,
           height: 'calc(100vh - 62px)',
         }}
         flexDirection='column'
