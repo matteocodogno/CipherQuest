@@ -12,7 +12,6 @@ import { authClient } from '@/lib/auth/custom/client';
 import { useUser } from '@/hooks/use-user';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Flag } from '@phosphor-icons/react';
 
 const schema = zod.object({
   username: zod.string().min(3, { message: 'Username is required' }),
