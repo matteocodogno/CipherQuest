@@ -7,11 +7,13 @@ import LogoutDialog from './dialog/logout-dialog.tsx';
 import RulesDialog from './dialog/rules-dialog.tsx';
 import { Stack } from '@mui/system';
 import useIsMobile from '@/hooks/use-is-mobile.ts';
-import { useUser } from '@/hooks/use-user.ts';
+import { useLocation } from 'react-router-dom';
 
 export const Header = (): ReactElement => {
   const isMobile = useIsMobile();
-  const { user } = useUser();
+  const location = useLocation();
+  const isChat = location.pathname === '/chat';
+
   const [showLogout, setShowLogout] = useState<boolean>(false);
   const [showRules, setShowRules] = useState<boolean>(false);
 
@@ -32,7 +34,7 @@ export const Header = (): ReactElement => {
           showIconLogo={isMobile}
         />
       </Box>
-      {user?.createdAt && (
+      {isChat && (
         <Stack
           flex={1}
           direction={'row'}
