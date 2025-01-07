@@ -12,14 +12,17 @@ export interface LogoProps {
   color?: Color;
   height?: number;
   width?: number;
+  showIconLogo: boolean;
 }
 
 export function Logo({
   color = 'dark',
   height = HEIGHT,
   width = WIDTH,
+  showIconLogo,
 }: LogoProps): ReactElement {
-  const url = color === 'dark' ? '/assets/logo.svg' : '/assets/logo--dark.svg';
+  const logo = color === 'dark' ? '/assets/logo--dark.svg' : '/assets/logo.svg';
+  const url = showIconLogo ? '/assets/logo-icon.svg' : logo;
 
   return (
     <Box alt='logo' component='img' height={height} src={url} width={width} />
@@ -32,6 +35,7 @@ export interface DynamicLogoProps {
   emblem?: boolean;
   height?: number;
   width?: number;
+  showIconLogo?: boolean;
 }
 
 export function DynamicLogo({
@@ -39,6 +43,7 @@ export function DynamicLogo({
   colorLight = 'dark',
   height = HEIGHT,
   width = WIDTH,
+  showIconLogo = false,
   ...props
 }: DynamicLogoProps): ReactElement {
   const { colorScheme } = useColorScheme();
@@ -46,9 +51,22 @@ export function DynamicLogo({
 
   return (
     <NoSsr
-      fallback={<Box sx={{ height: `${height}px`, width: `${width}px` }} />}
+      fallback={
+        <Box
+          sx={{
+            height: `${height}px`,
+            width: `${width}px`,
+          }}
+        />
+      }
     >
-      <Logo color={color} height={height} width={width} {...props} />
+      <Logo
+        color={color}
+        height={height}
+        width={width}
+        {...props}
+        showIconLogo={showIconLogo}
+      />
     </NoSsr>
   );
 }
