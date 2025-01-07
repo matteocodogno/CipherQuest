@@ -3,7 +3,7 @@ name: CI github actions
 on:
   push:
     branches:
-      - $default-branch
+      - main
   pull_request:
     types:
       - opened
