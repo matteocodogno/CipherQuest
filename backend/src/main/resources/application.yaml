@@ -19,6 +19,10 @@ spring:
   threads:
     virtual:
       enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/vectordb
+    username: testuser
+    password: testpwd
 
 overmind:
   ai:
