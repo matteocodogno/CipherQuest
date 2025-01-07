@@ -2,8 +2,7 @@
 FROM maven:3-eclipse-temurin-21 AS jre-builder
 
 RUN mkdir /usr/src/project
-COPY ./backend /usr/src/project
-COPY ./.git /usr/src/project/.git
+COPY . /usr/src/project
 WORKDIR /usr/src/project
 
 RUN mvn package -DskipTests=true && mv target/*.jar app.jar

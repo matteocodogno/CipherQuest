@@ -187,6 +187,11 @@
                 <artifactId>git-commit-id-maven-plugin</artifactId>
                 <configuration>
                     <offline>true</offline>
+                    <dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <runOnlyOnce>true</runOnlyOnce>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
             </plugin>
             <plugin>
