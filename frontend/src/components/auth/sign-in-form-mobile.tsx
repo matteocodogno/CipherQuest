@@ -5,6 +5,7 @@ import { ReactElement } from 'react';
 import { RouterLink } from '@/components/core/link';
 import SignInDescription from './sign-in-description';
 import { SignInForm } from './sign-in-form';
+import StickyBox from '../core/sticky-box';
 import { Trophy } from '@phosphor-icons/react';
 import { paths } from '@/paths';
 
@@ -60,23 +61,9 @@ const SignInMobile = (): ReactElement => {
         </Box>
         <SignInDescription />
       </Box>
-      <Box
-        sx={{
-          background: 'var(--mui-palette-background-paper)',
-          borderTopLeftRadius: '20px',
-          borderTopRightRadius: '20px',
-          px: 3,
-          paddingTop: 2,
-          paddingBottom: 5,
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'sticky',
-          bottom: 0,
-        }}
-        marginBottom={1}
-      >
+      <StickyBox>
         <SignInForm />
-      </Box>
+      </StickyBox>
     </Box>
   );
 };
