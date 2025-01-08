@@ -13,7 +13,7 @@ const StickyBox = ({ children }: StickyBoxProps) => {
         borderTopRightRadius: '20px',
         px: 3,
         paddingTop: 2,
-        paddingBottom: 5,
+        paddingBottom: 4,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'sticky',

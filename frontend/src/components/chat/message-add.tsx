@@ -21,8 +21,10 @@ type MessageAddProps = {
   onSend?: (type: MessageType, content: string) => void;
 };
 
-const MessageInputButton = (props: MessageAddProps) => {
-  const { disabled, onSend } = props;
+type MessageInputButtonProps = MessageAddProps & { isMobile?: boolean };
+
+const MessageInputButton = (props: MessageInputButtonProps) => {
+  const { disabled, onSend, isMobile } = props;
   const [content, setContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { messages } = useChat();
@@ -62,7 +64,7 @@ const MessageInputButton = (props: MessageAddProps) => {
         flexShrink: 0,
         alignSelf: 'stretch',
       }}
-      marginBottom={4}
+      marginBottom={isMobile ? 0 : 4}
     >
       <OutlinedInput
         disabled={disabled || gameEnded}
@@ -100,7 +102,7 @@ const MessageAdd = (props: MessageAddProps) => {
 
   return isMobile ? (
     <StickyBox>
-      <MessageInputButton {...props} />
+      <MessageInputButton {...props} isMobile />
     </StickyBox>
   ) : (
     <MessageInputButton {...props} />
