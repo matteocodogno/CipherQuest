@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { Box } from '@mui/system';
 import Dialog from '@/components/core/dialog.tsx';
 import ReactQuill from 'react-quill';
+import useIsMobile from '@/hooks/use-is-mobile';
 import useOnMount from '@mui/utils/useOnMount';
 
 interface NotesDialogProps {
@@ -14,6 +15,7 @@ interface NotesDialogProps {
 
 const NotesDialog = ({ handleClose, showDialog }: NotesDialogProps) => {
   const [content, setContent] = useState('');
+  const isMobile = useIsMobile();
 
   useOnMount(() => {
     const gameNotes = getGameNotes();
@@ -33,6 +35,7 @@ const NotesDialog = ({ handleClose, showDialog }: NotesDialogProps) => {
       title='Notes'
       closeDialog={saveNotes}
       showDialog={showDialog}
+      fullScreen={isMobile}
     >
       <Box marginBottom={6}>
         <ReactQuill
@@ -40,7 +43,11 @@ const NotesDialog = ({ handleClose, showDialog }: NotesDialogProps) => {
           onChange={(value) => {
             setContent(value);
           }}
-          style={{ minWidth: '600px', height: '400px', color: 'white' }}
+          style={{
+            minWidth: isMobile ? '200px' : '400px',
+            height: isMobile ? '500px' : '400px',
+            color: 'white',
+          }}
           className='react-quill'
         />
       </Box>
