@@ -11,15 +11,17 @@ import { GameStatus } from '@/api/chat/types';
 import type { MessageType } from '../../contexts/chat/types';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
+import StickyBox from '../core/sticky-box';
 import Tooltip from '@mui/material/Tooltip';
 import { useChat } from '@/hooks/use-chat';
+import useIsMobile from '@/hooks/use-is-mobile';
 
 type MessageAddProps = {
   disabled?: boolean;
   onSend?: (type: MessageType, content: string) => void;
 };
 
-const MessageAdd = (props: MessageAddProps) => {
+const MessageInputButton = (props: MessageAddProps) => {
   const { disabled, onSend } = props;
   const [content, setContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -90,6 +92,18 @@ const MessageAdd = (props: MessageAddProps) => {
       </Tooltip>
       <input hidden ref={fileInputRef} type='file' />
     </Stack>
+  );
+};
+
+const MessageAdd = (props: MessageAddProps) => {
+  const isMobile = useIsMobile();
+
+  return isMobile ? (
+    <StickyBox>
+      <MessageInputButton {...props} />
+    </StickyBox>
+  ) : (
+    <MessageInputButton {...props} />
   );
 };
 
