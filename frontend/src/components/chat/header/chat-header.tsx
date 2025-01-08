@@ -19,7 +19,9 @@ const ChatHeader: ForwardRefRenderFunction<HTMLDivElement, object> = (
     <Box
       ref={ref}
       sx={{
-        background: 'var(--mui-palette-background-paper)',
+        background: isMobile
+          ? 'transparent'
+          : 'var(--mui-palette-background-paper)',
         borderRadius: '20px',
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
