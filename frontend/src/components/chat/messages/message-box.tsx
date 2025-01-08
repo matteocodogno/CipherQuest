@@ -10,6 +10,7 @@ import { ReactElement } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { dayjs } from '@/lib/dayjs';
+import useIsMobile from '@/hooks/use-is-mobile';
 import { useUser } from '@/hooks/use-user';
 
 export interface MessageBoxProps {
@@ -19,6 +20,7 @@ export interface MessageBoxProps {
 export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
   const { user } = useUser();
   const position = message.author.id === user?.userId ? 'right' : 'left';
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -35,7 +37,7 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
           <Stack
             direction={position === 'right' ? 'row-reverse' : 'row'}
             spacing={2}
-            maxWidth={position === 'right' ? '35%' : '70%'}
+            maxWidth={isMobile ? '100%' : position === 'right' ? '35%' : '70%'}
             sx={{
               alignItems: 'flex-start',
               ml: position === 'right' ? 'auto' : 0,
@@ -66,7 +68,8 @@ export const MessageBox = ({ message }: MessageBoxProps): ReactElement => {
                       {message.author.name}
                     </Link>
                   </div>
-                  {message.type === 'image' && typeof message.content === 'string' ? (
+                  {message.type === 'image' &&
+                  typeof message.content === 'string' ? (
                     <CardMedia
                       image={message.content}
                       onClick={() => {
