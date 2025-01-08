@@ -1,9 +1,14 @@
 import { Fab } from '@mui/material';
 import { Notepad } from '@phosphor-icons/react';
 
-const NotesButton = ({ handleClick }: { handleClick: () => void}) => (
+interface NotesButtonProps {
+  handleClick: () => void;
+  variant?: 'circular' | 'extended';
+}
+
+const NotesButton = ({ handleClick, variant }: NotesButtonProps) => (
   <Fab
-    variant='extended'
+    variant={variant}
     color='secondary'
     size='large'
     sx={{
@@ -14,7 +19,7 @@ const NotesButton = ({ handleClick }: { handleClick: () => void}) => (
     }}
     onClick={handleClick}
   >
-    Block notes
+    {variant === 'extended' ? 'Block note' : ''}
     <Notepad size={24} />
   </Fab>
 );
