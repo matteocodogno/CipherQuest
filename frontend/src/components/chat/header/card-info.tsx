@@ -1,7 +1,6 @@
 import { Box, Stack } from '@mui/system';
 import { CardInfoVariant } from './constants';
 import { Typography } from '@mui/material';
-import useIsMobile from '@/hooks/use-is-mobile';
 
 interface CardInfoProps {
   svg: string;
@@ -14,8 +13,6 @@ const CardInfo = ({
   value,
   variant = CardInfoVariant.INFO,
 }: CardInfoProps) => {
-  const isMobile = useIsMobile();
-
   return (
     <Stack
       sx={{
@@ -28,8 +25,7 @@ const CardInfo = ({
       }}
       gap={1}
       flexDirection={'row'}
-      width={!isMobile && variant === CardInfoVariant.TIME ? '120px' : 'auto'}
-      minWidth={variant === CardInfoVariant.TIME ? '100px' : 'auto'}
+      width={variant === CardInfoVariant.TIME ? '120px' : 'auto'}
     >
       <Box component='img' src={svg} sx={{ height: '24px', width: 'auto' }} />
       <Box justifyContent='center' alignItems='center'>
