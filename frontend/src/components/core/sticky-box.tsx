@@ -19,7 +19,6 @@ const StickyBox = ({ children }: StickyBoxProps) => {
         position: 'sticky',
         bottom: 0,
       }}
-      marginBottom={1}
     >
       {children}
     </Box>
