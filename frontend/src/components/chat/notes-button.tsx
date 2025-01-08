@@ -1,9 +1,10 @@
 import { Fab } from '@mui/material';
 import { Notepad } from '@phosphor-icons/react';
+import { NotesButtonVariant } from './constants';
 
 interface NotesButtonProps {
   handleClick: () => void;
-  variant?: 'circular' | 'extended';
+  variant?: NotesButtonVariant;
 }
 
 const NotesButton = ({ handleClick, variant }: NotesButtonProps) => (
