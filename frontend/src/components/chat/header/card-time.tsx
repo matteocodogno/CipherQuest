@@ -10,7 +10,6 @@ interface CardTimeProps {
 
 const calculateTime = ({
   time,
-  isMobile,
 }: {
   time?: Date;
   isMobile: boolean;
@@ -22,7 +21,7 @@ const calculateTime = ({
     differenceInMilliseconds(currentDate, startingDate) + offset * 1000 * 60,
   );
 
-  return format(differenceDate, isMobile ? 'mm:ss' : 'HH:mm:ss');
+  return format(differenceDate, 'HH:mm:ss');
 };
 
 const CardTime = ({ time }: CardTimeProps) => {
@@ -36,7 +35,7 @@ const CardTime = ({ time }: CardTimeProps) => {
     return () => clearInterval(interval);
   }, [isMobile, setFormattedTime, time]);
 
-  const defaultTimeValue = isMobile ? '--:--' : '--:--:--';
+  const defaultTimeValue = '--:--:--';
 
   return (
     <CardInfo
