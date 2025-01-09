@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
+import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
 import code.nebula.cipherquest.models.dto.BotMessage.Companion.DEFAULT_LEVEL
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
@@ -44,14 +45,19 @@ class UserLevelService(
         return user
     }
 
-    fun createUserLevel(request: CreateUserLevelRequest): UserLevel =
-        userLevelRepository.save(
+    fun createUserLevel(request: CreateUserLevelRequest): UserLevel {
+        userLevelRepository.findFirstByUsername(request.username)?.let {
+            throw UserAlreadyExistsException("User '${request.username}' already exists.")
+        }
+
+        return userLevelRepository.save(
             UserLevel(
                 nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
                 username = request.username,
                 level = DEFAULT_LEVEL,
             ),
         )
+    }
 
     fun getLevelByUser(userId: String): UserLevel =
         userLevelRepository.findById(userId).orElseThrow {

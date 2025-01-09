@@ -18,12 +18,16 @@ export const getRandomArbitrary = (min: number, max: number) =>
 
 const authClientBuilder = () => ({
   signUp: async (params: SignUpParams): Promise<{ error?: string }> => {
-    const user = await signUpApi(params);
+    try {
+      const user = await signUpApi(params);
 
-    localStorage.setItem('user', JSON.stringify(user));
-    initializeGameSessionInfo();
+      localStorage.setItem('user', JSON.stringify(user));
+      initializeGameSessionInfo();
 
-    return {};
+      return {};
+    } catch {
+      return { error: 'Username already exists. Use another name please.' };
+    }
   },
 
   updateUserProperty: (key: string, value: unknown) => {
