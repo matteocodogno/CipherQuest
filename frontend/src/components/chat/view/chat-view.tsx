@@ -1,3 +1,4 @@
+import './chat-view.css';
 import { Box, Stack } from '@mui/system';
 import {
   PropsWithChildren,
@@ -49,9 +50,9 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
           marginTop: '8px',
           height: 'auto',
           width: 'auto',
-          zIndex: 5,
-          alignSelf: isMobile ? 'center' : 'flex-end',
+          alignSelf: isMobile ? 'flex-end' : 'flex-end',
         }}
+        className='slide-left'
       />
     );
   }, [isMobile]);

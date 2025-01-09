@@ -1,3 +1,4 @@
+import './card-info.css';
 import { Box, Stack } from '@mui/system';
 import { CardInfoVariant } from './constants';
 import { Typography } from '@mui/material';
@@ -27,7 +28,16 @@ const CardInfo = ({
       flexDirection={'row'}
       width={variant === CardInfoVariant.TIME ? '120px' : 'auto'}
     >
-      <Box component='img' src={svg} sx={{ height: '24px', width: 'auto' }} />
+      <Box
+        component='img'
+        src={svg}
+        sx={{
+          height: '24px',
+          width: 'auto',
+        }}
+        className='rotate-center'
+      />
+
       <Box justifyContent='center' alignItems='center'>
         <Typography>{value}</Typography>
       </Box>
@@ -36,3 +46,8 @@ const CardInfo = ({
 };
 
 export default CardInfo;
+
+// .rotate-center {
+// 	-webkit-animation: rotate-center 0.6s ease-in-out both;
+// 	        animation: rotate-center 0.6s ease-in-out both;
+// }
