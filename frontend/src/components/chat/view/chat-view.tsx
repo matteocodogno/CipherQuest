@@ -10,9 +10,11 @@ import {
 import ChatHeader from '../header/chat-header';
 import { MessageBox } from '../messages/message-box';
 import { useChat } from '@/hooks/use-chat';
+import useIsMobile from '@/hooks/use-is-mobile';
 
 export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const { messages } = useChat();
+  const isMobile = useIsMobile();
   const lastMessage =
     messages.length > 0 ? messages[messages.length - 1] : undefined;
   const [isLevelUp, setLevelUp] = useState<boolean>();
@@ -37,8 +39,8 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   }, [messages.length, lastMessage]);
 
   const showLevelUp = useCallback((): ReactElement => {
-    const chatHeader = headerRef.current?.getBoundingClientRect();
-    //TODO: Animate from (0, chatHeader?.right) to (chatHeader?.top, chatHeader?.right)
+    // const chatHeader = headerRef.current?.getBoundingClientRect();
+    //TODO: Animate from 0 to chatHeader?.top
     return (
       <Box
         component='img'
@@ -48,13 +50,11 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
           height: 'auto',
           width: 'auto',
           zIndex: 5,
-          position: 'absolute',
-          top: (chatHeader?.top ?? 0) + (chatHeader?.height ?? 0),
-          right: chatHeader?.x ?? 0,
+          alignSelf: isMobile ? 'center' : 'flex-end',
         }}
       />
     );
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
