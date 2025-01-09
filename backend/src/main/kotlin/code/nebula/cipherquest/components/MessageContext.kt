@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.components
 
 import code.nebula.cipherquest.models.UserStatus
+import code.nebula.cipherquest.models.dto.Source
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 
@@ -11,6 +12,6 @@ class MessageContext {
         mutableMapOf(
             "status" to UserStatus.IN_PROGRESS,
             "isLevelUp" to false,
-            "sources" to emptyList<String>(),
+            "sources" to emptyList<Source>(),
         )
 }

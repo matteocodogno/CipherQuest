@@ -33,6 +33,12 @@ class RagController(
                     TextReader(
                         resourceLoader.getResource("classpath:documents/${resource.filename}"),
                     ).apply {
+                        val filename =
+                            resource.filename
+                                ?.split(".")
+                                ?.getOrNull(1)
+                                .orEmpty()
+
                         customMetadata["level"] =
                             resource.filename
                                 ?.split(".")
@@ -40,13 +46,19 @@ class RagController(
                                 .orEmpty()
                                 .toInt()
 
-                        customMetadata["type"] = DocumentType.DOCUMENT
+                        customMetadata["type"] =
+                            if (filename.contains("diary", true)) {
+                                DocumentType.DIARY
+                            } else {
+                                DocumentType.DOCUMENT
+                            }
                     }.get()
                 }
 
         if (documents.isNotEmpty()) {
             documents.forEach { document ->
-                vectorStoreService.loadDocument(listOf(document))
+                vectorStoreService
+                    .loadDocument(listOf(document))
             }
             logger.info { "Loading ${documents.size} documents" }
         } else {

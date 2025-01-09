@@ -99,6 +99,11 @@ class GameService(
         val chatResponse = createChatResponseUsingProxyToolCalls(userToQuery)
         val toolCallResult = executeToolCalls(chatResponse)
 
+        if (toolCallResult != null) {
+            vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
+            vectorStoreService.saveMessage(userToQuery.first.userId, toolCallResult, MessageType.ASSISTANT)
+        }
+
         return toolCallResult ?: fallbackToChatClient(userToQuery) ?: ""
     }
 
@@ -106,7 +111,7 @@ class GameService(
         functionChatClient
             .prompt()
             .options(FunctionCallingOptionsBuilder().withProxyToolCalls(true).build())
-            .functions("getDocument")
+            .functions("getDiaryPages")
             .system { sp -> sp.param("userId", userToQuery.first.userId).param("level", userToQuery.first.level) }
             .user(userToQuery.second)
             .call()

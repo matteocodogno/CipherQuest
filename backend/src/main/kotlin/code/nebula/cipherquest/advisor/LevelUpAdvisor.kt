@@ -19,7 +19,7 @@ class LevelUpAdvisor(
     private val messageContext: MessageContext,
 ) : CallAroundAdvisor {
     companion object {
-        private const val LEVEL_UP_THRESHOLD = 0.82
+        private const val LEVEL_UP_THRESHOLD = 0.85
     }
 
     override fun getOrder() = Ordered.HIGHEST_PRECEDENCE + 2
