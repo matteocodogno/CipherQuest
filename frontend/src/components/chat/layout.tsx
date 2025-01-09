@@ -22,7 +22,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
 
   return (
     <Box
-      style={{
+      sx={{
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
@@ -31,6 +31,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
+        overscroll: 'hidden',
       }}
     >
       <Header />
@@ -39,7 +40,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
           width: isMobile ? '100%' : '70%',
           minWidth: isMobile ? '200px' : '600px',
           paddingX: isMobile ? 0 : 7,
-          height: 'calc(100vh - 62px)',
+          height: 'calc(100vh - 68px)',
         }}
         flexDirection='column'
         alignItems={'center'}
