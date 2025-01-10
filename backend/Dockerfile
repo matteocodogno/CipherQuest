@@ -15,8 +15,10 @@ RUN jdeps --ignore-missing-deps -q  \
     --class-path 'BOOT-INF/lib/*'  \
     app.jar > deps.info
 
+RUN echo "$(sed -r '/^\s*$/d' deps.info),jdk.crypto.ec" > deps2.info
+
 RUN jlink \
-    --add-modules $(cat deps.info) \
+    --add-modules $(cat deps2.info) \
     --strip-debug \
     --compress 2 \
     --no-header-files \
