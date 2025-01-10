@@ -2,18 +2,12 @@ import { differenceInMilliseconds, format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import CardInfo from './card-info';
 import { CardInfoVariant } from './constants';
-import useIsMobile from '@/hooks/use-is-mobile';
 
 interface CardTimeProps {
   time?: Date;
 }
 
-const calculateTime = ({
-  time,
-}: {
-  time?: Date;
-  isMobile: boolean;
-}): string => {
+const calculateTime = (time?: Date): string => {
   const offset = new Date().getTimezoneOffset();
   const currentDate = new Date();
   const startingDate = time ? new Date(time) : new Date();
@@ -25,21 +19,18 @@ const calculateTime = ({
 };
 
 const CardTime = ({ time }: CardTimeProps) => {
-  const isMobile = useIsMobile();
   const [formattedTime, setFormattedTime] = useState<string>();
   useEffect(() => {
     const interval = setInterval(() => {
-      setFormattedTime(calculateTime({ time, isMobile }));
+      setFormattedTime(calculateTime(time));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isMobile, setFormattedTime, time]);
-
-  const defaultTimeValue = '--:--:--';
+  }, [setFormattedTime, time]);
 
   return (
     <CardInfo
-      value={formattedTime ?? defaultTimeValue}
+      value={formattedTime ?? '--:--:--'}
       svg={'/assets/time.svg'}
       variant={CardInfoVariant.TIME}
     />
