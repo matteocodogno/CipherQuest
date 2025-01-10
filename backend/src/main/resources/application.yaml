@@ -25,6 +25,17 @@ spring:
     url: jdbc:postgresql://localhost:5433/vectordb
     username: testuser
     password: testpwd
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 overmind:
   ai:
@@ -34,6 +45,11 @@ overmind:
     chat:
       history:
         max-size: 10
+  mail:
+    unique-code:
+      from: noreply@resistance.io
+      subject: Urgent Instructions
+
 
 server:
   servlet:
@@ -62,6 +78,7 @@ management:
     git:
       #      mode: full
       enabled: true
+
 
 info:
   app:

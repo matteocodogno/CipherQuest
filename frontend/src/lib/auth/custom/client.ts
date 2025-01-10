@@ -10,7 +10,7 @@ export type SignUpParams = {
 };
 
 export type SignInWithPasswordParams = {
-  username: string;
+  email: string;
 };
 
 export const getRandomArbitrary = (min: number, max: number) =>

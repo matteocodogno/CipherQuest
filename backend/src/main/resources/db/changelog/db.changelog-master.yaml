@@ -17,3 +17,9 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20241205100000-vector_store_info.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250108171830-email_user.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250109090030-unique_user_code.sql
