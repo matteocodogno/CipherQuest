@@ -48,8 +48,7 @@ At this point, you should have two services up and running. You can test the bac
 Navigating to `http://localhost:5173` you should see the frontend application. First time you land on the page, you
 will be asked to provide a name, it is mandatory and it will be stored in the local storage of your browser.
 
-> ⚠️ **Important**: Until the logout feature is implemented, you have to clear the local storage of your browser to
-log out to start a new session.
+Log out to start a new session.
 
 ### IDE Configuration
 
@@ -76,6 +75,7 @@ No tests have been written yet.
 
 - [matteo codogno](https://github.com/matteocodogno)
 - [andrea rubino](https://github.com/rubin0)
+- [simone cimoli](https://github.com/CimsW3llD)
 
 ## License
 
