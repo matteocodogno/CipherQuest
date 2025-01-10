@@ -20,7 +20,7 @@ const NotesButton = ({ handleClick, variant }: NotesButtonProps) => (
     }}
     onClick={handleClick}
   >
-    {variant === 'extended' ? 'Block note' : ''}
+    {variant === 'extended' ? 'Block notes' : ''}
     <Notepad size={24} />
   </Fab>
 );
