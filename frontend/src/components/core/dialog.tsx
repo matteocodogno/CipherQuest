@@ -17,6 +17,7 @@ interface ContentDialogProps {
   title: string;
   showDialog?: boolean;
   closeDialog: () => void;
+  fullScreen?: boolean;
 }
 
 const Dialog = ({
@@ -24,6 +25,7 @@ const Dialog = ({
   title,
   showDialog = true,
   closeDialog,
+  fullScreen,
 }: ContentDialogProps) => {
   return (
     <BootstrapDialog
@@ -31,6 +33,7 @@ const Dialog = ({
       aria-labelledby='customized-dialog-title'
       open={showDialog}
       maxWidth={'lg'}
+      fullScreen={fullScreen}
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id='customized-dialog-title'>
         {title}

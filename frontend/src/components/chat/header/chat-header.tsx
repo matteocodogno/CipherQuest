@@ -4,6 +4,7 @@ import CardInfo from './card-info';
 import CardTime from './card-time';
 import { Typography } from '@mui/material';
 import { useChat } from '@/hooks/use-chat';
+import useIsMobile from '@/hooks/use-is-mobile';
 import { useUser } from '@/hooks/use-user';
 
 const ChatHeader: ForwardRefRenderFunction<HTMLDivElement, object> = (
@@ -12,20 +13,24 @@ const ChatHeader: ForwardRefRenderFunction<HTMLDivElement, object> = (
 ) => {
   const { coins, level } = useChat();
   const { user } = useUser();
+  const isMobile = useIsMobile();
 
   return (
     <Box
       ref={ref}
       sx={{
-        background: 'var(--mui-palette-background-paper)',
+        background: isMobile
+          ? 'transparent'
+          : 'var(--mui-palette-background-paper)',
         borderRadius: '20px',
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'flex-start' : 'center',
         flexShrink: 0,
         alignSelf: 'stretch',
         p: 3,
       }}
+      gap={1}
     >
       <Typography variant='h4'>{user?.username}</Typography>
       <Box
