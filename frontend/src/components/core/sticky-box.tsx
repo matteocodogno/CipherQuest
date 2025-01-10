@@ -18,6 +18,7 @@ const StickyBox = ({ children }: StickyBoxProps) => {
         justifyContent: 'center',
         position: 'sticky',
         bottom: 0,
+        alignSelf: 'stretch',
       }}
     >
       {children}
