@@ -3,7 +3,7 @@ package code.nebula.cipherquest.service
 import code.nebula.cipherquest.configuration.properties.UniqueCodeMailProperties
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
-import code.nebula.cipherquest.models.dto.BotMessage.Companion.DEFAULT_LEVEL
+import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
@@ -135,7 +135,7 @@ class UserLevelService(
                         userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
                         email = request.username.substringBefore("@"),
                         username = request.username,
-                        level = DEFAULT_LEVEL,
+                        level = BotMessage.DEFAULT_LEVEL,
                         uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase(),
                     ),
                 ).also { sendUniqueCodeEmail(it) }
