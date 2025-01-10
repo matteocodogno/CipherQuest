@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { DynamicLogo } from '@/components/core/logo';
 import { ReactElement } from 'react';
 import { RouterLink } from '@/components/core/link';
+import { ScoreBoardButtonVariant } from '../core/types';
+import ScoreboardButton from '../core/scoreboard-button';
 import SignInDescription from './sign-in-description';
 import { SignInForm } from './sign-in-form';
 import StickyBox from '../core/sticky-box';
-import { Trophy } from '@phosphor-icons/react';
 import { paths } from '@/paths';
 
 const SignInMobile = (): ReactElement => {
@@ -21,16 +21,7 @@ const SignInMobile = (): ReactElement => {
           py: 4,
         }}
       >
-        <Button
-          component={RouterLink}
-          href={paths.game.score}
-          variant='outlined'
-          color='primary'
-          endIcon={<Trophy />}
-          style={{ marginBottom: '24px' }}
-        >
-          Go to scoreboard
-        </Button>
+        <ScoreboardButton variant={ScoreBoardButtonVariant.OUTLINED} />
       </Box>
 
       <Box
