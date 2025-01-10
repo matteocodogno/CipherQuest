@@ -1,6 +1,8 @@
 spring:
   application:
     name: CipherQuest
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
   ai:
     openai:
       chat:
@@ -36,9 +38,11 @@ overmind:
 server:
   servlet:
     context-path: /api
-
+  shutdown: graceful
 
 management:
+  server:
+    port: 8081
   endpoints:
     web:
       exposure:
@@ -46,6 +50,18 @@ management:
   endpoint:
     health:
       show-details: always
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+    git:
+      #      mode: full
+      enabled: true
 
 info:
   app:
