@@ -52,56 +52,16 @@ export const SignInForm = (): ReactElement => {
   );
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          px: isMobile ? 3 : 0,
-          py: isMobile ? 4 : 0,
-        }}
-      >
-        <Button
-          component={RouterLink}
-          href={paths.game.score}
-          variant='outlined'
-          color='primary'
-          endIcon={<Trophy />}
-          style={{ marginBottom: isMobile ? '24px' : '290px' }}
-        >
-          Go to scoreboard
-        </Button>
-      </Box>
-
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          alignSelf: 'stretch',
-          marginTop: '290px',
-        }}
-        gap={isMobile ? 4 : 11}
-      >
-        <Box sx={{ margin: 'auto' }}>
-          <Box
-            component={RouterLink}
-            href={paths.home}
-            sx={{
-              display: 'inline-block',
-              fontSize: 0,
-            }}
-          >
-            <DynamicLogo
-              colorDark='light'
-              colorLight='dark'
-              height={96}
-              width={366}
-            />
-          </Box>
-        </Box>
-        {isMobile && <SignInDescription />}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 2,
+        alignSelf: 'stretch',
+      }}
+    >
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
         <Box
           sx={{
             display: 'flex',
