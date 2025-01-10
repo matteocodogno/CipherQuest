@@ -20,14 +20,17 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const [isLevelUp, setLevelUp] = useState<boolean>();
   const [gameStatus, setGameStatus] = useState<GameStatus>();
 
-  const messageRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!messageRef.current) {
+    if (!messagesContainerRef.current) {
       return;
     }
-    messageRef.current.scrollIntoView({ behavior: 'smooth' });
+    messagesContainerRef.current.scrollTo({
+      top: messagesContainerRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
 
     setLevelUp(lastMessage?.info?.isLevelUp);
 
@@ -54,7 +57,6 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
           marginTop: '8px',
           height: 'auto',
           width: 'auto',
-          zIndex: 5,
           position: 'absolute',
           top: (chatHeader?.top ?? 0) + (chatHeader?.height ?? 0),
           right: chatHeader?.x ?? 0,
@@ -68,6 +70,7 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
       <ChatHeader ref={headerRef} />
       {isLevelUp && showLevelUp()}
       <Stack
+        ref={messagesContainerRef}
         padding={4}
         direction={'column'}
         flex={1}
@@ -87,7 +90,6 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
         {gameStatus !== undefined && gameStatus !== GameStatus.IN_PROGRESS && (
           <MessageEndGame status={gameStatus} />
         )}
-        <div ref={messageRef} />
       </Stack>
       {children}
     </>
