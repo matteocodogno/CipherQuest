@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit
 import kotlin.random.Random.Default.nextLong
 
 @Service
+@Suppress("TooManyFunctions")
 class UserLevelService(
     private val userLevelRepository: UserLevelRepository,
     private val emailSender: JavaMailSender,
@@ -33,6 +34,7 @@ class UserLevelService(
         private const val COINS_SCORE = 5
         private const val TIME_THRESHOLD = 30
         private const val LEVEL_SCORE = 250
+        private const val UNIQUE_CODE_SIZE = 8
     }
 
     @Value("classpath:/emails/unique-code.st")
@@ -134,7 +136,7 @@ class UserLevelService(
                         email = request.username.substringBefore("@"),
                         username = request.username,
                         level = DEFAULT_LEVEL,
-                        uniqueCode = RandomStringUtils.randomAlphanumeric(8).uppercase(),
+                        uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase(),
                     ),
                 ).also { sendUniqueCodeEmail(it) }
 
