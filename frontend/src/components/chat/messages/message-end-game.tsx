@@ -3,6 +3,7 @@ import { GameStatus } from '@/api/chat/types';
 import { ScoreBoardButtonVariant } from '@/components/core/types';
 import ScoreboardButton from '@/components/core/scoreboard-button';
 import useGetScore from '@/api/score/use-get-score';
+import useIsMobile from '@/hooks/use-is-mobile';
 import { useMemo } from 'react';
 import { useUser } from '@/hooks/use-user';
 
@@ -13,18 +14,21 @@ interface MessageEndGameProps {
 const MessageEndGame = ({ status }: MessageEndGameProps) => {
   const { user } = useUser();
   const scoreResult = useGetScore(user?.userId);
+  const isMobile = useIsMobile();
 
   const { message, asset } = useMemo(() => {
     switch (status) {
       case GameStatus.WIN:
         return {
           message: 'Great job, Overmind has been deactivated!',
-          asset: 'assets/winner.svg',
+          asset: isMobile ? 'assets/winner-mobile.svg' : 'assets/winner.svg',
         };
       case GameStatus.GAME_OVER:
         return {
           message: 'You are out of coins!',
-          asset: 'assets/game-over.svg',
+          asset: isMobile
+            ? 'assets/game-over-mobile.svg'
+            : 'assets/game-over.svg',
         };
       case GameStatus.CHEATED:
         return {
@@ -38,13 +42,13 @@ const MessageEndGame = ({ status }: MessageEndGameProps) => {
           asset: 'assets/game-over.svg',
         };
     }
-  }, [status]);
+  }, [isMobile, status]);
 
   return (
     <Stack
       sx={{
         marginTop: '100px',
-        marginBottom: '200px',
+        marginBottom: isMobile ? '100px' : '200px',
         alignItems: 'center',
       }}
       gap={2}
