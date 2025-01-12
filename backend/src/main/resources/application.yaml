@@ -26,10 +26,10 @@ spring:
     username: testuser
     password: testpwd
   mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    host: smtp.gmail.com
+    port: 465
+    username: mail@gmail.com
+    password: 'password'
     properties:
       mail:
         smtp:
