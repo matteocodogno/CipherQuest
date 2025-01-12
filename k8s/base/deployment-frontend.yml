@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cipher-quest-frontend
+  annotations:
+    kubernetes.io/change-cause: "First release"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      service: frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1 # 1 more pod than desired
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        service: frontend
+    spec:
+      imagePullSecrets:
+        - name: regsecret-cipher-quest
+      containers:
+        - name: frontend
+          image: dockerhub.welld.io/welld/cipher-quest/frontend:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Gi"
+              cpu: "4000m"
+#          livenessProbe:
+#            httpGet:
+#              port: 7777
+#              path: /favicon.ico
+#            initialDelaySeconds: 5
+#            periodSeconds: 2
+#            timeoutSeconds: 1
+#            failureThreshold: 3
+#          readinessProbe:
+#            httpGet:
+#              port: 7777
+#              path: /favicon.ico
+#            initialDelaySeconds: 5
+#            periodSeconds: 2
+#            timeoutSeconds: 1
+#            failureThreshold: 3
+          ports:
+            - containerPort: 7777
+              name: http

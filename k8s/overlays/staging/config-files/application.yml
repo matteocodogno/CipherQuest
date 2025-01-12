@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://10.76.81.5:5432/cipher-quest-staging?sslMode=require
+    username: cipher-quest-user
+    password: ${PG_PASSWORD}
+  config:
+    activate:
+      on-profile: staging

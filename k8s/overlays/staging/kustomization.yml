@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: welld-staging
+
+labels:
+  - pairs:
+      env: staging
+    includeSelectors: false
+
+secretGenerator:
+  - name: cipher-quest-be
+    options:
+      annotations:
+        sealedsecrets.bitnami.com/managed: "true"
+    type: Opaque
+
+patches:
+  - target:
+      kind: Secret
+      name: regsecret-cipher-quest
+    path: secrets/empty-registry-key.yml
+
+configMapGenerator:
+  - name: cipher-quest-backend-param
+    literals:
+      - SPRING_OPTS=--spring.config.location=classpath:/,file:/deployments/config/ --spring.profiles.active=staging
+  - name: cipher-quest-backend-config
+    files:
+      - config-files/application.yml
+
+resources:
+  - ../../base
+  - ingress.yml
+  - secrets/cipher-quest-be.yml
+  - secrets/registry-key.yml

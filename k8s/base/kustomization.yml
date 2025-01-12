@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - pairs:
+      app: cipher-quest
+      version: v1
+    includeSelectors: false
+
+configurations:
+  - configuration/sealed-secret-config.yml
+
+resources:
+  - deployment-backend.yml
+  - deployment-frontend.yml
+  - service-backend.yml
+  - service-frontend.yml

@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cipher-quest
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: overmind.welld.io
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-be-overmind
+                port:
+                  number: 8080
+          - path: /.*
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-fe-overmind
+                port:
+                  number: 7777
+  tls:
+    - hosts:
+        - overmind.welld.io
+      secretName: overmind-cert
+

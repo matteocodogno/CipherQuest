@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cipher-quest-backend
+  annotations:
+    kubernetes.io/change-cause: "First release"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      service: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1 # 1 more pod than desired
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        service: backend
+    spec:
+      imagePullSecrets:
+        - name: regsecret-cipher-quest
+      volumes:
+        - name: app-config-volume
+          configMap:
+            name: cipher-quest-backend-config
+            items:
+              - key: application.yml
+                path: application.yml
+      containers:
+        - name: backend
+          image: dockerhub.welld.io/welld/cipher-quest/backend:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "800m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+#          livenessProbe:
+#            httpGet:
+#              port: 8081
+#              path: /actuator/info
+#            initialDelaySeconds: 60
+#            periodSeconds: 2
+#            timeoutSeconds: 1
+#            failureThreshold: 3
+#          readinessProbe:
+#            httpGet:
+#              port: 8081
+#              path: /actuator/health
+#            initialDelaySeconds: 60
+#            periodSeconds: 2
+#            timeoutSeconds: 1
+#            failureThreshold: 3
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8081
+              name: actuator
+          env:
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cipher-quest-be
+                  key: DB_PASSWORD
+            - name: SPRING_OPTS
+              valueFrom:
+                configMapKeyRef:
+                  name: cipher-quest-backend-param
+                  key: SPRING_OPTS
+          volumeMounts:
+            - mountPath: /deployments/config
+              name: app-config-volume
+              readOnly: true
