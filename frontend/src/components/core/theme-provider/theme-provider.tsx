@@ -14,7 +14,7 @@ const CustomThemeProvider = ({ children }: ThemeProviderProps): ReactElement => 
   });
 
   return (
-    <ThemeProvider disableTransitionOnChange theme={theme}>
+    <ThemeProvider disableTransitionOnChange theme={theme} defaultMode='dark'>
       <CssBaseline />
       {children}
     </ThemeProvider>
