@@ -3,22 +3,27 @@ import Box from '@mui/material/Box';
 import { Header } from './header.tsx';
 import { Stack } from '@mui/material';
 import useIsMobile from '@/hooks/use-is-mobile.ts';
+import { useNavigate } from 'react-router-dom';
 import { usePathname } from '@/hooks/use-pathname.ts';
+import { paths } from '@/paths.ts';
 
 type LayoutProps = {
   children: ReactNode;
 };
 
 const backgroundMap: Record<string, string> = {
-  '/rules': '/assets/rules-background.jpeg',
-  '/chat': '/assets/chat-background.jpeg',
-  '/score': '/assets/score-background.jpeg',
+  [paths.game.rules]: '/assets/rules-background.jpeg',
+  [paths.game.chat]: '/assets/chat-background.jpeg',
+  [paths.game.score]: '/assets/score-background.jpeg',
 };
 
 export function Layout({ children }: LayoutProps): ReactElement {
+  const navigate = useNavigate();
   const pathname = usePathname();
   const background = backgroundMap[pathname] ?? '/assets/background.jpeg';
   const isMobile = useIsMobile();
+
+  if (pathname === '/') navigate(paths.game.chat);
 
   return (
     <Box
