@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@Suppress("MaxLineLength")
 class GlobalExceptionHandler {
     @ExceptionHandler(DocumentNotFoundException::class)
     fun handleDocumentNotFoundException(e: DocumentNotFoundException): ResponseEntity<String> =
