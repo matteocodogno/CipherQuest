@@ -145,7 +145,7 @@ class UserLevelService(
 
     private fun sendUniqueCodeEmail(user: UserLevel) {
         val templateString = uniqueCodeEmail.getContentAsString(Charsets.UTF_8)
-        val template = ST(templateString, '$', '$')
+        val template = ST(templateString)
         template.add("username", user.username)
         template.add("uniqueCode", user.uniqueCode)
         val result = template.render()
