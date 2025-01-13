@@ -72,6 +72,11 @@ spec:
                   secretKeyRef:
                     name: cipher-quest-be
                     key: OPENAI_API_KEY
+            - name: MAIL_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: cipher-quest-be
+                    key: MAIL_PASSWORD
             - name: SPRING_OPTS
               valueFrom:
                 configMapKeyRef:

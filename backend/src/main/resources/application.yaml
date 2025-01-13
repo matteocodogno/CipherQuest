@@ -47,7 +47,7 @@ overmind:
         max-size: 10
   mail:
     unique-code:
-      from: noreply@resistance.io
+      from: noreply@welld.io
       subject: Urgent Instructions
 
 

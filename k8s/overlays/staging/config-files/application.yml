@@ -16,3 +16,14 @@ spring:
         options:
           model: text-embedding-ada-002
       api-key: ${OPENAI_API_KEY}
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: dev@welld.ch
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
