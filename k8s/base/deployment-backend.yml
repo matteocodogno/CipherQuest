@@ -77,6 +77,11 @@ spec:
                   secretKeyRef:
                     name: cipher-quest-be
                     key: MAIL_PASSWORD
+            - name: WIN_CONDITION
+              valueFrom:
+                  secretKeyRef:
+                    name: cipher-quest-be
+                    key: WIN_CONDITION
             - name: SPRING_OPTS
               valueFrom:
                 configMapKeyRef:
