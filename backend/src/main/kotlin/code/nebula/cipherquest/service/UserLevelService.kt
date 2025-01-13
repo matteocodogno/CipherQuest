@@ -1,20 +1,30 @@
 package code.nebula.cipherquest.service
 
+import code.nebula.cipherquest.configuration.properties.UniqueCodeMailProperties
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
-import code.nebula.cipherquest.models.dto.BotMessage.Companion.DEFAULT_LEVEL
+import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
 import jakarta.persistence.EntityNotFoundException
+import org.apache.commons.lang3.RandomStringUtils
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.Resource
+import org.springframework.mail.SimpleMailMessage
+import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
+import org.stringtemplate.v4.ST
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random.Default.nextLong
 
 @Service
+@Suppress("TooManyFunctions")
 class UserLevelService(
     private val userLevelRepository: UserLevelRepository,
+    private val emailSender: JavaMailSender,
+    private val uniqueCodeMailProperties: UniqueCodeMailProperties,
 ) {
     companion object {
         private const val LEVEL_UP_COINS = 10
@@ -24,7 +34,11 @@ class UserLevelService(
         private const val COINS_SCORE = 5
         private const val TIME_THRESHOLD = 30
         private const val LEVEL_SCORE = 250
+        private const val UNIQUE_CODE_SIZE = 8
     }
+
+    @Value("classpath:/emails/unique-code.st")
+    private lateinit var uniqueCodeEmail: Resource
 
     fun calculateScore(user: UserLevel): UserLevel {
         val win = user.terminatedAt != null
@@ -46,17 +60,11 @@ class UserLevelService(
     }
 
     fun createUserLevel(request: CreateUserLevelRequest): UserLevel {
-        userLevelRepository.findFirstByUsername(request.username)?.let {
-            throw UserAlreadyExistsException("User '${request.username}' already exists.")
+        userLevelRepository.findFirstByEmail(request.email)?.let {
+            throw UserAlreadyExistsException("User '${request.email}' already exists.")
         }
 
-        return userLevelRepository.save(
-            UserLevel(
-                nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
-                username = request.username,
-                level = DEFAULT_LEVEL,
-            ),
-        )
+        return saveUser(request)
     }
 
     fun getLevelByUser(userId: String): UserLevel =
@@ -118,4 +126,41 @@ class UserLevelService(
                             ).toInt(),
                 )
             }
+
+    fun saveUser(request: CreateUserLevelRequest): UserLevel {
+        val username = request.email.substringBefore("@")
+        val uniqueCode =
+            RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase().also {
+                sendUniqueCodeEmail(username, it, request.email)
+            }
+        return userLevelRepository.save(
+            UserLevel(
+                userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
+                email = request.email,
+                username = username,
+                level = BotMessage.DEFAULT_LEVEL,
+                uniqueCode = uniqueCode,
+            ),
+        )
+    }
+
+    private fun sendUniqueCodeEmail(
+        username: String,
+        uniqueCode: String,
+        email: String,
+    ) {
+        val templateString = uniqueCodeEmail.getContentAsString(Charsets.UTF_8)
+        val template = ST(templateString, '{', '}')
+        template.add("username", username)
+        template.add("uniqueCode", uniqueCode)
+        val result = template.render()
+
+        SimpleMailMessage()
+            .apply {
+                from = uniqueCodeMailProperties.from
+                setTo(email)
+                subject = uniqueCodeMailProperties.subject
+                text = result
+            }.also { emailSender.send(it) }
+    }
 }

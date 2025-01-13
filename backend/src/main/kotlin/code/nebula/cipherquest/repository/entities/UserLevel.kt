@@ -12,6 +12,7 @@ data class UserLevel(
     var userId: String,
     var level: Int,
     var username: String,
+    var email: String,
     var coins: Int = 25,
     @CreationTimestamp
     var createdAt: OffsetDateTime = OffsetDateTime.now(),
@@ -19,4 +20,5 @@ data class UserLevel(
     var updatedAt: OffsetDateTime = OffsetDateTime.now(),
     var terminatedAt: OffsetDateTime? = null,
     var score: Long = 0,
+    var uniqueCode: String = "",
 )
