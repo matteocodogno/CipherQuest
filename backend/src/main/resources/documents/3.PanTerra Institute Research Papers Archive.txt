@@ -49,11 +49,11 @@ Date: December 3, 2140
 Abstract: Proposing a global strategy for integrating AI technologies into sustainable
 development practices, emphasizing environmental stewardship and social equity.
 
-ID: 84241132
+ID: 52744349
 Title: Ethical Implications of Autonomous Systems in Healthcare: Balancing Innovation and
 Responsibility
 Author: Dr. Elara Chen
-Date: April 15, 2118
+Date: April 09, 2118
 Abstract: This paper explores the ethical considerations surrounding the integration of
 autonomous systems in healthcare settings, emphasizing the need for responsible innovation
 and patient-centered care.
