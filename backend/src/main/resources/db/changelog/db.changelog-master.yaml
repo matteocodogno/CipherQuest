@@ -23,3 +23,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20250109090030-unique_user_code.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20251301152000-user-level-username-remove-limit.sql
