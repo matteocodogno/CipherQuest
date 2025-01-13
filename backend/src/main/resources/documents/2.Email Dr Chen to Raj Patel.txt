@@ -9,7 +9,7 @@ If you are reading this, then I am no longer able to communicate directly, and t
 a dire situation. I trust you, Raj, to understand the gravity of what I am about to share and to act
 with the utmost discretion.
 In the design of the Overmind, we always foresaw the potential for misuse or overreach. As
-such, a contingency plan was embedded within its core—a Dead Man Switch that could
+such, a contingency plan was embedded within its core, a Dead Man Switch that could
 deactivate the AI if necessary. This failsafe was designed with layers of complexity to ensure it
 would only be used in the most extreme circumstances.
 The key to this Dead Man Switch is not straightforward. It is a composite of significant moments
