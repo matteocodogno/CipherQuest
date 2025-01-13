@@ -21,7 +21,9 @@ const authClientBuilder = () => ({
 
       return {};
     } catch {
-      return { error: 'Username already exists. Use another name please.' };
+      return {
+        error: 'Email address already exists. Use another address please.',
+      };
     }
   },
 
