@@ -12,6 +12,7 @@ import { GameStatus } from '@/api/chat/types';
 import { MessageBox } from '../messages/message-box';
 import MessageEndGame from '../messages/message-end-game';
 import { useChat } from '@/hooks/use-chat';
+import useIsMobile from '@/hooks/use-is-mobile';
 
 export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
   const { messages } = useChat();
@@ -19,6 +20,7 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
     messages.length > 0 ? messages[messages.length - 1] : undefined;
   const [isLevelUp, setLevelUp] = useState<boolean>();
   const [gameStatus, setGameStatus] = useState<GameStatus>();
+  const isMobile = useIsMobile();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -58,12 +60,15 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
           height: 'auto',
           width: 'auto',
           position: 'absolute',
-          top: (chatHeader?.top ?? 0) + (chatHeader?.height ?? 0),
+          top:
+            (chatHeader?.top ?? 0) +
+            (chatHeader?.height ?? 0) +
+            (isMobile ? 60 : 0),
           right: chatHeader?.x ?? 0,
         }}
       />
     );
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
