@@ -2,10 +2,10 @@ import { ReactElement, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import { Header } from './header.tsx';
 import { Stack } from '@mui/material';
+import { paths } from '@/paths.ts';
 import useIsMobile from '@/hooks/use-is-mobile.ts';
 import { useNavigate } from 'react-router-dom';
 import { usePathname } from '@/hooks/use-pathname.ts';
-import { paths } from '@/paths.ts';
 
 type LayoutProps = {
   children: ReactNode;
@@ -37,6 +37,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         overscroll: 'hidden',
+        overflow: 'hidden',
       }}
     >
       <Header />
@@ -46,6 +47,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
           minWidth: isMobile ? '200px' : '600px',
           paddingX: isMobile ? 0 : 7,
           height: 'calc(100vh - 68px)',
+          overflowY: 'auto',
         }}
         flexDirection='column'
         alignItems={'center'}
