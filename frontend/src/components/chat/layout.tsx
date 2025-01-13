@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Header } from './header.tsx';
 import { Stack } from '@mui/material';
@@ -23,7 +23,9 @@ export function Layout({ children }: LayoutProps): ReactElement {
   const background = backgroundMap[pathname] ?? '/assets/background.jpeg';
   const isMobile = useIsMobile();
 
-  if (pathname === '/') navigate(paths.game.chat);
+  useEffect(() => {
+    if (pathname === '/') navigate(paths.game.chat);
+  }, [navigate, pathname]);
 
   return (
     <Box
