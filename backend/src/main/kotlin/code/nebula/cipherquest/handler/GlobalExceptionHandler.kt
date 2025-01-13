@@ -21,13 +21,13 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException::class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    fun handleUsernameAlreadyExistsException(ex: UserAlreadyExistsException): String =
+    fun handleMethodArgumentNotValidException(ex: UserAlreadyExistsException): String =
         ex.message
             ?: "Username already exists"
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleUsernameAlreadyExistsException(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, List<String>>> {
+    fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, List<String>>> {
         val errors: Map<String, List<String>> =
             ex.bindingResult
                 .fieldErrors
