@@ -6,3 +6,13 @@ spring:
   config:
     activate:
       on-profile: staging
+  ai:
+    openai:
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.78
+      embedding:
+        options:
+          model: text-embedding-ada-002
+      api-key: ${OPENAI_API_KEY}

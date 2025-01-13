@@ -36,7 +36,7 @@ spec:
           resources:
             requests:
               memory: "512Mi"
-              cpu: "800m"
+              cpu: "400m"
             limits:
               memory: "1Gi"
               cpu: "1000m"
@@ -67,6 +67,11 @@ spec:
                 secretKeyRef:
                   name: cipher-quest-be
                   key: DB_PASSWORD
+            - name: OPENAI_API_KEY
+              valueFrom:
+                  secretKeyRef:
+                    name: cipher-quest-be
+                    key: OPENAI_API_KEY
             - name: SPRING_OPTS
               valueFrom:
                 configMapKeyRef:
