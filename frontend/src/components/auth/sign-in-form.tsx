@@ -14,12 +14,12 @@ import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const schema = zod.object({
-  username: zod.string().min(3, { message: 'Username is required' }),
+  email: zod.string().email({ message: 'This email address is not valid.' }),
 });
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = { username: '' } satisfies Values;
+const defaultValues = { email: '' } satisfies Values;
 
 export const SignInForm = (): ReactElement => {
   const { checkSession } = useUser();
@@ -73,17 +73,13 @@ export const SignInForm = (): ReactElement => {
         >
           <Controller
             control={control}
-            name='username'
+            name='email'
             render={({ field }) => (
-              <FormControl error={Boolean(errors.username)} fullWidth>
-                <InputLabel>What would you like to be called?</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  type='username'
-                  placeholder='Username'
-                />
-                {errors.username ? (
-                  <FormHelperText>{errors.username.message}</FormHelperText>
+              <FormControl error={Boolean(errors.email)} fullWidth>
+                <InputLabel>What is your email address?</InputLabel>
+                <OutlinedInput {...field} type='email' placeholder='Email' />
+                {errors.email ? (
+                  <FormHelperText>{errors.email.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
@@ -91,6 +87,10 @@ export const SignInForm = (): ReactElement => {
           {errors.root ? (
             <Alert color='error'>{errors.root.message}</Alert>
           ) : null}
+          <FormHelperText sx={{ color: 'text.primary' }}>
+            You’ll receive a unique ID code, keep it safe to claim your reward
+            if you win.
+          </FormHelperText>
           <Button
             disabled={isPending}
             type='submit'
