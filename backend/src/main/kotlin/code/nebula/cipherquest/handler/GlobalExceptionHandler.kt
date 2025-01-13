@@ -6,6 +6,7 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.mail.MailException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -18,6 +19,10 @@ class GlobalExceptionHandler {
     @ExceptionHandler(DocumentNotFoundException::class)
     fun handleDocumentNotFoundException(e: DocumentNotFoundException): ResponseEntity<String> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
+
+    @ExceptionHandler(MailException::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleMailExceptionException(ex: MailException): String = ex.message ?: "Mail server error"
 
     @ExceptionHandler(UserAlreadyExistsException::class)
     @ResponseStatus(HttpStatus.CONFLICT)

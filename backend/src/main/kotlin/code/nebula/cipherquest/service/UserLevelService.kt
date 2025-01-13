@@ -128,32 +128,37 @@ class UserLevelService(
             }
 
     fun saveUser(request: CreateUserLevelRequest): UserLevel {
-        val user =
-            userLevelRepository
-                .save(
-                    UserLevel(
-                        userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
-                        email = request.email,
-                        username = request.email.substringBefore("@"),
-                        level = BotMessage.DEFAULT_LEVEL,
-                        uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase(),
-                    ),
-                ).also { sendUniqueCodeEmail(it) }
-
-        return user
+        val username = request.email.substringBefore("@")
+        val uniqueCode =
+            RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase().also {
+                sendUniqueCodeEmail(username, it, request.email)
+            }
+        return userLevelRepository.save(
+            UserLevel(
+                userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
+                email = request.email,
+                username = username,
+                level = BotMessage.DEFAULT_LEVEL,
+                uniqueCode = uniqueCode,
+            ),
+        )
     }
 
-    private fun sendUniqueCodeEmail(user: UserLevel) {
+    private fun sendUniqueCodeEmail(
+        username: String,
+        uniqueCode: String,
+        email: String,
+    ) {
         val templateString = uniqueCodeEmail.getContentAsString(Charsets.UTF_8)
         val template = ST(templateString)
-        template.add("username", user.username)
-        template.add("uniqueCode", user.uniqueCode)
+        template.add("username", username)
+        template.add("uniqueCode", uniqueCode)
         val result = template.render()
 
         SimpleMailMessage()
             .apply {
                 from = uniqueCodeMailProperties.from
-                setTo(user.email)
+                setTo(email)
                 subject = uniqueCodeMailProperties.subject
                 text = result
             }.also { emailSender.send(it) }
