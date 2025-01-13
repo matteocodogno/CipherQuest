@@ -3,14 +3,9 @@ import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
 
 export type SignUpParams = {
-  username: string;
+  email: string;
   firstName?: string;
   lastName?: string;
-  email?: string;
-};
-
-export type SignInWithPasswordParams = {
-  username: string;
 };
 
 export const getRandomArbitrary = (min: number, max: number) =>
