@@ -2,6 +2,7 @@ package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.service.UserLevelService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,6 +18,6 @@ class UserLevelController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createUser(
-        @RequestBody request: CreateUserLevelRequest,
+        @Valid @RequestBody request: CreateUserLevelRequest,
     ) = userLevelService.createUserLevel(request)
 }

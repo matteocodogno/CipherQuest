@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.test.context.ActiveProfiles
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -20,6 +21,7 @@ import kotlin.test.assertEquals
 
 @Testcontainers
 @SpringBootTest
+@ActiveProfiles("test")
 @Suppress("LongParameterList", "DestructuringDeclarationWithTooManyEntries")
 class UserLevelServiceTest {
     @Autowired

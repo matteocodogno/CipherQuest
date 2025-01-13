@@ -60,8 +60,8 @@ class UserLevelService(
     }
 
     fun createUserLevel(request: CreateUserLevelRequest): UserLevel {
-        userLevelRepository.findFirstByUsername(request.username)?.let {
-            throw UserAlreadyExistsException("User '${request.username}' already exists.")
+        userLevelRepository.findFirstByEmail(request.email)?.let {
+            throw UserAlreadyExistsException("User '${request.email}' already exists.")
         }
 
         return saveUser(request)
@@ -133,8 +133,8 @@ class UserLevelService(
                 .save(
                     UserLevel(
                         userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
-                        email = request.username.substringBefore("@"),
-                        username = request.username,
+                        email = request.email,
+                        username = request.email.substringBefore("@"),
                         level = BotMessage.DEFAULT_LEVEL,
                         uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase(),
                     ),

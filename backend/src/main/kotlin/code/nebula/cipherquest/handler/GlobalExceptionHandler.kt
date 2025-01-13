@@ -2,13 +2,17 @@ package code.nebula.cipherquest.handler
 
 import code.nebula.cipherquest.exceptions.DocumentNotFoundException
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class GlobalExceptionHandler {
     @ExceptionHandler(DocumentNotFoundException::class)
     fun handleDocumentNotFoundException(e: DocumentNotFoundException): ResponseEntity<String> =
@@ -19,4 +23,15 @@ class GlobalExceptionHandler {
     fun handleUsernameAlreadyExistsException(ex: UserAlreadyExistsException): String =
         ex.message
             ?: "Username already exists"
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleUsernameAlreadyExistsException(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, List<String>>> {
+        val errors: Map<String, List<String>> =
+            ex.bindingResult
+                .fieldErrors
+                .groupBy({ it.field }, { it.defaultMessage ?: "Generic Error" })
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors)
+    }
 }
