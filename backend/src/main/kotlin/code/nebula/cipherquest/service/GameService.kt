@@ -50,6 +50,8 @@ class GameService(
                     .buildWinMessage(userToQuery.first)
             vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
             vectorStoreService.saveMessage(userToQuery.first.userId, botMessage.message, MessageType.ASSISTANT)
+            val messageId = vectorStoreService.getLastMessage(userToQuery.first.userId).id
+            vectorStoreService.updateInfo(messageId, botMessage.info)
             return botMessage
         } else {
             null
@@ -66,6 +68,8 @@ class GameService(
                     .buildGameOverMessage(userToQuery.first)
             vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
             vectorStoreService.saveMessage(userToQuery.first.userId, botMessage.message, MessageType.ASSISTANT)
+            val messageId = vectorStoreService.getLastMessage(userToQuery.first.userId).id
+            vectorStoreService.updateInfo(messageId, botMessage.info)
             return botMessage
         } else {
             null
@@ -87,7 +91,8 @@ class GameService(
 
                 vectorStoreService.saveMessage(userId, userMessage, MessageType.USER)
                 vectorStoreService.saveMessage(userId, botMessage.message, MessageType.ASSISTANT)
-
+                val messageId = vectorStoreService.getLastMessage(userToQuery.first.userId).id
+                vectorStoreService.updateInfo(messageId, botMessage.info)
                 botMessage
             }
     }
