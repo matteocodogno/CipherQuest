@@ -72,7 +72,7 @@ const MessageEndGame = ({ status }: MessageEndGameProps) => {
           variant='body1'
           style={{ whiteSpace: 'pre-wrap' }}
         >
-          {'Your score is: ' + scoreResult.data?.score}
+          {'Your score is: ' + (scoreResult.data?.score ?? '0')}
         </Typography>
       </Stack>
       <ScoreboardButton variant={ScoreBoardButtonVariant.CONTAINED} />
