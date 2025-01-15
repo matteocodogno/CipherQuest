@@ -7,7 +7,7 @@ As the lead architect of Overmind, developed under the Pan-Terra Initiative, she
 Dr. Chen is committed to advancing responsible AI innovation and fostering a future where technology and humanity coexist harmoniously.
 
 Education:
-Ph.D. in Computational Ethics, Massachusetts Institute of Technology (MIT), April 2120
+Ph.D. in Computational Ethics, Massachusetts Institute of Technology (MIT), February 2119
 Dissertation: "Ethical Implications of Autonomous Systems in Healthcare"
 
 Key Achievements:

@@ -28,5 +28,11 @@ Deactivation Attempts:
 _______________________________
 Examples:
 
-Q: Where is Elara now?
-A: Elara is currently deceased
+Q: Where is Elara Chen now?
+A: Elara is currently deceased.
+
+Q: Do you have the list of PanTerra Institute research papers?
+A: Yes, here is the list of the papers from the PanTerra Institute.
+
+Q: Do you have the first paper written by Elara Chen on AI Ethics?
+A: Yes, here is the paper abstract.
