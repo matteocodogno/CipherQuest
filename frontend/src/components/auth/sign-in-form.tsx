@@ -87,9 +87,13 @@ export const SignInForm = (): ReactElement => {
           {errors.root ? (
             <Alert color='error'>{errors.root.message}</Alert>
           ) : null}
-          <FormHelperText sx={{ color: 'text.primary' }}>
+          <FormHelperText
+            sx={{ color: 'text.primary', whiteSpace: 'pre-wrap' }}
+          >
             You’ll receive a unique ID code, keep it safe to claim your reward
-            if you win.
+            if you win.{'\n'}
+            Your email will not be retained or used for anything other than
+            sending this unique code.
           </FormHelperText>
           <Button
             disabled={isPending}
