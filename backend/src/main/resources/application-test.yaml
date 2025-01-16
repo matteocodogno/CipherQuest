@@ -50,7 +50,7 @@ overmind:
       from: noreply@resistance.io
       subject: Urgent Instructions
   security:
-    token: ${SECURITY_TOKEN}
+    token: ${SECURITY_TOKEN:verysupersecuretoken}
 
 server:
   servlet:
