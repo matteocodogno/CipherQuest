@@ -21,6 +21,16 @@ spring:
   threads:
     virtual:
       enabled: true
+
+
+
+
+
+
+
+
+
+
   datasource:
     url: jdbc:postgresql://localhost:5433/vectordb
     username: testuser
@@ -49,6 +59,8 @@ overmind:
     unique-code:
       from: noreply@welld.io
       subject: Urgent Instructions
+  security:
+    token: ${SECURITY_TOKEN}
 
 
 server:
