@@ -18,7 +18,7 @@ spring:
       api-key: ${OPENAI_API_KEY}
   mail:
     host: smtp.gmail.com
-    port: 465
+    port: 587
     username: dev@welld.ch
     password: ${MAIL_PASSWORD}
     properties:
