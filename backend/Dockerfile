@@ -25,13 +25,18 @@ RUN jlink \
     --no-man-pages \
     --output /optimized-jre
 
-# Second stage: use custom JRE
+# Second stage: extract the JAR file
+FROM eclipse-temurin:21-jre AS extractor
+RUN mkdir /opt/app
+WORKDIR /opt/app
+COPY --from=jre-builder /usr/src/project/app.jar app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+# Third stage: use custom JRE
 FROM debian:12.8-slim
 
 ENV JAVA_HOME=/opt/java/jdk21
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
-
-#RUN apk add gcompat
 
 # copy JRE from the base image
 COPY --from=jre-builder /optimized-jre $JAVA_HOME
@@ -44,14 +49,16 @@ RUN addgroup --system $APPLICATION_USER && adduser --system $APPLICATION_USER --
 
 # Create a directory for the application
 RUN mkdir /project && chown -R $APPLICATION_USER /project
-
-COPY --from=jre-builder  /usr/src/project/app.jar /project/
-
 WORKDIR /project
+
+COPY --from=extractor /opt/app/dependencies/ ./
+COPY --from=extractor /opt/app/spring-boot-loader/ ./
+COPY --from=extractor /opt/app/snapshot-dependencies/ ./
+COPY --from=extractor /opt/app/application/ ./
 
 USER $APPLICATION_USER
 
 ENV SPRING_OPTS=""
 
 EXPOSE 8080
-CMD java -jar app.jar $SPRING_OPTS
+CMD java -XX:+UseParallelGC -XX:MaxRAMPercentage=75 org.springframework.boot.loader.launch.JarLauncher $SPRING_OPTS
