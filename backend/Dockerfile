@@ -5,8 +5,8 @@ RUN mkdir /usr/src/project
 COPY . /usr/src/project
 WORKDIR /usr/src/project
 
-RUN mvn package -DskipTests=true && mv target/*.jar app.jar
-RUN jar -xf app.jar
+RUN --mount=type=cache,target=/root/.m2 mvn package -DskipTests && mv target/*.jar app.jar
+RUN jar xf app.jar
 
 RUN jdeps --ignore-missing-deps -q  \
     --recursive  \
