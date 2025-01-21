@@ -1,6 +1,8 @@
 package code.nebula.cipherquest.controller
 
+import code.nebula.cipherquest.models.CustomByteArrayResource
 import code.nebula.cipherquest.models.DocumentType
+import code.nebula.cipherquest.repository.gcs.StoryRepository
 import code.nebula.cipherquest.service.LevelUpQuestions
 import code.nebula.cipherquest.service.RedactedQuestions
 import code.nebula.cipherquest.service.VectorStoreService
@@ -9,9 +11,11 @@ import org.springframework.ai.document.Document
 import org.springframework.ai.reader.TextReader
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternResolver
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.nio.file.Path
 
 private val logger = KotlinLogging.logger {}
 
@@ -21,38 +25,45 @@ class RagController(
     val vectorStoreService: VectorStoreService,
     val resourceLoader: ResourceLoader,
     val resourcePatternResolver: ResourcePatternResolver,
+    private val storyRepository: StoryRepository,
 ) {
-    @PostMapping("/load")
-    fun load() {
-        val documents: List<Document> =
-            resourcePatternResolver
-                .getResources("classpath:documents/*")
-                .filterNot { resource ->
-                    vectorStoreService.existsDocumentWithSource(resource.filename ?: "")
-                }.flatMap { resource ->
-                    TextReader(
-                        resourceLoader.getResource("classpath:documents/${resource.filename}"),
-                    ).apply {
-                        val filename =
-                            resource.filename
-                                ?.split(".")
-                                ?.getOrNull(1)
-                                .orEmpty()
+    @PostMapping("/load/{storyName}")
+    fun load(
+        @PathVariable storyName: String,
+    ) {
+        val documents =
+            storyRepository
+                .findByStoryName(storyName)
+                .map { blob -> Path.of(blob.name).fileName.toString() to blob }
+                .filterNot { (filename, _) -> filename.contains(storyName) }
+                .filterNot { (filename, _) -> vectorStoreService.existsDocumentWithSource(filename) }
+                .flatMap { (originalFilename, blob) ->
+                    CustomByteArrayResource(blob.getContent(), originalFilename).let { resource ->
+                        TextReader(resource)
+                            .apply {
+                                customMetadata["source"] = originalFilename
 
-                        customMetadata["level"] =
-                            resource.filename
-                                ?.split(".")
-                                ?.getOrNull(0)
-                                .orEmpty()
-                                .toInt()
+                                val filename =
+                                    originalFilename
+                                        .split(".")
+                                        .getOrNull(1)
+                                        .orEmpty()
 
-                        customMetadata["type"] =
-                            if (filename.contains("diary", true)) {
-                                DocumentType.DIARY
-                            } else {
-                                DocumentType.DOCUMENT
-                            }
-                    }.get()
+                                customMetadata["level"] =
+                                    originalFilename
+                                        .split(".")
+                                        .getOrNull(0)
+                                        .orEmpty()
+                                        .toInt()
+
+                                customMetadata["type"] =
+                                    if (filename.contains("diary", true)) {
+                                        DocumentType.DIARY
+                                    } else {
+                                        DocumentType.DOCUMENT
+                                    }
+                            }.get()
+                    }
                 }
 
         if (documents.isNotEmpty()) {
