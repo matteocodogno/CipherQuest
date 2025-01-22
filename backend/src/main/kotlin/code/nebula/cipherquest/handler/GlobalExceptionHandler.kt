@@ -2,6 +2,7 @@ package code.nebula.cipherquest.handler
 
 import code.nebula.cipherquest.exceptions.DocumentNotFoundException
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -29,6 +30,12 @@ class GlobalExceptionHandler {
     fun handleMethodArgumentNotValidException(ex: UserAlreadyExistsException): String =
         ex.message
             ?: "Username already exists"
+
+    @ExceptionHandler(EntityNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handleMethodArgumentNotValidException(ex: EntityNotFoundException): String =
+        ex.message
+            ?: "Entity not found"
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

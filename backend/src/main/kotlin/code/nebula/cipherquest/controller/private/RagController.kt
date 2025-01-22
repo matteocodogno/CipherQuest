@@ -1,4 +1,4 @@
-package code.nebula.cipherquest.controller
+package code.nebula.cipherquest.controller.private
 
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.LevelUpQuestions
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("/rag")
+@RequestMapping("/private/rag")
 class RagController(
     val vectorStoreService: VectorStoreService,
     val resourceLoader: ResourceLoader,

@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserLevelRepository : ListCrudRepository<UserLevel, String> {
-    fun findFirstByEmail(username: String): UserLevel?
+    fun findFirstByEmail(email: String): UserLevel?
+
+    fun findFirstByUsername(username: String): UserLevel?
 }

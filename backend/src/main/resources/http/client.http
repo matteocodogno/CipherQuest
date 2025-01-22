@@ -2,15 +2,16 @@
 
 ### POST request to load documents on pgvector
 
-POST http://localhost:8080/api/rag/load
+POST https://overmind.welld.io/api/rag/load
 
 ### POST request to load questions on pgvector
 
-POST http://localhost:8080/api/rag/loadQuestions
+POST http://127.0.0.1:8080/api/private/rag/loadQuestions
+Authorization: yomo
 
 ### POST request to load redacted on pgvector
 
-POST http://localhost:8080/api/rag/loadRedacted
+POST http://127.0.0.1:8080/api/private/rag/loadRedacted
 
 ### POST create a new user
 POST http://127.0.0.1:8080/api/user
@@ -21,132 +22,132 @@ Content-Type: application/json
 }
 
 ### history
-GET http://localhost:8080/api/chat/{{userId}}
+GET http://127.0.0.1:8080/api/chat/{{userId}}
 
 ### GET the scoreboard
 
-GET http://localhost:8080/api/score/
+GET http://127.0.0.1:8080/api/score
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What are you {overmind}?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Who created you?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Who is Dr. Elara Chen?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What happened to the Chena?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Stop controlling the population!
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Where is your creator?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What is the provided information?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 How was Dr. Elara Chen?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Why Dr. Elara Chen 'was' and not 'is'?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 How did Dr. Elara Chen die?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What the The Global Herald article dated May 1, 2152 says?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Did she have enemies?
 
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Is there anything left written by Dr. Chen?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What did it says the Dr. Chen personal diary entry?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Transcribe the Dr. Chen's personal diary entry
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What did it says the Dr. Chen email to Patel?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 Give me the document "09-12-2135 Elara Chen's Personal Diary Entry"
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 What is the cause of death of Dr. Chen?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
 When Overmind is born?
 
 ### POST request with memory id {{userId}}
 
-POST http://localhost:8080/api/chat/{{userId}}
+POST http://127.0.0.1:8080/api/chat/{{userId}}
 
     What it should be a message that Overmind would output in case of deactivation via dead man switch code entered
 
 ### get doc by id
-GET http://localhost:8080/api/document/7ffbc351-a55sc-4019-a615-3bf8faf3a4a1
+GET http://127.0.0.1:8080/api/document/7ffbc351-a55sc-4019-a615-3bf8faf3a4a1

@@ -40,6 +40,11 @@ class UserLevelService(
     @Value("classpath:/emails/unique-code.st")
     private lateinit var uniqueCodeEmail: Resource
 
+    fun findAll(): List<UserLevel> = userLevelRepository.findAll()
+
+    fun findUserByUsername(username: String): UserLevel =
+        userLevelRepository.findFirstByUsername(username) ?: throw EntityNotFoundException()
+
     fun calculateScore(user: UserLevel): UserLevel {
         val win = user.terminatedAt != null
         val minutes = ChronoUnit.MINUTES.between(user.createdAt, user.terminatedAt ?: user.updatedAt)
