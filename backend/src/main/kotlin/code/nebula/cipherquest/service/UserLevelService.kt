@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.service
 
+import code.nebula.cipherquest.configuration.properties.FeatureFlags
 import code.nebula.cipherquest.configuration.properties.UniqueCodeMailProperties
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
@@ -25,6 +26,7 @@ class UserLevelService(
     private val userLevelRepository: UserLevelRepository,
     private val emailSender: JavaMailSender,
     private val uniqueCodeMailProperties: UniqueCodeMailProperties,
+    private val featureFlags: FeatureFlags,
 ) {
     companion object {
         private const val LEVEL_UP_COINS = 10
@@ -60,8 +62,8 @@ class UserLevelService(
     }
 
     fun createUserLevel(request: CreateUserLevelRequest): UserLevel {
-        userLevelRepository.findFirstByEmail(request.email)?.let {
-            throw UserAlreadyExistsException("User '${request.email}' already exists.")
+        userLevelRepository.findFirstByUsername(request.username)?.let {
+            throw UserAlreadyExistsException("User '${request.username}' already exists.")
         }
 
         return saveUser(request)
@@ -128,15 +130,21 @@ class UserLevelService(
             }
 
     fun saveUser(request: CreateUserLevelRequest): UserLevel {
-        val username = request.email.substringBefore("@")
+        val username = request.username.substringBefore("@")
         val uniqueCode =
-            RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase().also {
-                sendUniqueCodeEmail(username, it, request.email)
-            }
+            RandomStringUtils
+                .randomAlphanumeric(UNIQUE_CODE_SIZE)
+                .uppercase()
+                .also { code ->
+                    if (featureFlags.sendEmail) {
+                        sendUniqueCodeEmail(username, code, request.username)
+                    }
+                }
+
         return userLevelRepository.save(
             UserLevel(
                 userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
-                email = request.email,
+                email = request.username,
                 username = username,
                 level = BotMessage.DEFAULT_LEVEL,
                 uniqueCode = uniqueCode,

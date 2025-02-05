@@ -56,7 +56,8 @@ overmind:
       stories-bucket:
         name: cipher-quest
         folder: stories
-
+  feature:
+    send-email: ${FEATURE_SEND_EMAIL:false}
 
 
 server:
