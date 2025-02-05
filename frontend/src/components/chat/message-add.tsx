@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { FormControl, FormHelperText } from '@mui/material';
 import { ArrowUp } from '@phosphor-icons/react';
 import Button from '@mui/material/Button';
 import { GameStatus } from '@/api/chat/types';
@@ -30,6 +31,7 @@ const MessageInputButton = (props: MessageInputButtonProps) => {
   const { messages } = useChat();
   const lastMessage =
     messages.length > 0 ? messages[messages.length - 1] : undefined;
+  const maxLength = 1000;
 
   const gameEnded = lastMessage?.info?.status !== GameStatus.IN_PROGRESS;
 
@@ -60,23 +62,29 @@ const MessageInputButton = (props: MessageInputButtonProps) => {
       direction='row'
       spacing={2}
       sx={{
-        alignItems: 'center',
+        alignItems: 'flex-start',
         flexShrink: 0,
         alignSelf: 'stretch',
       }}
       marginBottom={isMobile ? 0 : 4}
     >
-      <OutlinedInput
-        disabled={disabled || gameEnded}
-        onChange={handleChange}
-        onKeyUp={handleKeyUp}
-        placeholder='Ask something...'
-        sx={{
-          flex: '1 1 auto',
-          background: 'var(--mui-palette-background-paper)',
-        }}
-        value={content}
-      />
+      <FormControl fullWidth>
+        <OutlinedInput
+          disabled={disabled || gameEnded}
+          onChange={handleChange}
+          onKeyUp={handleKeyUp}
+          inputProps={{ maxLength: maxLength }}
+          placeholder='Ask something...'
+          sx={{
+            flex: '1 1 auto',
+            background: 'var(--mui-palette-background-paper)',
+          }}
+          value={content}
+        />
+        <FormHelperText
+          sx={{ textAlign: 'right' }}
+        >{`${content.length}/${maxLength}`}</FormHelperText>
+      </FormControl>
       <Tooltip title='Send'>
         <Button
           color='primary'
