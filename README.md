@@ -59,6 +59,7 @@ When running the backend from your IDE, you need to set the following environmen
 -   `MAIL_PORT`: SMTP email port
 -   `MAIL_USERNAME`: SMTP username account
 -   `MAIL_PASSWORD`: SMTP username password
+-   `FEATURE_SEND_EMAIL`: Send email feature
 -   Working directory: `${PWD}/backend`
     ![IDE Configuration](./docs/assets/working-dir.png)
 
