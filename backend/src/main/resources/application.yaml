@@ -49,6 +49,8 @@ overmind:
     unique-code:
       from: noreply@welld.io
       subject: Urgent Instructions
+  prompt:
+    max-length: 1000
   cloud:
     storage:
       stories-bucket:
