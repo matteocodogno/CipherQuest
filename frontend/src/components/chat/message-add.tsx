@@ -62,7 +62,7 @@ const MessageInputButton = (props: MessageInputButtonProps) => {
       direction='row'
       spacing={2}
       sx={{
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
         flexShrink: 0,
         alignSelf: 'stretch',
       }}
@@ -73,18 +73,24 @@ const MessageInputButton = (props: MessageInputButtonProps) => {
           disabled={disabled || gameEnded}
           onChange={handleChange}
           onKeyUp={handleKeyUp}
-          inputProps={{ maxLength: maxLength }}
+          inputProps={{
+            maxLength: maxLength,
+          }}
           placeholder='Ask something...'
           sx={{
-            flex: '1 1 auto',
             background: 'var(--mui-palette-background-paper)',
+            padding: 1,
           }}
           value={content}
+          multiline
+          minRows={1}
+          maxRows={5}
         />
         <FormHelperText
-          sx={{ textAlign: 'right' }}
+          sx={{ textAlign: 'right', height: 2 }}
         >{`${content.length}/${maxLength}`}</FormHelperText>
       </FormControl>
+
       <Tooltip title='Send'>
         <Button
           color='primary'
@@ -94,12 +100,14 @@ const MessageInputButton = (props: MessageInputButtonProps) => {
             bgcolor: 'var(--mui-palette-primary-main)',
             color: 'text.primary',
             '&:hover': { bgcolor: 'var(--mui-palette-primary-dark)' },
+            marginBottom: 0.7,
           }}
           endIcon={<ArrowUp />}
         >
           Send
         </Button>
       </Tooltip>
+
       <input hidden ref={fileInputRef} type='file' />
     </Stack>
   );
