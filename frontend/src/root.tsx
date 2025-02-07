@@ -1,6 +1,7 @@
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Analytics } from '@/components/core/analytics.tsx';
+import { FeaturesProvider } from './contexts/features/features-provider';
 import { LocalizationProvider } from '@/components/core/localization-provider.tsx';
 import { Metadata } from '@/types/metadata';
 import { ReactNode } from 'react';
@@ -10,9 +11,9 @@ import { Toaster } from 'sonner';
 import { UserProvider } from '@/contexts/auth/custom/user-context.tsx';
 import { config } from '@/config.ts';
 
-const metadata = {title: config.site.name} satisfies Metadata;
+const metadata = { title: config.site.name } satisfies Metadata;
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 type RootProps = {
   children: ReactNode;
@@ -27,12 +28,14 @@ export const Root = ({ children }: RootProps) => (
     <QueryClientProvider client={queryClient}>
       <Analytics>
         <LocalizationProvider>
-          <UserProvider>
-            <ThemeProvider>
-              {children}
-              <Toaster position='bottom-right' />
-            </ThemeProvider>
-          </UserProvider>
+          <FeaturesProvider>
+            <UserProvider>
+              <ThemeProvider>
+                {children}
+                <Toaster position='bottom-right' />
+              </ThemeProvider>
+            </UserProvider>
+          </FeaturesProvider>
         </LocalizationProvider>
       </Analytics>
       <ReactQueryDevtools initialIsOpen={false} />

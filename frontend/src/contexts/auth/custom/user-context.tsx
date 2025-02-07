@@ -1,4 +1,11 @@
-import { ReactElement, ReactNode, createContext, useCallback, useEffect, useState } from 'react';
+import {
+  ReactElement,
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { User } from '@/types/user';
 import { authClient } from '@/lib/auth/custom/client.ts';
 import { logger } from '@/lib/default-loggger.ts';
@@ -36,14 +43,22 @@ export const UserProvider = ({ children }: UserProviderProps): ReactElement => {
 
       if (error) {
         logger.error(error);
-        setState({ user: null, error: 'Something went wrong!', isLoading: false});
+        setState({
+          user: null,
+          error: 'Something went wrong!',
+          isLoading: false,
+        });
         return;
       }
 
       setState({ user, error: null, isLoading: false });
     } catch (err) {
       logger.error('Error checking session', err);
-      setState({ user: null, error: 'Something went wrong!', isLoading: false});
+      setState({
+        user: null,
+        error: 'Something went wrong!',
+        isLoading: false,
+      });
     }
   }, []);
 
