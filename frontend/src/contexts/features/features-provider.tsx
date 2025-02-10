@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { FeaturesContext } from './features-context';
+import useGetFeatures from '@/api/features/use-get-features';
 
 type FeaturesProviderProps = {
   children: ReactNode;
@@ -7,7 +8,11 @@ type FeaturesProviderProps = {
 const FeaturesProvider = ({
   children,
 }: FeaturesProviderProps): ReactElement => {
-  const features = {};
+  const { data: features, isError } = useGetFeatures();
+
+  if (isError) {
+    throw new Error('Error getting feature status');
+  }
 
   return (
     <FeaturesContext.Provider value={{ features }}>
