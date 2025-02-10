@@ -24,6 +24,8 @@ class GameService(
     private val functionChatClient: ChatClient,
     @Value("\${application.win-condition}")
     private val winCondition: String,
+    @Value("\${overmind.prompt.max-length}")
+    private val promptMaxLength: Int,
     private val userLevelService: UserLevelService,
     private val functionCallbackContext: FunctionCallbackContext,
     private val messageContext: MessageContext,
@@ -153,11 +155,13 @@ class GameService(
         userId: String,
         userMessage: String,
     ): BotMessage {
+        val userMessageTruncated: String = userMessage.take(promptMaxLength)
+
         val userLevel = userLevelService.getLevelByUser(userId)
 
         return listOf(::detectCheat, ::gameOver, ::gameWin)
-            .firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessage)) }
-            ?: gameNextTurn(Pair(userLevel, userMessage)).let { response ->
+            .firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessageTruncated)) }
+            ?: gameNextTurn(Pair(userLevel, userMessageTruncated)).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
                 val messageId = vectorStoreService.getLastMessage(userId).id
                 vectorStoreService.updateInfo(messageId, messageContext.context)
