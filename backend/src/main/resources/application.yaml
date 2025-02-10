@@ -49,6 +49,12 @@ overmind:
     unique-code:
       from: noreply@welld.io
       subject: Urgent Instructions
+  cloud:
+    storage:
+      stories-bucket:
+        name: cipher-quest
+        folder: stories
+
 
 
 server:
