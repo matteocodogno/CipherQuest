@@ -1,3 +1,4 @@
+import { SIGNUP_ERROR } from './constants';
 import { SignUpParams } from '@/lib/auth/custom/client.ts';
 import { logger } from '@/lib/default-loggger.ts';
 import { z } from 'zod';
@@ -23,7 +24,7 @@ export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
   });
 
   if (response.status === 409) {
-    throw new Error('Username already exists.');
+    throw new Error(SIGNUP_ERROR.USERNAME_ALREADY_EXISTS);
   }
 
   const jsonResponse = await response.json();

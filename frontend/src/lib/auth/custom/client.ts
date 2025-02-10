@@ -1,9 +1,9 @@
 import type { User } from '@/types/user';
 import { initializeGameSessionInfo } from '@/lib/game/localStore';
-import { signUpApi } from '@/contexts/auth/custom/api.ts';
+import { signUpApi } from '@/api/auth/api.ts';
 
 export type SignUpParams = {
-  email: string;
+  username: string;
   firstName?: string;
   lastName?: string;
 };
@@ -20,10 +20,14 @@ const authClientBuilder = () => ({
       initializeGameSessionInfo();
 
       return {};
-    } catch {
-      return {
-        error: 'Email address already exists. Use another address please.',
-      };
+    } catch (error) {
+      console.debug({ error });
+
+      if (error instanceof Error) {
+        return { error: error.message };
+      }
+
+      return {};
     }
   },
 

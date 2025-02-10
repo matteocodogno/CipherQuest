@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { FeaturesContext } from './features-context';
+import { logger } from '@/lib/default-loggger';
 import useGetFeatures from '@/api/features/use-get-features';
 
 type FeaturesProviderProps = {
@@ -11,7 +12,7 @@ const FeaturesProvider = ({
   const { data: features, isError } = useGetFeatures();
 
   if (isError) {
-    throw new Error('Error getting feature status');
+    logger.error('Error getting feature status');
   }
 
   return (
