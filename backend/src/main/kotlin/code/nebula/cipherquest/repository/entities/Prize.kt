@@ -8,7 +8,7 @@ import java.time.LocalDate
 data class Prize(
     @Id
     var id: String,
-    var prizeName: String,
+    var name: String,
     var position: Int,
     var date: LocalDate = LocalDate.now(),
 )

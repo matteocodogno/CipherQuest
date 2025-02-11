@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS prize
 (
     id        uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-    prize_name       VARCHAR(50),
+    name       VARCHAR(50),
     position         INT,
     date    DATE
 );
