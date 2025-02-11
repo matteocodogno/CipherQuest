@@ -26,3 +26,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20251301152000-user-level-username-remove-limit.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20251002163000-prize-table.sql
