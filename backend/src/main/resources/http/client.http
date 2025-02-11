@@ -12,6 +12,10 @@ POST http://localhost:8080/api/rag/loadQuestions
 
 POST http://localhost:8080/api/rag/loadRedacted
 
+### GET prizes
+
+GET http://localhost:8080/api/prize
+
 ### POST create a new user
 POST http://127.0.0.1:8080/api/user
 Content-Type: application/json
@@ -150,3 +154,5 @@ POST http://localhost:8080/api/chat/{{userId}}
 
 ### get doc by id
 GET http://localhost:8080/api/document/7ffbc351-a55sc-4019-a615-3bf8faf3a4a1
+
+
