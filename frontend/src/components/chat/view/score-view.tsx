@@ -175,10 +175,10 @@ export const ScoreView = (): ReactElement => {
             <TableBody>
               {firstThree?.map((row) => (
                 <GradientTableRow key={row.index} index={row.index}>
-                  <TableCell>{row.index + 1}</TableCell>
-                  <TableCell>{row.username}</TableCell>
+                  <TableCell width={'30%'}>{row.index + 1}</TableCell>
+                  <TableCell width={'100%'}>{row.username}</TableCell>
                   <TableCell align='right'>{row.score}</TableCell>
-                  <TableCell align='right'>{row.time}</TableCell>
+                  <TableCell align='right'>{row.time}'</TableCell>
                 </GradientTableRow>
               ))}
             </TableBody>
@@ -197,10 +197,10 @@ export const ScoreView = (): ReactElement => {
             <TableBody>
               {fourToEight?.map((row) => (
                 <TableRow key={row.index}>
-                  <TableCell>{row.index + 1}</TableCell>
-                  <TableCell>{row.username}</TableCell>
+                  <TableCell width={'30%'}>{row.index + 1}</TableCell>
+                  <TableCell width={'100%'}>{row.username}</TableCell>
                   <TableCell align='right'>{row.score}</TableCell>
-                  <TableCell align='right'>{row.time}</TableCell>
+                  <TableCell align='right'>{row.time}'</TableCell>
                 </TableRow>
               ))}
             </TableBody>
