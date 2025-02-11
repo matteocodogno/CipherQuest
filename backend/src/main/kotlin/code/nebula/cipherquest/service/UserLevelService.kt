@@ -115,29 +115,24 @@ class UserLevelService(
                 TimeFrameFilter.LAST_WEEK -> now.minusWeeks(1)
                 TimeFrameFilter.LAST_MONTH -> now.minusMonths(1)
                 TimeFrameFilter.LAST_YEAR -> now.minusYears(1)
+                TimeFrameFilter.ALL -> null
             }
 
         return userLevelRepository
             .findAll()
-            .filter { user ->
-                val date = user.terminatedAt ?: user.updatedAt
-                date.isAfter(cutoff)
-            }.filter { it.score > 0 }
+            .asSequence()
+            .filter { user -> cutoff?.let { (user.terminatedAt ?: user.updatedAt).isAfter(it) } ?: true }
+            .filter { it.score > 0 }
             .sortedByDescending { it.score }
-            .mapIndexed { index, userLevel ->
+            .mapIndexed { index, user ->
                 ScoreboardEntry(
                     index = index,
-                    username = userLevel.username,
-                    score = userLevel.score.toInt(),
-                    userId = userLevel.userId,
-                    time =
-                        ChronoUnit.MINUTES
-                            .between(
-                                userLevel.createdAt,
-                                userLevel.terminatedAt ?: userLevel.updatedAt,
-                            ).toInt(),
+                    username = user.username,
+                    score = user.score.toInt(),
+                    userId = user.userId,
+                    time = ChronoUnit.MINUTES.between(user.createdAt, user.terminatedAt ?: user.updatedAt).toInt(),
                 )
-            }
+            }.toList()
     }
 
     fun saveUser(request: CreateUserLevelRequest): UserLevel {

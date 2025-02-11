@@ -5,4 +5,5 @@ enum class TimeFrameFilter {
     LAST_WEEK,
     LAST_MONTH,
     LAST_YEAR,
+    ALL,
 }
