@@ -6,7 +6,7 @@ const useGetScoreboard = (params: URLSearchParams) =>
   useQuery({
     queryKey: ['scoreboard', params],
     queryFn: () =>
-      fetch(SCOREBOARD_URL + `/?${params}`, {
+      fetch(SCOREBOARD_URL + `?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

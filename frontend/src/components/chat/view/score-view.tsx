@@ -15,7 +15,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { ArrowLeft } from '@phosphor-icons/react';
 import Box from '@mui/material/Box';
@@ -75,11 +75,11 @@ const GradientTableRow = styled(TableRow)(({ index }: { index: number }) => ({
 
 export const ScoreView = (): ReactElement => {
   const [currentPeriod, setCurrentPeriod] = useState<ScoreboardPeriod>(
-    ScoreboardPeriod.ALL,
+    ScoreboardPeriod.TODAY,
   );
   const { isError, isLoading, data, error, refetch } = useGetScoreboard(
     new URLSearchParams({
-      time: currentPeriod,
+      timeFrameFilter: currentPeriod,
     }),
   );
   const isMobile = useIsMobile();
@@ -87,13 +87,13 @@ export const ScoreView = (): ReactElement => {
   const firstThree = useMemo(() => data?.slice(0, 3), [data]);
   const fourToEight = useMemo(() => data?.slice(3, 8), [data]);
 
-  const handleChange = useCallback(
-    (event: SelectChangeEvent) => {
-      setCurrentPeriod(event.target.value as ScoreboardPeriod);
-      refetch();
-    },
-    [refetch],
-  );
+  const handleChange = useCallback((event: SelectChangeEvent) => {
+    setCurrentPeriod(event.target.value as ScoreboardPeriod);
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [currentPeriod, refetch]);
 
   if (isError) {
     console.error('Error loading the scoreboard', error);
@@ -196,6 +196,7 @@ export const ScoreView = (): ReactElement => {
                   onChange={handleChange}
                 >
                   <MenuItem value={ScoreboardPeriod.ALL}>All</MenuItem>
+                  <MenuItem value={ScoreboardPeriod.TODAY}>Today</MenuItem>
                   <MenuItem value={ScoreboardPeriod.LAST_WEEK}>
                     Last week
                   </MenuItem>
