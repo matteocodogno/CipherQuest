@@ -29,7 +29,19 @@ GET http://localhost:8080/api/chat/{{userId}}
 
 ### GET the scoreboard
 
-GET http://localhost:8080/api/score/
+GET http://localhost:8080/api/score
+
+### GET the scoreboard LAST WEEK
+
+GET http://localhost:8080/api/score?timeFrameFilter=LAST_WEEK
+
+### GET the scoreboard LAST MONTH
+
+GET http://localhost:8080/api/score?timeFrameFilter=LAST_MONTH
+
+### GET the scoreboard LAST YEAR
+
+GET http://localhost:8080/api/score?timeFrameFilter=LAST_YEAR
 
 ### POST request with memory id {{userId}}
 

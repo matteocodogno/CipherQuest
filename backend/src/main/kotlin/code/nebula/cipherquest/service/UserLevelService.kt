@@ -3,6 +3,7 @@ package code.nebula.cipherquest.service
 import code.nebula.cipherquest.configuration.properties.UniqueCodeMailProperties
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
+import code.nebula.cipherquest.models.TimeFrameFilter
 import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
@@ -106,11 +107,23 @@ class UserLevelService(
             .also(::setScoreCheated)
             .let(userLevelRepository::save)
 
-    fun calculateScoreboard(): List<ScoreboardEntry> =
-        userLevelRepository
+    fun calculateScoreboard(timeFrameFilter: TimeFrameFilter): List<ScoreboardEntry> {
+        val now = OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val cutoff =
+            when (timeFrameFilter) {
+                TimeFrameFilter.TODAY -> now
+                TimeFrameFilter.LAST_WEEK -> now.minusWeeks(1)
+                TimeFrameFilter.LAST_MONTH -> now.minusMonths(1)
+                TimeFrameFilter.LAST_YEAR -> now.minusYears(1)
+            }
+
+        return userLevelRepository
             .findAll()
-            .filter { it.score > 0 }
-            .sortedByDescending(UserLevel::score)
+            .filter { user ->
+                val date = user.terminatedAt ?: user.updatedAt
+                date.isAfter(cutoff)
+            }.filter { it.score > 0 }
+            .sortedByDescending { it.score }
             .mapIndexed { index, userLevel ->
                 ScoreboardEntry(
                     index = index,
@@ -121,11 +134,11 @@ class UserLevelService(
                         ChronoUnit.MINUTES
                             .between(
                                 userLevel.createdAt,
-                                userLevel.terminatedAt
-                                    ?: userLevel.updatedAt,
+                                userLevel.terminatedAt ?: userLevel.updatedAt,
                             ).toInt(),
                 )
             }
+    }
 
     fun saveUser(request: CreateUserLevelRequest): UserLevel {
         val username = request.email.substringBefore("@")

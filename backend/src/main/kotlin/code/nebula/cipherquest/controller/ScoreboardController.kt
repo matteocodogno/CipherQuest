@@ -2,10 +2,12 @@ package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.controller.request.Score
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
+import code.nebula.cipherquest.models.TimeFrameFilter
 import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -14,7 +16,9 @@ class ScoreboardController(
     private val userLevelService: UserLevelService,
 ) {
     @GetMapping
-    fun getScoreboard(): List<ScoreboardEntry> = userLevelService.calculateScoreboard()
+    fun getScoreboard(
+        @RequestParam(defaultValue = "TODAY") timeFrameFilter: TimeFrameFilter,
+    ): List<ScoreboardEntry> = userLevelService.calculateScoreboard(timeFrameFilter)
 
     @GetMapping("/{id}")
     fun getScore(
