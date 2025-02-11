@@ -14,7 +14,7 @@ const UserLevel = z.object({
 export type UserLevel = z.infer<typeof UserLevel>;
 
 export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
-  const response = await fetch('/api/user', {
+  const response = await fetch('/api/user/overmind', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

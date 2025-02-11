@@ -1,6 +1,5 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.configuration.properties.UniqueCodeMailProperties
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
 import code.nebula.cipherquest.models.TimeFrameFilter
@@ -10,22 +9,15 @@ import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
 import jakarta.persistence.EntityNotFoundException
 import org.apache.commons.lang3.RandomStringUtils
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
-import org.springframework.mail.SimpleMailMessage
-import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
-import org.stringtemplate.v4.ST
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random.Default.nextLong
 
 @Service
-@Suppress("TooManyFunctions")
 class UserLevelService(
     private val userLevelRepository: UserLevelRepository,
-    private val emailSender: JavaMailSender,
-    private val uniqueCodeMailProperties: UniqueCodeMailProperties,
+    private val mailService: MailService,
 ) {
     companion object {
         private const val LEVEL_UP_COINS = 10
@@ -37,9 +29,6 @@ class UserLevelService(
         private const val LEVEL_SCORE = 250
         private const val UNIQUE_CODE_SIZE = 8
     }
-
-    @Value("classpath:/emails/unique-code.st")
-    private lateinit var uniqueCodeEmail: Resource
 
     fun calculateScore(user: UserLevel): UserLevel {
         val win = user.terminatedAt != null
@@ -60,23 +49,21 @@ class UserLevelService(
         return user
     }
 
-    fun createUserLevel(request: CreateUserLevelRequest): UserLevel {
+    fun createUserLevel(
+        request: CreateUserLevelRequest,
+        storyName: String,
+    ): UserLevel {
         userLevelRepository.findFirstByEmail(request.email)?.let {
             throw UserAlreadyExistsException("User '${request.email}' already exists.")
         }
 
-        return saveUser(request)
+        return saveUser(request, storyName)
     }
 
     fun getLevelByUser(userId: String): UserLevel =
         userLevelRepository.findById(userId).orElseThrow {
             EntityNotFoundException("User with ID $userId not found")
         }
-
-    fun increaseQuestionCounter(userId: String) {
-        getLevelByUser(userId)
-            .let(userLevelRepository::save)
-    }
 
     fun decreaseCoins(userId: String): UserLevel =
         getLevelByUser(userId)
@@ -124,40 +111,24 @@ class UserLevelService(
             }.toList()
     }
 
-    fun saveUser(request: CreateUserLevelRequest): UserLevel {
+    fun saveUser(
+        request: CreateUserLevelRequest,
+        storyName: String,
+    ): UserLevel {
         val username = request.email.substringBefore("@")
-        val uniqueCode =
-            RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase().also {
-                sendUniqueCodeEmail(username, it, request.email)
+        val uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase()
+
+        return userLevelRepository
+            .save(
+                UserLevel(
+                    userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
+                    email = request.email,
+                    username = username,
+                    level = BotMessage.DEFAULT_LEVEL,
+                    uniqueCode = uniqueCode,
+                ),
+            ).also { user ->
+                mailService.sendUniqueCodeEmail(request.email, storyName, username, user.uniqueCode)
             }
-        return userLevelRepository.save(
-            UserLevel(
-                userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
-                email = request.email,
-                username = username,
-                level = BotMessage.DEFAULT_LEVEL,
-                uniqueCode = uniqueCode,
-            ),
-        )
-    }
-
-    private fun sendUniqueCodeEmail(
-        username: String,
-        uniqueCode: String,
-        email: String,
-    ) {
-        val templateString = uniqueCodeEmail.getContentAsString(Charsets.UTF_8)
-        val template = ST(templateString, '{', '}')
-        template.add("username", username)
-        template.add("uniqueCode", uniqueCode)
-        val result = template.render()
-
-        SimpleMailMessage()
-            .apply {
-                from = uniqueCodeMailProperties.from
-                setTo(email)
-                subject = uniqueCodeMailProperties.subject
-                text = result
-            }.also { emailSender.send(it) }
     }
 }
