@@ -3,19 +3,26 @@ import {
   Card,
   CardContent,
   CardHeader,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from '@mui/material';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useMemo, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { ArrowLeft } from '@phosphor-icons/react';
 import Box from '@mui/material/Box';
 import { Match } from 'effect';
 import PageHeader from '@/components/core/Headings/page-header.tsx';
 import { RouterLink } from '@/components/core/link.tsx';
+import { ScoreboardPeriod } from '../constants';
 import Typography from '@mui/material/Typography';
 import useGetScoreboard from '@/api/score/use-get-scoreboard.ts';
 import useIsMobile from '@/hooks/use-is-mobile';
@@ -69,9 +76,16 @@ const GradientTableRow = styled(TableRow)(({ index }: { index: number }) => ({
 export const ScoreView = (): ReactElement => {
   const { isError, isLoading, data, error } = useGetScoreboard();
   const isMobile = useIsMobile();
+  const [currentPeriod, setCurrentPeriod] = useState<ScoreboardPeriod>(
+    ScoreboardPeriod.ALL,
+  );
 
   const firstThree = useMemo(() => data?.slice(0, 3), [data]);
   const fourToEight = useMemo(() => data?.slice(3, 8), [data]);
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setCurrentPeriod(event.target.value as ScoreboardPeriod);
+  };
 
   if (isError) {
     console.error('Error loading the scoreboard', error);
@@ -163,26 +177,50 @@ export const ScoreView = (): ReactElement => {
             background: 'var(--background-paper-glass)',
           }}
         >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCellHeader>Position</TableCellHeader>
-                <TableCellHeader>Player</TableCellHeader>
-                <TableCellHeader align='right'>Score</TableCellHeader>
-                <TableCellHeader align='right'>Time</TableCellHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {firstThree?.map((row) => (
-                <GradientTableRow key={row.index} index={row.index}>
-                  <TableCell width={'30%'}>{row.index + 1}</TableCell>
-                  <TableCell width={'100%'}>{row.username}</TableCell>
-                  <TableCell align='right'>{row.score}</TableCell>
-                  <TableCell align='right'>{row.time}'</TableCell>
-                </GradientTableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <Stack direction={'column'} flex={1} alignSelf={'stretch'}>
+            <Box sx={{ py: 2, px: 3 }}>
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel id='period-filter'>Filter by period</InputLabel>
+                <Select
+                  labelId='period-filter'
+                  id='period-filter-select'
+                  value={currentPeriod}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={ScoreboardPeriod.ALL}>All</MenuItem>
+                  <MenuItem value={ScoreboardPeriod.LAST_WEEK}>
+                    Last week
+                  </MenuItem>
+                  <MenuItem value={ScoreboardPeriod.LAST_MONTH}>
+                    Last month
+                  </MenuItem>
+                  <MenuItem value={ScoreboardPeriod.LAST_YEAR}>
+                    Last year
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCellHeader>Position</TableCellHeader>
+                  <TableCellHeader>Player</TableCellHeader>
+                  <TableCellHeader align='right'>Score</TableCellHeader>
+                  <TableCellHeader align='right'>Time</TableCellHeader>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {firstThree?.map((row) => (
+                  <GradientTableRow key={row.index} index={row.index}>
+                    <TableCell width={'30%'}>{row.index + 1}</TableCell>
+                    <TableCell width={'100%'}>{row.username}</TableCell>
+                    <TableCell align='right'>{row.score}</TableCell>
+                    <TableCell align='right'>{row.time}'</TableCell>
+                  </GradientTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Stack>
         </Card>
         <Card
           style={{
