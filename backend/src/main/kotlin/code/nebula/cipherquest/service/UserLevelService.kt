@@ -108,22 +108,11 @@ class UserLevelService(
             .let(userLevelRepository::save)
 
     fun calculateScoreboard(timeFrameFilter: TimeFrameFilter): List<ScoreboardEntry> {
-        val now = OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val cutoff =
-            when (timeFrameFilter) {
-                TimeFrameFilter.TODAY -> now
-                TimeFrameFilter.LAST_WEEK -> now.minusWeeks(1)
-                TimeFrameFilter.LAST_MONTH -> now.minusMonths(1)
-                TimeFrameFilter.LAST_YEAR -> now.minusYears(1)
-                TimeFrameFilter.ALL -> null
-            }
+        val cutoff = timeFrameFilter.startDate()
 
         return userLevelRepository
-            .findAll()
+            .findByUpdatedAtAfterAndScoreGreaterThanOrderByScoreDesc(cutoff, 0)
             .asSequence()
-            .filter { user -> cutoff?.let { (user.terminatedAt ?: user.updatedAt).isAfter(it) } ?: true }
-            .filter { it.score > 0 }
-            .sortedByDescending { it.score }
             .mapIndexed { index, user ->
                 ScoreboardEntry(
                     index = index,
