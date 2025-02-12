@@ -56,6 +56,10 @@ overmind:
       stories-bucket:
         name: cipher-quest
         folder: stories
+      email-templates-bucket:
+        name: cipher-quest
+        folder: email-templates
+
 
 
 
