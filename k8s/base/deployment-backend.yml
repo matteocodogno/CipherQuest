@@ -29,6 +29,12 @@ spec:
             items:
               - key: application.yml
                 path: application.yml
+        - name: google-cloud-key
+          secret:
+            secretName: cipher-quest-be
+            items:
+              - key: sa_key
+                path: key.json
       containers:
         - name: backend
           image: dockerhub.welld.io/welld/cipher-quest/backend:latest
@@ -87,7 +93,12 @@ spec:
                 configMapKeyRef:
                   name: cipher-quest-backend-param
                   key: SPRING_OPTS
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
           volumeMounts:
             - mountPath: /deployments/config
               name: app-config-volume
+              readOnly: true
+            - mountPath: /var/secrets/google
+              name: google-cloud-key
               readOnly: true

@@ -27,3 +27,8 @@ spring:
           auth: true
           starttls:
             enable: true
+
+logging:
+  level:
+    root: WARN
+    org.springframework.web: DEBUG
