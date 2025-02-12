@@ -21,6 +21,7 @@ import { ArrowLeft } from '@phosphor-icons/react';
 import Box from '@mui/material/Box';
 import { Match } from 'effect';
 import PageHeader from '@/components/core/Headings/page-header.tsx';
+import PrizeItem from './prize-item';
 import { RouterLink } from '@/components/core/link.tsx';
 import { ScoreboardPeriod } from '../constants';
 import Typography from '@mui/material/Typography';
@@ -165,24 +166,9 @@ export const ScoreView = (): ReactElement => {
         >
           <CardHeader title='Rewards 🤑' />
           <CardContent>
-            <Typography variant='body1'>
-              🥇 Prize for the first place: <strong>{prizes[0].name}</strong>
-              <br />
-              {prizes.length > 1 ? (
-                <>
-                  🥈 Prize for the second place:{' '}
-                  <strong>{prizes[1].name}</strong>
-                  <br />{' '}
-                </>
-              ) : null}
-              {prizes.length > 2 ? (
-                <>
-                  🥉 Prize for the third place:{' '}
-                  <strong>{prizes[2].name}</strong>
-                  <br />{' '}
-                </>
-              ) : null}
-            </Typography>
+            {prizes.map((prize) => (
+              <PrizeItem index={prize.position} label={prize.name} />
+            ))}
           </CardContent>
         </Card>
       )}
