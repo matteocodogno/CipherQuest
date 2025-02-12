@@ -27,7 +27,8 @@ The bot won't reveal its secret until you ask the right questions. Can you outsm
     -   to receive direct feedback in your IDE, you can install the ktlint plugin for your IDE (ktlint-intellij-plugin)
 -   Ensure you have created the following directory under the project base path: `.mnt/postgres/data`
 -   Configure the following environment variables:
-    -   `OPENAI_API_KEY` with the OpenAI API key, alternatively you can define it in your run configuration of your IDE.
+    - `OPENAI_API_KEY` with the OpenAI API key, alternatively you can define it in your run configuration of your IDE.
+    - `GOOGLE_APPLICATION_CREDENTIALS` with the Service Account key to access to GCS buckets
 
 ## Initialization
 
