@@ -2,11 +2,11 @@ import { SCOREBOARD_URL } from '@/api/constants.ts';
 import { ScoreboardResponseSchema } from '@/api/score/schema.ts';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetScoreboard = () =>
+const useGetScoreboard = (params: URLSearchParams) =>
   useQuery({
-    queryKey: ['scoreboard'],
+    queryKey: ['scoreboard', params],
     queryFn: () =>
-      fetch(SCOREBOARD_URL, {
+      fetch(SCOREBOARD_URL + `?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
