@@ -22,5 +22,5 @@ class EmailTemplateRepository(
             "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
         )
 
-    fun findUniqueCodeByStoryName(storyName: String): Blob = download(getBlobId(storyName, "unique-code.st"))
+    fun findUniqueCodeByStoryName(storyName: String): Blob = download(getBlobId(storyName, "unique-code.html"))
 }

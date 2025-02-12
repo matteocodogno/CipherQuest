@@ -2,8 +2,9 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.configuration.properties.UniqueCodeMailProperties
 import code.nebula.cipherquest.repository.gcs.EmailTemplateRepository
-import org.springframework.mail.SimpleMailMessage
+import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import org.stringtemplate.v4.ST
 
@@ -21,19 +22,22 @@ class MailService(
     ) {
         val message =
             emailTemplateRepository.findUniqueCodeByStoryName(storyName).let {
-                ST(String(it.getContent()), '{', '}')
+                ST(String(it.getContent()), '+', '+')
                     .apply {
                         add("uniqueCode", uniqueCode)
                         add("username", username)
                     }.render()
             }
 
-        SimpleMailMessage()
-            .apply {
-                from = uniqueCodeMailProperties.from
-                setTo(email)
-                subject = uniqueCodeMailProperties.subject
-                text = message
-            }.also { emailSender.send(it) }
+        val mimeMessage: MimeMessage = emailSender.createMimeMessage()
+
+        MimeMessageHelper(mimeMessage, true).apply {
+            setFrom(uniqueCodeMailProperties.from)
+            setTo(email)
+            setSubject(uniqueCodeMailProperties.subject)
+            setText(message, true)
+        }
+
+        emailSender.send(mimeMessage)
     }
 }
