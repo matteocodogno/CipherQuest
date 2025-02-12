@@ -11,6 +11,10 @@ enum class TimeFrameFilter {
     ALL,
     ;
 
+    companion object {
+        const val TEN_YEARS = 10L
+    }
+
     fun startDate(): OffsetDateTime =
         OffsetDateTime
             .now()
@@ -21,7 +25,7 @@ enum class TimeFrameFilter {
                     LAST_WEEK -> offsetDateTime.minusWeeks(1)
                     LAST_MONTH -> offsetDateTime.minusMonths(1)
                     LAST_YEAR -> offsetDateTime.minusYears(1)
-                    ALL -> OffsetDateTime.MIN
+                    ALL -> offsetDateTime.minusYears(TEN_YEARS)
                 }
             }
 }
