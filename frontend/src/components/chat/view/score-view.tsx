@@ -21,9 +21,11 @@ import { ArrowLeft } from '@phosphor-icons/react';
 import Box from '@mui/material/Box';
 import { Match } from 'effect';
 import PageHeader from '@/components/core/Headings/page-header.tsx';
+import PrizeItem from './prize-item';
 import { RouterLink } from '@/components/core/link.tsx';
 import { ScoreboardPeriod } from '../constants';
 import Typography from '@mui/material/Typography';
+import useGetPrizes from '@/api/score/use-get-prizes';
 import useGetScoreboard from '@/api/score/use-get-scoreboard.ts';
 import useIsMobile from '@/hooks/use-is-mobile';
 import { useUser } from '@/hooks/use-user';
@@ -77,11 +79,20 @@ export const ScoreView = (): ReactElement => {
   const [currentPeriod, setCurrentPeriod] = useState<ScoreboardPeriod>(
     ScoreboardPeriod.TODAY,
   );
-  const { isError, isLoading, data, error, refetch } = useGetScoreboard(
+  const {
+    isError,
+    isLoading: isLoadingScoreboard,
+    data,
+    error,
+    refetch,
+  } = useGetScoreboard(
     new URLSearchParams({
       timeFrameFilter: currentPeriod,
     }),
   );
+
+  const { isLoading: isLoadingPrizes, prizes } = useGetPrizes();
+
   const isMobile = useIsMobile();
 
   const firstThree = useMemo(() => data?.slice(0, 3), [data]);
@@ -114,7 +125,7 @@ export const ScoreView = (): ReactElement => {
     );
   }
 
-  if (isLoading) {
+  if (isLoadingScoreboard || isLoadingPrizes) {
     return (
       <Box
         style={{
@@ -144,29 +155,23 @@ export const ScoreView = (): ReactElement => {
       }}
     >
       <PageHeader title={'Scoreboard'} breadcrumb={<ScoreBreadcrumb />} />
-      <Card
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          alignSelf: 'stretch',
-        }}
-      >
-        <CardHeader title='Rewards 🤑' />
-        <CardContent>
-          <Typography variant='body1'>
-            🥇 Prize for the first place:{' '}
-            <strong>LEGO Star Wars TIE Interceptor 🧱</strong>
-            <br />
-            🥈 Prize for the second place:{' '}
-            <strong>WellD Stormtech backpack 🎒</strong>
-            <br />
-            🥉 Prize for the third place:{' '}
-            <strong>WellD Carhart backpack 🎒</strong>
-            <br />
-          </Typography>
-        </CardContent>
-      </Card>
+      {prizes && prizes.length > 0 && (
+        <Card
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            alignSelf: 'stretch',
+          }}
+        >
+          <CardHeader title='Rewards 🤑' />
+          <CardContent>
+            {prizes.map((prize) => (
+              <PrizeItem index={prize.position} label={prize.name} />
+            ))}
+          </CardContent>
+        </Card>
+      )}
       <Box
         style={{
           display: 'flex',

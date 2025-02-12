@@ -13,3 +13,13 @@ export const ScoreboardResponseSchema = z.array(
 export const ScoreResponseSchema = z.object({
   score: z.number().nonnegative(),
 });
+
+export const PrizesResponseSchema = z
+  .array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      position: z.number().nonnegative(),
+    }),
+  )
+  .optional();
