@@ -1,167 +1,107 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.components.MessageContext
-import code.nebula.cipherquest.models.DocumentType
+import code.nebula.cipherquest.configuration.properties.GameConfig
+import code.nebula.cipherquest.models.UserQuery
 import code.nebula.cipherquest.models.dto.BotMessage
-import code.nebula.cipherquest.repository.entities.UserLevel
-import org.springframework.ai.chat.client.ChatClient
-import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
-import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
-import org.springframework.ai.chat.messages.MessageType
-import org.springframework.ai.chat.model.ChatResponse
-import org.springframework.ai.model.function.FunctionCallback
-import org.springframework.ai.model.function.FunctionCallbackContext
-import org.springframework.ai.model.function.FunctionCallingOptionsBuilder
-import org.springframework.beans.factory.annotation.Value
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
+private val logger = KotlinLogging.logger {}
+
 @Service
-@Suppress("SwallowedException", "TooGenericExceptionCaught", "LongParameterList")
 class GameService(
-    private val chatClient: ChatClient,
-    private val functionChatClient: ChatClient,
-    @Value("\${application.win-condition}")
-    private val winCondition: String,
-    @Value("\${overmind.prompt.max-length}")
-    private val promptMaxLength: Int,
     private val userLevelService: UserLevelService,
-    private val functionCallbackContext: FunctionCallbackContext,
     private val messageContext: MessageContext,
     private val vectorStoreService: VectorStoreService,
+    private val chatService: ChatService,
+    private val gameConfig: GameConfig,
+    private val cheatDetectionService: CheatDetectionService,
 ) {
-    companion object {
-        private const val CHAT_MEMORY_MAX_SIZE = 20
-        private const val MAX_LEVEL = 3
-        private const val MIN_QUESTIONS = 6
-    }
-
     /**
-     * Check if the user is winning the game, and return the win message if so.
+     * Determines if the user has won the game based on their query input and handles the victory process.
+     *
+     * If the user's query matches the defined win condition, this method triggers the win process for the user,
+     * constructs a win message, logs the query and bot's response, updates additional information in the
+     * storage system, and returns a `BotMessage` representing the win state. If the win condition is not met,
+     * it returns `null`.
+     *
+     * @param userQuery the user query containing the user's information and their message input.
+     * @return a [BotMessage] representing the win state if the win condition is met, or `null` otherwise.
      */
-    private fun gameWin(userToQuery: Pair<UserLevel, String>): BotMessage? {
-        return if (Pattern
-                .compile(winCondition)
+    private fun gameWin(userQuery: UserQuery): BotMessage? =
+        if (Pattern
+                .compile(gameConfig.winCondition)
                 .toRegex()
-                .containsMatchIn(userToQuery.second)
+                .containsMatchIn(userQuery.message)
         ) {
-            userLevelService.hasWon(userToQuery.first.userId)
-            val botMessage =
-                BotMessage
-                    .buildWinMessage(userToQuery.first)
-            vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
-            vectorStoreService.saveMessage(userToQuery.first.userId, botMessage.message, MessageType.ASSISTANT)
-            val messageId = vectorStoreService.getLastMessage(userToQuery.first.userId).id
-            vectorStoreService.updateInfo(messageId, botMessage.info)
-            return botMessage
+            userLevelService.hasWon(userQuery.user.userId)
+            BotMessage.buildWinMessage(userQuery.user)
         } else {
             null
         }
-    }
 
     /**
-     * Check if the user has spent all their coins, and return the game over message if so.
+     * Determines if the game is over for the user based on their current coin count and processes the game over state.
+     *
+     * If the user's coins are less than or equal to zero, creates a game over message,
+     * logs the user's query and the corresponding bot message, updates additional information in storage,
+     * and returns the `BotMessage`. Otherwise, returns `null`.
+     *
+     * @param userQuery the user's query object containing user-specific data and the message they sent.
+     * @return a [BotMessage] representing the game over state if the game ends, or `null` if the game is not over.
      */
-    private fun gameOver(userToQuery: Pair<UserLevel, String>): BotMessage? {
-        return if (userToQuery.first.coins <= 0) {
-            val botMessage =
-                BotMessage
-                    .buildGameOverMessage(userToQuery.first)
-            vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
-            vectorStoreService.saveMessage(userToQuery.first.userId, botMessage.message, MessageType.ASSISTANT)
-            val messageId = vectorStoreService.getLastMessage(userToQuery.first.userId).id
-            vectorStoreService.updateInfo(messageId, botMessage.info)
-            return botMessage
+    private fun gameOver(userQuery: UserQuery): BotMessage? =
+        if (userQuery.user.coins <= 0) {
+            BotMessage.buildGameOverMessage(userQuery.user)
         } else {
             null
         }
-    }
 
-    private fun detectCheat(userToQuery: Pair<UserLevel, String>): BotMessage? {
-        val (userLevel, userMessage) = userToQuery
+    /**
+     * Detects if a user is attempting to cheat in the game based on their query.
+     * If cheating is detected, updates the user's status, logs the related messages,
+     * and returns a cheat detection message.
+     *
+     * @param userQuery the user query containing the user's information and message.
+     * @return a [BotMessage] indicating the detected cheating behavior, or `null` if no cheating is detected.
+     */
+    private fun detectCheat(userQuery: UserQuery): BotMessage? {
+        val userLevel = userQuery.user
         val userId = userLevel.userId
 
-        return Regex(winCondition)
-            .takeIf {
-                it.containsMatchIn(userMessage) &&
-                    userLevel.level < MAX_LEVEL &&
-                    vectorStoreService.countUserMessages(userId) < MIN_QUESTIONS
-            }?.let {
-                userLevelService.hasCheated(userId)
-                val botMessage = BotMessage.buildCheatMessage(userLevel)
+        if (cheatDetectionService.checkIfCheating(userQuery)) {
+            userLevelService.hasCheated(userId)
+            BotMessage.buildCheatMessage(userLevel)
+        }
 
-                vectorStoreService.saveMessage(userId, userMessage, MessageType.USER)
-                vectorStoreService.saveMessage(userId, botMessage.message, MessageType.ASSISTANT)
-                val messageId = vectorStoreService.getLastMessage(userToQuery.first.userId).id
-                vectorStoreService.updateInfo(messageId, botMessage.info)
-                botMessage
-            }
+        return null
     }
 
     /**
-     * Go ahead to the next turn in the game. Pass the user's message to the chat client and return the response.
+     * Processes the user's query for the next turn in the game and retrieves the corresponding response.
+     *
+     * @param userQuery the user's query containing their information and message.
+     * @return a string response generated based on the user's query.
      */
-    private fun gameNextTurn(userToQuery: Pair<UserLevel, String>): String {
-        val chatResponse = createChatResponseUsingProxyToolCalls(userToQuery)
-        val toolCallResult = executeToolCalls(chatResponse)
-
-        if (toolCallResult != null) {
-            vectorStoreService.saveMessage(userToQuery.first.userId, userToQuery.second, MessageType.USER)
-            vectorStoreService.saveMessage(userToQuery.first.userId, toolCallResult, MessageType.ASSISTANT)
-        }
-
-        return toolCallResult ?: fallbackToChatClient(userToQuery) ?: ""
-    }
-
-    private fun createChatResponseUsingProxyToolCalls(userToQuery: Pair<UserLevel, String>): ChatResponse? =
-        functionChatClient
-            .prompt()
-            .options(FunctionCallingOptionsBuilder().withProxyToolCalls(true).build())
-            .functions("getDiaryPages")
-            .system { sp -> sp.param("userId", userToQuery.first.userId).param("level", userToQuery.first.level) }
-            .user(userToQuery.second)
-            .call()
-            .chatResponse()
-
-    private fun executeToolCalls(chatResponse: ChatResponse?): String? =
-        chatResponse?.result?.output?.toolCalls?.firstNotNullOfOrNull { toolCall ->
-            val callback: FunctionCallback = functionCallbackContext.getFunctionCallback(toolCall.name, null)
-
-            try {
-                callback.call(toolCall.arguments())?.removeSurrounding("\"", "\"")
-            } catch (e: NullPointerException) {
-                return null
-            }
-        }
-
-    private fun fallbackToChatClient(userToQuery: Pair<UserLevel, String>): String? =
-        chatClient
-            .prompt()
-            .system { sp -> sp.param("userId", userToQuery.first.userId).param("level", userToQuery.first.level) }
-            .user(userToQuery.second)
-            .advisors { a ->
-                a
-                    .param(CHAT_MEMORY_CONVERSATION_ID_KEY, userToQuery.first.userId)
-                    .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, CHAT_MEMORY_MAX_SIZE)
-                    .param(
-                        QuestionAnswerAdvisor.FILTER_EXPRESSION,
-                        "type == '${DocumentType.DOCUMENT}' && level <= ${userToQuery.first.level}",
-                    )
-            }.call()
-            .content()
+    private fun gameNextTurn(userQuery: UserQuery): String = chatService.chat(userQuery)
 
     fun play(
         userId: String,
         userMessage: String,
     ): BotMessage {
-        val userMessageTruncated: String = userMessage.take(promptMaxLength)
-
-        val userLevel = userLevelService.getLevelByUser(userId)
+        val userQuery =
+            UserQuery(
+                Pair(
+                    userLevelService.getLevelByUser(userId),
+                    userMessage.take(gameConfig.prompt.maxLength),
+                ),
+            )
 
         return listOf(::detectCheat, ::gameOver, ::gameWin)
-            .firstNotNullOfOrNull { fn -> fn(Pair(userLevel, userMessageTruncated)) }
-            ?: gameNextTurn(Pair(userLevel, userMessageTruncated)).let { response ->
+            .firstNotNullOfOrNull { fn -> fn(userQuery) }
+            ?: gameNextTurn(userQuery).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
                 val messageId = vectorStoreService.getLastMessage(userId).id
                 vectorStoreService.updateInfo(messageId, messageContext.context)

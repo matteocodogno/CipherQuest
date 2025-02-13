@@ -22,8 +22,6 @@ class VectorStoreService(
 ) {
     fun loadDocument(docs: List<Document>) = vectorStore.add(TokenTextSplitter().split(docs))
 
-    fun search(query: String): List<Document> = vectorStore.similaritySearch(query)
-
     fun countUserMessages(id: String): Int = vectorStoreRepository.countUserMessages(id)
 
     fun existsDocumentWithSource(filename: String) = vectorStoreRepository.existsDocumentWithSource(filename)
@@ -48,6 +46,13 @@ class VectorStoreService(
         info: Map<String, Any>?,
     ) {
         vectorStoreRepository.updateInfo(id, JSONObject(info).toString())
+    }
+
+    fun updateInfoOnLastMessage(
+        userId: String,
+        info: Map<String, Any>?,
+    ) {
+        updateInfo(getLastMessage(userId).id, info)
     }
 
     fun getLastMessage(userId: String): Message = vectorStoreRepository.getMessageHistoryByUserId(userId).last()
