@@ -9,9 +9,9 @@ POST http://localhost:8080/api/rag/load/{storyName}
 
 POST http://localhost:8080/api/rag/loadQuestions/overmind
 
-### POST request to load redacted on pgvector
+### POST request to load protected on pgvector
 
-POST http://localhost:8080/api/rag/loadRedacted
+POST http://localhost:8080/api/rag/loadProtected/overmind
 
 ### GET prizes
 

@@ -3,7 +3,7 @@ package code.nebula.cipherquest.configuration
 import code.nebula.cipherquest.advisor.LastMessageMemoryAppenderAdvisor
 import code.nebula.cipherquest.advisor.LevelUpAdvisor
 import code.nebula.cipherquest.advisor.LoggingAdvisor
-import code.nebula.cipherquest.advisor.RedactInputAdvisor
+import code.nebula.cipherquest.advisor.ProtectedInputAdvisor
 import code.nebula.cipherquest.advisor.SanitizeInputAdvisor
 import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
 import code.nebula.cipherquest.components.MessageContext
@@ -53,7 +53,7 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
-                RedactInputAdvisor(vectorStore, vectorStoreService),
+                ProtectedInputAdvisor(vectorStore, vectorStoreService),
                 LevelUpAdvisor(vectorStore, userLevelService, messageContext),
                 VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
                 LastMessageMemoryAppenderAdvisor(vectorStoreService),
@@ -77,7 +77,7 @@ class ChatClientConfiguration(
         return builder
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
-                RedactInputAdvisor(vectorStore, vectorStoreService),
+                ProtectedInputAdvisor(vectorStore, vectorStoreService),
                 LoggingAdvisor(),
             ).build()
     }
