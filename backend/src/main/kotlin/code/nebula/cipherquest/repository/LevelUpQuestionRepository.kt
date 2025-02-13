@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface LevelUpQuestionRepository: ListCrudRepository<LevelUpQuestion, String> {
+    fun findAllByStoryName(storyName: String): List<LevelUpQuestion>
 }

@@ -9,4 +9,5 @@ data class LevelUpQuestion(
     var id: String,
     var level: Int,
     var question: String,
+    var storyName: String,
 )

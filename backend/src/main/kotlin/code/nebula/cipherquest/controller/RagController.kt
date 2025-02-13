@@ -78,10 +78,12 @@ class RagController(
         }
     }
 
-    @PostMapping("/loadQuestions")
-    fun loadQuestions() {
+    @PostMapping("/loadQuestions/{storyName}")
+    fun loadQuestions(
+        @PathVariable storyName: String,
+    ) {
         val documents: List<Document> =
-            levelUpQuestionRepository.findAll()
+            levelUpQuestionRepository.findAllByStoryName(storyName)
                 .filterNot { q ->
                     vectorStoreService.existsDocumentWithSource(q.question)
                 }.map { d ->
