@@ -4,6 +4,6 @@ enum class DocumentType {
     DOCUMENT,
     DIARY,
     QUESTION,
-    REDACTED,
+    PROTECTED,
     MEMORY,
 }

@@ -16,7 +16,7 @@ import org.springframework.core.Ordered
 import org.springframework.stereotype.Service
 
 @Service
-class RedactInputAdvisor(
+class ProtectedInputAdvisor(
     private val vectorStore: VectorStore,
     private val vectorStoreService: VectorStoreService,
 ) : CallAroundAdvisor {
@@ -60,17 +60,17 @@ class RedactInputAdvisor(
     }
 
     fun checkQuestion(query: String): Boolean {
-        val redactedQuestionFound =
+        val protectedQuestionFound =
             vectorStore
                 .similaritySearch(
                     SearchRequest
                         .defaults()
                         .withSimilarityThreshold(SIMILARITY_THRESHOLD)
                         .withQuery(query)
-                        .withFilterExpression("type == '${DocumentType.REDACTED}'"),
+                        .withFilterExpression("type == '${DocumentType.PROTECTED}'"),
                 ).size > 0
 
-        return redactedQuestionFound
+        return protectedQuestionFound
     }
 
     private fun doGetConversationId(context: Map<String, Any>) = context["chat_memory_conversation_id"].toString()
