@@ -86,7 +86,8 @@ class RagController(
             levelUpQuestionRepository.findAllByStoryName(storyName)
                 .filterNot { q ->
                     vectorStoreService.existsDocumentWithSource(q.question)
-                }.map { d ->
+                }
+                .map { d ->
                     Document(
                         d.question,
                         mapOf<String, Any>(
