@@ -2,8 +2,8 @@ package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.CustomByteArrayResource
 import code.nebula.cipherquest.models.DocumentType
+import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.gcs.StoryRepository
-import code.nebula.cipherquest.service.LevelUpQuestions
 import code.nebula.cipherquest.service.RedactedQuestions
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -26,6 +26,7 @@ class RagController(
     val resourceLoader: ResourceLoader,
     val resourcePatternResolver: ResourcePatternResolver,
     private val storyRepository: StoryRepository,
+    private val levelUpQuestionRepository: LevelUpQuestionRepository,
 ) {
     @PostMapping("/load/{storyName}")
     fun load(
@@ -80,7 +81,7 @@ class RagController(
     @PostMapping("/loadQuestions")
     fun loadQuestions() {
         val documents: List<Document> =
-            LevelUpQuestions.levelUpQuestionList
+            levelUpQuestionRepository.findAll()
                 .filterNot { q ->
                     vectorStoreService.existsDocumentWithSource(q.question)
                 }.map { d ->

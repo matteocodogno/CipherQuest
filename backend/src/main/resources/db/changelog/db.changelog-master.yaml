@@ -29,3 +29,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20251002163000-prize-table.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250213095432-create-level-up-question-table.sql
