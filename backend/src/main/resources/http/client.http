@@ -1,8 +1,9 @@
 @userId = 8536759380
 
 ### POST request to load documents on pgvector
+### storyName: [overmind]
 
-POST http://localhost:8080/api/rag/load
+POST http://localhost:8080/api/rag/load/{storyName} 
 
 ### POST request to load questions on pgvector
 
