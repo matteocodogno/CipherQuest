@@ -1,6 +1,61 @@
 @userId = 8536759380
 @storyName = Overmind
 
+### POST request to add a level up question
+
+POST http://localhost:8080/api/question/levelUp
+Content-Type: application/json
+
+{
+    "level": 2,
+    "question": "This is a level up question",
+    "storyName": "foo"
+}
+
+### POST request to add multiple level up questions
+
+POST http://localhost:8080/api/question/bulk/levelUp
+Content-Type: application/json
+
+[
+    {
+        "level": 2,
+        "question": "Level up question 1",
+        "storyName": "foo"
+    },
+    {
+        "level": 3,
+        "question": "Level up question 2",
+        "storyName": "foo"
+    }
+]
+
+### POST request to add a protected question
+
+POST http://localhost:8080/api/question/protected
+Content-Type: application/json
+
+{
+    "question": "This is a protected question",
+    "storyName": "foo"
+}
+
+### POST request to add multiple protected questions
+
+POST http://localhost:8080/api/question/bulk/protected
+Content-Type: application/json
+
+[
+    {
+        "question": "Protected question 1",
+        "storyName": "foo"
+    },
+    {
+        "question": "Protected question 2",
+        "storyName": "foo"
+    }
+]
+
 ### POST request to load documents on pgvector
 ### storyName: [overmind]
 
