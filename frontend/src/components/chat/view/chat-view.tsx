@@ -11,6 +11,7 @@ import ChatHeader from '../header/chat-header';
 import { GameStatus } from '@/api/chat/types';
 import { MessageBox } from '../messages/message-box';
 import MessageEndGame from '../messages/message-end-game';
+import ScrollDownButton from '../buttons/scroll-down-button';
 import { useChat } from '@/hooks/use-chat';
 import useIsMobile from '@/hooks/use-is-mobile';
 
@@ -96,6 +97,10 @@ export const ChatView = ({ children }: PropsWithChildren): ReactElement => {
           <MessageEndGame status={gameStatus} />
         )}
       </Stack>
+      <Box sx={{marginBottom: 4}}>
+
+      <ScrollDownButton handleClick={()=>{}} />
+      </Box>
       {children}
     </>
   );
