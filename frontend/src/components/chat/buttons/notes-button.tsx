@@ -1,6 +1,6 @@
 import { Fab } from '@mui/material';
 import { Notepad } from '@phosphor-icons/react';
-import { NotesButtonVariant } from './constants';
+import { NotesButtonVariant } from '../constants';
 import useIsMobile from '@/hooks/use-is-mobile';
 
 interface NotesButtonProps {

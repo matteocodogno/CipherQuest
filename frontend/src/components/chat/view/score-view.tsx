@@ -21,7 +21,7 @@ import { ArrowLeft } from '@phosphor-icons/react';
 import Box from '@mui/material/Box';
 import { Match } from 'effect';
 import PageHeader from '@/components/core/Headings/page-header.tsx';
-import PrizeItem from './prize-item';
+import PrizeItem from '../prizes/prize-item';
 import { RouterLink } from '@/components/core/link.tsx';
 import { ScoreboardPeriod } from '../constants';
 import Typography from '@mui/material/Typography';
