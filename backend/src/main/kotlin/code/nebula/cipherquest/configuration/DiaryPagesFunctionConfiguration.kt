@@ -18,7 +18,7 @@ class DiaryPagesFunctionConfiguration {
         java.util.function.Function { req ->
             req.let { (userId, level) ->
                 val allDiaryPages: List<Source>? = vectorStoreService.getAllDiaryPages(level)
-                messageContext.context["sources"] = allDiaryPages.orEmpty()
+                messageContext.sources = allDiaryPages.orEmpty()
 
                 "Resource #$userId, here is the Dr. Elara Chen's diary pages that you have access to as requested."
             }

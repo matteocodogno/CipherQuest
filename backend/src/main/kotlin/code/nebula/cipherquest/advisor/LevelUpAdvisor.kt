@@ -33,7 +33,7 @@ class LevelUpAdvisor(
         val id = doGetConversationId(advisedRequest.adviseContext)
         val result = levelUp(id, advisedRequest.userText)
 
-        messageContext.context["isLevelUp"] = result
+        messageContext.isLevelUp = result
 
         return chain.nextAroundCall(advisedRequest)
     }
