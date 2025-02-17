@@ -38,13 +38,13 @@ spring:
             enable: true
 
 overmind:
+  win-condition: ${WIN_CONDITION:.*WIN*}
   ai:
     rag:
       result-limit: 3
       similarity-threshold: 0.76
     chat:
-      history:
-        max-size: 10
+      history-max-size: 10
   mail:
     unique-code:
       from: noreply@welld.io
@@ -133,4 +133,3 @@ info:
 application:
   name: '@project.name@'
   version: '@project.version@'
-  win-condition: ${WIN_CONDITION:.*WIN*}

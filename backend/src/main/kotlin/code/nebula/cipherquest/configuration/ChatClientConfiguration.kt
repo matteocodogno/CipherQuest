@@ -7,6 +7,7 @@ import code.nebula.cipherquest.advisor.ProtectedInputAdvisor
 import code.nebula.cipherquest.advisor.SanitizeInputAdvisor
 import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
 import code.nebula.cipherquest.components.MessageContext
+import code.nebula.cipherquest.configuration.properties.GameConfig
 import code.nebula.cipherquest.service.UserLevelService
 import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.ai.chat.client.ChatClient
@@ -20,19 +21,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 
 @Configuration
-@Suppress("LongParameterList")
 class ChatClientConfiguration(
     private val messageContext: MessageContext,
     private val chatModel: ChatModel,
     private val vectorStore: VectorStore,
     private val vectorStoreService: VectorStoreService,
     private val userLevelService: UserLevelService,
-    @Value("\${overmind.ai.chat.history.max-size}")
-    private val chatHistoryWindowSize: Int,
-    @Value("\${overmind.ai.rag.result-limit}")
-    private val requestLimitRag: Int,
-    @Value("\${overmind.ai.rag.similarity-threshold}")
-    private val similarityThreshold: Double,
+    private val gameConfig: GameConfig,
 ) {
     @Value("classpath:/prompts/system-message.st")
     private lateinit var systemMessageResource: Resource
@@ -55,14 +50,14 @@ class ChatClientConfiguration(
                 SanitizeInputAdvisor(),
                 ProtectedInputAdvisor(vectorStore, vectorStoreService),
                 LevelUpAdvisor(vectorStore, userLevelService, messageContext),
-                VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, chatHistoryWindowSize),
+                VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, gameConfig.ai.chat.historyMaxSize),
                 LastMessageMemoryAppenderAdvisor(vectorStoreService),
                 TitleQuestionAnswerAdvisor(
                     vectorStore,
                     SearchRequest
                         .defaults()
-                        .withTopK(requestLimitRag)
-                        .withSimilarityThreshold(similarityThreshold),
+                        .withTopK(gameConfig.ai.rag.resultLimit)
+                        .withSimilarityThreshold(gameConfig.ai.rag.similarityThreshold),
                     ragSystemText,
                     messageContext,
                 ),
