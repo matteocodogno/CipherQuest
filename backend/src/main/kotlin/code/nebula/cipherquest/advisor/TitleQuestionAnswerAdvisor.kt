@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.advisor
 
 import code.nebula.cipherquest.components.MessageContext
+import code.nebula.cipherquest.models.dto.Source
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
@@ -56,18 +57,16 @@ class TitleQuestionAnswerAdvisor(
             context[RETRIEVED_DOCUMENTS] = documents
         }
 
-        messageContext.context["sources"] =
+        messageContext.sources =
             documents
-                .map {
-                    mapOf(
-                        "id" to it.id,
-                        "title" to (
-                            it.metadata["source"]
-                                ?.toString()
-                                ?.split(".")
-                                ?.getOrNull(1)
-                                .orEmpty()
-                        ),
+                .map { doc ->
+                    Source(
+                        doc.id,
+                        doc.metadata["source"]
+                            ?.toString()
+                            ?.split(".")
+                            ?.getOrNull(1)
+                            .orEmpty()
                     )
                 }.toList()
 
