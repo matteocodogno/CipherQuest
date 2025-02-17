@@ -35,3 +35,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20250213154430-create-protected-question-table.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20251702095500-prize_story_name.sql
