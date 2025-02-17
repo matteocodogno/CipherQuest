@@ -9,5 +9,6 @@ import java.time.LocalDate
 class PrizeService(
     private val prizeRepository: PrizeRepository,
 ) {
-    fun findAllByCurrentDate(): List<Prize> = prizeRepository.findAllByDateOrderByPositionAsc(LocalDate.now())
+    fun findAllByCurrentDate(storyName: String): List<Prize> =
+        prizeRepository.findAllByStoryNameAndDateOrderByPositionAsc(storyName, LocalDate.now())
 }
