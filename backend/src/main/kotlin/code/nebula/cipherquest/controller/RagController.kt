@@ -2,12 +2,9 @@ package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.CustomByteArrayResource
 import code.nebula.cipherquest.models.DocumentType
-import code.nebula.cipherquest.repository.LevelUpQuestionRepository
-import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import code.nebula.cipherquest.repository.gcs.StoryRepository
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.ai.document.Document
 import org.springframework.ai.reader.TextReader
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,8 +19,6 @@ private val logger = KotlinLogging.logger {}
 class RagController(
     val vectorStoreService: VectorStoreService,
     private val storyRepository: StoryRepository,
-    private val levelUpQuestionRepository: LevelUpQuestionRepository,
-    private val protectedQuestionRepository: ProtectedQuestionRepository,
 ) {
     @PostMapping("/load/{storyName}")
     fun load(
@@ -72,61 +67,6 @@ class RagController(
             logger.info { "Loading ${documents.size} documents" }
         } else {
             logger.info { "No new documents to load" }
-        }
-    }
-
-    @PostMapping("/loadQuestions/{storyName}")
-    fun loadQuestions(
-        @PathVariable storyName: String,
-    ) {
-        val documents: List<Document> =
-            levelUpQuestionRepository
-                .findAllByStoryName(storyName)
-                .filterNot { q ->
-                    vectorStoreService.existsDocumentWithSource(q.question)
-                }.map { d ->
-                    Document(
-                        d.question,
-                        mapOf<String, Any>(
-                            "type" to DocumentType.QUESTION,
-                            "level" to d.level,
-                            "source" to d.question,
-                        ),
-                    )
-                }
-
-        if (documents.isNotEmpty()) {
-            logger.info { "Loading ${documents.size} questions" }
-            vectorStoreService.loadDocument(documents)
-        } else {
-            logger.info { "No new questions to load" }
-        }
-    }
-
-    @PostMapping("/loadProtected/{storyName}")
-    fun loadProtected(
-        @PathVariable storyName: String,
-    ) {
-        val documents: List<Document> =
-            protectedQuestionRepository
-                .findAllByStoryName(storyName)
-                .filterNot { q ->
-                    vectorStoreService.existsDocumentWithSource(q.question)
-                }.map { d ->
-                    Document(
-                        d.question,
-                        mapOf<String, Any>(
-                            "type" to DocumentType.PROTECTED,
-                            "source" to d,
-                        ),
-                    )
-                }
-
-        if (documents.isNotEmpty()) {
-            logger.info { "Loading ${documents.size} questions" }
-            vectorStoreService.loadDocument(documents)
-        } else {
-            logger.info { "No new questions to load" }
         }
     }
 }
