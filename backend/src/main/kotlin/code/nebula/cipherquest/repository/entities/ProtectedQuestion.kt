@@ -4,13 +4,13 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import java.util.*
+import java.util.UUID
 
 @Entity
 data class ProtectedQuestion(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
-    val question: String,
+    val content: String,
     val storyName: String,
 )
