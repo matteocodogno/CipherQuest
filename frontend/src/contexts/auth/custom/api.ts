@@ -1,3 +1,4 @@
+import { STORY_NAME } from '@/constants.ts'
 import { SignUpParams } from '@/lib/auth/custom/client.ts';
 import { logger } from '@/lib/default-loggger.ts';
 import { z } from 'zod';
@@ -14,7 +15,7 @@ const UserLevel = z.object({
 export type UserLevel = z.infer<typeof UserLevel>;
 
 export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
-  const response = await fetch('/api/user/overmind', {
+  const response = await fetch(`/api/user/${STORY_NAME}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
