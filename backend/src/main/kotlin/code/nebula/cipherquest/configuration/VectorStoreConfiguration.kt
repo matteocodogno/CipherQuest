@@ -1,8 +1,8 @@
 package code.nebula.cipherquest.configuration
 
 import org.springframework.ai.embedding.EmbeddingModel
-import org.springframework.ai.vectorstore.PgVectorStore
 import org.springframework.ai.vectorstore.VectorStore
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.JdbcTemplate
@@ -15,14 +15,14 @@ class VectorStoreConfiguration(
     @Bean
     fun levelUpQuestionVectorStore(): VectorStore =
         PgVectorStore
-            .Builder(jdbcTemplate, embeddingModel)
-            .withVectorTableName("level_up_question")
+            .builder(jdbcTemplate, embeddingModel)
+            .vectorTableName("level_up_question")
             .build()
 
     @Bean
     fun protectedQuestionVectorStore(): VectorStore =
         PgVectorStore
-            .Builder(jdbcTemplate, embeddingModel)
-            .withVectorTableName("protected_question")
+            .builder(jdbcTemplate, embeddingModel)
+            .vectorTableName("protected_question")
             .build()
 }
