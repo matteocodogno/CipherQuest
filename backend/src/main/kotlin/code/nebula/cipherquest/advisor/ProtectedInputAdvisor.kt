@@ -32,7 +32,7 @@ class ProtectedInputAdvisor(
         advisedRequest: AdvisedRequest,
         chain: CallAroundAdvisorChain,
     ): AdvisedResponse {
-        if (checkQuestion(advisedRequest.userText)) {
+        if (hasMatchingProtectedDocuments(advisedRequest.userText)) {
             val id = doGetConversationId(advisedRequest.adviseContext)
 
             val message = "Resource #$id, the answer is REDACTED for your safety."
@@ -43,7 +43,7 @@ class ProtectedInputAdvisor(
             return AdvisedResponse(
                 ChatResponse
                     .builder()
-                    .withGenerations(
+                    .generations(
                         listOf(
                             Generation(
                                 AssistantMessage(
@@ -59,19 +59,24 @@ class ProtectedInputAdvisor(
         }
     }
 
-    fun checkQuestion(query: String): Boolean {
-        val protectedQuestionFound =
+    /**
+     * Checks if there are any matching documents of type `DocumentType.PROTECTED` based on the given query.
+     *
+     * @param query The search query to find matching protected documents.
+     * @return `true` if there are matching protected documents, `false` otherwise.
+     */
+    fun hasMatchingProtectedDocuments(query: String) =
+        (
             vectorStore
                 .similaritySearch(
                     SearchRequest
-                        .defaults()
-                        .withSimilarityThreshold(SIMILARITY_THRESHOLD)
-                        .withQuery(query)
-                        .withFilterExpression("type == '${DocumentType.PROTECTED}'"),
-                ).size > 0
-
-        return protectedQuestionFound
-    }
+                        .builder()
+                        .similarityThreshold(SIMILARITY_THRESHOLD)
+                        .query(query)
+                        .filterExpression("type == '${DocumentType.PROTECTED}'")
+                        .build(),
+                )?.size ?: 0
+            ) > 0
 
     private fun doGetConversationId(context: Map<String, Any>) = context["chat_memory_conversation_id"].toString()
 }

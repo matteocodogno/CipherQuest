@@ -48,11 +48,12 @@ class LevelUpAdvisor(
             vectorStore
                 .similaritySearch(
                     SearchRequest
-                        .defaults()
-                        .withSimilarityThreshold(LEVEL_UP_THRESHOLD)
-                        .withQuery(query)
-                        .withFilterExpression("type == '${DocumentType.QUESTION}'"),
-                ).minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
+                        .builder()
+                        .query(query)
+                        .similarityThreshold(LEVEL_UP_THRESHOLD)
+                        .filterExpression("type == '${DocumentType.QUESTION}'")
+                        .build(),
+                )?.minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
                 ?.metadata
                 ?.get("level")
                 ?.toString()
