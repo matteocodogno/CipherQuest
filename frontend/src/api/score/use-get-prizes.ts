@@ -11,7 +11,7 @@ const useGetPrizes = () => {
   } = useQuery({
     queryKey: ['prizes'],
     queryFn: () =>
-      fetch(PRIZES_URL + `/${STORY_NAME}`, {
+      fetch(`${PRIZES_URL}/${STORY_NAME}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
