@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 
 @Configuration
+@Suppress("LongParameterList")
 class ChatClientConfiguration(
     private val messageContext: MessageContext,
     private val chatModel: ChatModel,
