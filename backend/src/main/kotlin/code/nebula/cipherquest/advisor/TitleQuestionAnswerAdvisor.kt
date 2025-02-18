@@ -55,9 +55,6 @@ class TitleQuestionAnswerAdvisor(
         val documents = vectorStore.similaritySearch(searchRequestToUse)
 
         if (documents != null) {
-//            TODO: Do we need it?
-//            context[RETRIEVED_DOCUMENTS] = documents
-
             messageContext.sources =
                 documents
                     .map { doc ->
