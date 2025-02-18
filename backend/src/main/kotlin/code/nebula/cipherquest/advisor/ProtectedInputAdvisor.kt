@@ -76,7 +76,7 @@ class ProtectedInputAdvisor(
                         .filterExpression("type == '${DocumentType.PROTECTED}'")
                         .build(),
                 )?.size ?: 0
-            ) > 0
+        ) > 0
 
     private fun doGetConversationId(context: Map<String, Any>) = context["chat_memory_conversation_id"].toString()
 }
