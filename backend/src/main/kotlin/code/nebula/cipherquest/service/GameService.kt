@@ -103,8 +103,7 @@ class GameService(
             .firstNotNullOfOrNull { fn -> fn(userQuery) }
             ?: gameNextTurn(userQuery).let { response ->
                 val user = userLevelService.decreaseCoins(userId)
-                val messageId = vectorStoreService.getLastMessage(userId).id
-                vectorStoreService.updateInfo(messageId, messageContext)
+                vectorStoreService.updateInfoOnLastMessage(userId, messageContext)
                 return BotMessage.build(response, user, messageContext)
             }
     }
