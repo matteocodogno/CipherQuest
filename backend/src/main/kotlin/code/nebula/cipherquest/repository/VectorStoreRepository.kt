@@ -66,11 +66,11 @@ class VectorStoreRepository(
                 Source(
                     id = rs.getString("id"),
                     title =
-                    rs
-                        .getString("title")
-                        .split(".")
-                        .getOrNull(1)
-                        .orEmpty(),
+                        rs
+                            .getString("title")
+                            .split(".")
+                            .getOrNull(1)
+                            .orEmpty(),
                 )
             },
             level,
@@ -101,9 +101,9 @@ class VectorStoreRepository(
                     sender = Sender.valueOf(rs.getString("sender")),
                     timestamp = rs.getObject("timestamp", OffsetDateTime::class.java),
                     info =
-                    rs.getString("info")?.let { json ->
-                        objectMapper.readValue(json, Info::class.java)
-                    } ?: Info(),
+                        rs.getString("info")?.let { json ->
+                            objectMapper.readValue(json, Info::class.java)
+                        } ?: Info(),
                 )
             },
             userId,
