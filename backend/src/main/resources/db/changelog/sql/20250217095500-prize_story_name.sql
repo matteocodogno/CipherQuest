@@ -6,5 +6,5 @@
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where table_name='prize' and column_name='story_name';
 
 ALTER TABLE prize
-    ADD COLUMN story_name TEXT NULL;
+    ADD COLUMN story_name TEXT DEFAULT 'overmind' NOT NULL;
 
