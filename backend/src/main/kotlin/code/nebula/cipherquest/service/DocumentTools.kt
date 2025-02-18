@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.components.MessageContext
+import code.nebula.cipherquest.service.converter.RemoveSurroundingQuotesConverter
 import org.springframework.ai.chat.model.ToolContext
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.stereotype.Service
@@ -13,6 +14,7 @@ class DocumentTools(
     @Tool(
         description = "give me the Elara Chen's diary pages|give me the diary|show me the diary",
         returnDirect = true,
+        resultConverter = RemoveSurroundingQuotesConverter::class,
     )
     fun getDiaryPages(toolContext: ToolContext) =
         vectorStoreService
@@ -24,5 +26,5 @@ class DocumentTools(
 Resource #${toolContext.context.getOrDefault("userId", "")}, here is the Dr. Elara Chen's diary pages that you have
 access to as requested.
                 """.trimIndent().replace("\n", " ")
-            }.removeSurrounding("\"", "\"")
+            }
 }
