@@ -12,7 +12,7 @@ import org.springframework.ai.vectorstore.VectorStore
 
 class TitleQuestionAnswerAdvisor(
     private val vectorStore: VectorStore,
-    private val searchRequest: SearchRequest = SearchRequest.defaults(),
+    private val searchRequest: SearchRequest = SearchRequest.builder().build(),
     private val userTextAdvise: String = DEFAULT_USER_TEXT_ADVISE,
     private val messageContext: MessageContext,
 ) : QuestionAnswerAdvisor(vectorStore, searchRequest, userTextAdvise) {
@@ -47,41 +47,43 @@ class TitleQuestionAnswerAdvisor(
         val searchRequestToUse =
             SearchRequest
                 .from(this.searchRequest)
-                .withQuery(request.userText())
-                .withFilterExpression(doGetFilterExpression(context))
+                .query(request.userText())
+                .filterExpression(doGetFilterExpression(context))
+                .build()
 
         // 2. Search for similar documents in the vector store.
         val documents = vectorStore.similaritySearch(searchRequestToUse)
 
         if (documents != null) {
-            context[RETRIEVED_DOCUMENTS] = documents
-        }
+//            TODO: Do we need it?
+//            context[RETRIEVED_DOCUMENTS] = documents
 
-        messageContext.sources =
-            documents
-                .map { doc ->
-                    Source(
-                        doc.id,
-                        doc.metadata["source"]
-                            ?.toString()
-                            ?.split(".")
-                            ?.getOrNull(1)
-                            .orEmpty()
-                    )
-                }.toList()
+            messageContext.sources =
+                documents
+                    .map { doc ->
+                        Source(
+                            doc.id,
+                            doc.metadata["source"]
+                                ?.toString()
+                                ?.split(".")
+                                ?.getOrNull(1)
+                                .orEmpty(),
+                        )
+                    }.toList()
+        }
 
         // 3. Create the context from the documents.
         val documentContext =
             documents
                 ?.joinToString(
                     System.lineSeparator(),
-                ) { document -> "Title: ${document.metadata["source"]}\n${document.content}" }
+                ) { document -> "Title: ${document.metadata["source"]}\n${document.text}" }
 
         // 4. Advise the user parameters.
         return AdvisedRequest
             .from(request)
-            .withUserText(advisedUserText)
-            .withUserParams(mapOf("question_answer_context" to documentContext))
+            .userText(advisedUserText)
+            .userParams(mapOf("question_answer_context" to documentContext))
             .build()
     }
 
@@ -90,7 +92,7 @@ class TitleQuestionAnswerAdvisor(
             .builder()
             .from(advisedResponse.response())
             .run {
-                withMetadata(
+                metadata(
                     RETRIEVED_DOCUMENTS,
                     advisedResponse.adviseContext()[RETRIEVED_DOCUMENTS],
                 )

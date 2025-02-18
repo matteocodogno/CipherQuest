@@ -35,13 +35,9 @@ class ChatClientConfiguration(
     @Value("classpath:/prompts/rag-system-text.st")
     private lateinit var ragSystemTextResource: Resource
 
-    @Value("classpath:/prompts/memory-text.st")
-    private lateinit var memoryTextResource: Resource
-
     @Bean
     fun chatClient(): ChatClient {
         val ragSystemText = ragSystemTextResource.getContentAsString(Charsets.UTF_8)
-        val memorySystemText = memoryTextResource.getContentAsString(Charsets.UTF_8)
         val builder = ChatClient.builder(chatModel)
 
         return builder
@@ -50,29 +46,21 @@ class ChatClientConfiguration(
                 SanitizeInputAdvisor(),
                 ProtectedInputAdvisor(vectorStore, vectorStoreService),
                 LevelUpAdvisor(vectorStore, userLevelService, messageContext),
-                VectorStoreChatMemoryAdvisor(vectorStore, memorySystemText, gameConfig.ai.chat.historyMaxSize),
+                VectorStoreChatMemoryAdvisor
+                    .builder(vectorStore)
+                    .chatMemoryRetrieveSize(gameConfig.ai.chat.historyMaxSize)
+                    .build(),
                 LastMessageMemoryAppenderAdvisor(vectorStoreService),
                 TitleQuestionAnswerAdvisor(
                     vectorStore,
                     SearchRequest
-                        .defaults()
-                        .withTopK(gameConfig.ai.rag.resultLimit)
-                        .withSimilarityThreshold(gameConfig.ai.rag.similarityThreshold),
+                        .builder()
+                        .topK(gameConfig.ai.rag.resultLimit)
+                        .similarityThreshold(gameConfig.ai.rag.similarityThreshold)
+                        .build(),
                     ragSystemText,
                     messageContext,
                 ),
-                LoggingAdvisor(),
-            ).build()
-    }
-
-    @Bean
-    fun functionChatClient(): ChatClient {
-        val builder = ChatClient.builder(chatModel)
-
-        return builder
-            .defaultSystem(systemMessageResource)
-            .defaultAdvisors(
-                ProtectedInputAdvisor(vectorStore, vectorStoreService),
                 LoggingAdvisor(),
             ).build()
     }

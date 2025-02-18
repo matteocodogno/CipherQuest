@@ -42,7 +42,7 @@ class LastMessageMemoryAppenderAdvisor(
             chain.nextAroundCall(
                 AdvisedRequest
                     .from(advisedRequest)
-                    .withSystemParams(updatedParams)
+                    .systemParams(updatedParams)
                     .build(),
             )
         }
