@@ -24,5 +24,5 @@ class DocumentTools(
 Resource #${toolContext.context.getOrDefault("userId", "")}, here is the Dr. Elara Chen's diary pages that you have
 access to as requested.
                 """.trimIndent().replace("\n", " ")
-            }
+            }.removeSurrounding("\"", "\"")
 }
