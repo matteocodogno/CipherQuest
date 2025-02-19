@@ -16,14 +16,8 @@ class LevelUpQuestionRepository(
         levelUpQuestionVectorStore,
         jdbcTemplate,
         "level_up_question",
+        mapOf("level" to LevelUpQuestionRequest::level),
     ) {
-    override val getFindAllByStoryNameQuery: String =
-        """
-        SELECT id, content, metadata->>'storyName' as storyName, metadata->>'level' as level
-        FROM level_up_question
-        WHERE metadata->>'storyName' = ?
-        """.trimIndent()
-
     override fun buildQuestion(rs: ResultSet) =
         LevelUpQuestion(
             id = UUID.fromString(rs.getString("id")),
@@ -31,12 +25,4 @@ class LevelUpQuestionRepository(
             storyName = rs.getString("storyName"),
             content = rs.getString("content"),
         )
-
-    override fun getDocumentMetadata(
-        question: LevelUpQuestionRequest,
-        storyName: String,
-    ) = mapOf(
-        "storyName" to storyName,
-        "level" to question.level,
-    )
 }
