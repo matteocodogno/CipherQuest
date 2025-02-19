@@ -1,16 +1,11 @@
 package code.nebula.cipherquest.repository.entities
 
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
 import java.util.UUID
 
 @Entity
-data class ProtectedQuestion(
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID? = null,
-    val content: String,
-    val storyName: String,
-)
+class ProtectedQuestion(
+    override val id: UUID? = null,
+    override val content: String,
+    override val storyName: String,
+) : Question(id, content, storyName)

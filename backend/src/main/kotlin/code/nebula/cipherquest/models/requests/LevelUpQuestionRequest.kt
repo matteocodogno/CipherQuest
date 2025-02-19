@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.models.requests
 
 data class LevelUpQuestionRequest(
-    val content: String,
+    override val content: String,
     val level: Int,
-)
+) : QuestionRequest
