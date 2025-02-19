@@ -12,14 +12,10 @@ import java.sql.ResultSet
 abstract class QuestionRepository<S : QuestionRequest, T : Question>(
     private val vectorStore: VectorStore,
     private val jdbcTemplate: JdbcTemplate,
-    tableName: String,
+    private val tableName: String,
+    private val additionalColumns: Map<String, (S) -> Any> = emptyMap(),
 ) {
-    protected open val getFindAllByStoryNameQuery: String =
-        """
-        SELECT id, content, metadata->>'storyName' as storyName
-        FROM $tableName
-        WHERE metadata->>'storyName' = ?
-        """.trimIndent()
+    abstract fun buildQuestion(rs: ResultSet): T
 
     open fun save(
         newQuestions: List<S>,
@@ -44,7 +40,7 @@ abstract class QuestionRepository<S : QuestionRequest, T : Question>(
         val query =
             """
             SELECT id, content, metadata->>'storyName' as storyName 
-            ${additionalMetadata.joinToString { ", metadata->>'$it' as $it" }}
+            ${additionalColumns.keys.joinToString { ", metadata->>'$it' as $it" }}
             FROM $tableName
             WHERE metadata->>'storyName' = ?
             """.trimIndent()
@@ -58,13 +54,15 @@ abstract class QuestionRepository<S : QuestionRequest, T : Question>(
         )
     }
 
-    abstract fun buildQuestion(rs: ResultSet): T
-
-    open fun getDocumentMetadata(
+    private fun getDocumentMetadata(
         question: S,
         storyName: String,
     ): Map<String, Any> =
-        mapOf(
-            "storyName" to storyName,
-        )
+        buildMap {
+            put("storyName", storyName)
+            putAll(
+                additionalColumns.entries
+                    .associate { (key, value) -> key to value(question) },
+            )
+        }
 }
