@@ -7,7 +7,9 @@ import java.time.OffsetDateTime
 
 @Repository
 interface UserLevelRepository : ListCrudRepository<UserLevel, String> {
-    fun findFirstByEmail(username: String): UserLevel?
+    fun findFirstByEmail(email: String): UserLevel?
+
+    fun existsUserLevelByUsername(username: String): Boolean
 
     fun findByUpdatedAtAfterAndScoreGreaterThanOrderByScoreDesc(
         updatedAtAfter: OffsetDateTime,
