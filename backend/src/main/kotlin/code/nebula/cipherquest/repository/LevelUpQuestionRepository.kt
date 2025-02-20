@@ -4,8 +4,8 @@ import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
 import code.nebula.cipherquest.repository.entities.LevelUpQuestion
 import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.sql.ResultSet
 import java.util.UUID
 
 @Repository
@@ -19,11 +19,13 @@ class LevelUpQuestionRepository(
     ) {
     override val tableName = "level_up_question"
 
-    override fun buildQuestion(rs: ResultSet) =
-        LevelUpQuestion(
-            id = UUID.fromString(rs.getString("id")),
-            level = rs.getInt("level"),
-            storyName = rs.getString("storyName"),
-            content = rs.getString("content"),
-        )
+    override val questionMapper =
+        RowMapper<LevelUpQuestion> { rs, _ ->
+            LevelUpQuestion(
+                id = UUID.fromString(rs.getString("id")),
+                content = rs.getString("content"),
+                storyName = rs.getString("storyName"),
+                level = rs.getInt("level"),
+            )
+        }
 }

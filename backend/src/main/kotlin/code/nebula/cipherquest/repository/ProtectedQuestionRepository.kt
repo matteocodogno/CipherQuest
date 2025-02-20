@@ -4,8 +4,8 @@ import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
 import code.nebula.cipherquest.repository.entities.ProtectedQuestion
 import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.sql.ResultSet
 import java.util.UUID
 
 @Repository
@@ -18,10 +18,12 @@ class ProtectedQuestionRepository(
     ) {
     override val tableName = "protected_question"
 
-    override fun buildQuestion(rs: ResultSet): ProtectedQuestion =
-        ProtectedQuestion(
-            id = UUID.fromString(rs.getString("id")),
-            storyName = rs.getString("storyName"),
-            content = rs.getString("content"),
-        )
+    override val questionMapper =
+        RowMapper<ProtectedQuestion> { rs, _ ->
+            ProtectedQuestion(
+                id = UUID.fromString(rs.getString("id")),
+                content = rs.getString("content"),
+                storyName = rs.getString("storyName"),
+            )
+        }
 }
