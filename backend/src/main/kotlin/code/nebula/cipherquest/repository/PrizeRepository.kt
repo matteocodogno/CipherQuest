@@ -7,5 +7,8 @@ import java.time.LocalDate
 
 @Repository
 interface PrizeRepository : ListCrudRepository<Prize, String> {
-    fun findAllByDateOrderByPositionAsc(date: LocalDate): List<Prize>
+    fun findAllByStoryNameAndDateOrderByPositionAsc(
+        storyName: String,
+        date: LocalDate,
+    ): List<Prize>
 }

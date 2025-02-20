@@ -1,5 +1,6 @@
 import { PRIZES_URL } from '../constants';
 import { PrizesResponseSchema } from './schema';
+import { STORY_NAME } from '@/constants.ts'
 import { useQuery } from '@tanstack/react-query';
 
 const useGetPrizes = () => {
@@ -10,7 +11,7 @@ const useGetPrizes = () => {
   } = useQuery({
     queryKey: ['prizes'],
     queryFn: () =>
-      fetch(PRIZES_URL, {
+      fetch(`${PRIZES_URL}/${STORY_NAME}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
