@@ -29,7 +29,6 @@ class UserLevelService(
         private const val TIME_THRESHOLD = 30
         private const val LEVEL_SCORE = 250
         private const val UNIQUE_CODE_SIZE = 8
-        private const val LOWER_LIMIT_USERNAME_RANDOM_ID = 0
         private const val UPPER_LIMIT_USERNAME_RANDOM_ID = 100
     }
 
@@ -123,7 +122,7 @@ class UserLevelService(
         val username =
             generateSequence(
                 baseUsername,
-            ) { "$baseUsername${Random.nextInt(LOWER_LIMIT_USERNAME_RANDOM_ID, UPPER_LIMIT_USERNAME_RANDOM_ID)}" }
+            ) { "$baseUsername${Random.nextInt(UPPER_LIMIT_USERNAME_RANDOM_ID)}" }
                 .first { !userLevelRepository.existsUserLevelByUsername(it) }
 
         val uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase()
