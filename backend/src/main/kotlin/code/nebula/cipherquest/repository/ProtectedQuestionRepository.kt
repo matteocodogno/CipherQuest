@@ -15,8 +15,9 @@ class ProtectedQuestionRepository(
 ) : QuestionRepository<ProtectedQuestionRequest, ProtectedQuestion>(
         protectedQuestionVectorStore,
         jdbcTemplate,
-        "protected_question",
     ) {
+    override val tableName = "protected_question"
+
     override fun buildQuestion(rs: ResultSet): ProtectedQuestion =
         ProtectedQuestion(
             id = UUID.fromString(rs.getString("id")),
