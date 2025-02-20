@@ -12,7 +12,6 @@ import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import kotlin.random.Random
 import kotlin.random.Random.Default.nextLong
 
 @Service
@@ -29,7 +28,6 @@ class UserLevelService(
         private const val TIME_THRESHOLD = 30
         private const val LEVEL_SCORE = 250
         private const val UNIQUE_CODE_SIZE = 8
-        private const val UPPER_LIMIT_USERNAME_RANDOM_ID = 100
     }
 
     fun calculateScore(user: UserLevel): UserLevel {
@@ -119,10 +117,12 @@ class UserLevelService(
     ): UserLevel {
         val baseUsername = request.email.substringBefore("@")
 
+        var counter = 1
+
         val username =
             generateSequence(
                 baseUsername,
-            ) { "$baseUsername${Random.nextInt(UPPER_LIMIT_USERNAME_RANDOM_ID)}" }
+            ) { "$baseUsername${counter++}" }
                 .first { !userLevelRepository.existsUserLevelByUsername(it) }
 
         val uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase()
