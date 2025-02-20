@@ -14,7 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.UUID
 import java.util.stream.Collectors
 import java.util.stream.Stream
 import kotlin.test.Test
