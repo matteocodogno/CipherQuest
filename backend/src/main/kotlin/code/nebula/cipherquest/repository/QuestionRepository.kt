@@ -4,11 +4,9 @@ import code.nebula.cipherquest.models.requests.QuestionRequest
 import code.nebula.cipherquest.repository.entities.Question
 import org.springframework.ai.document.Document
 import org.springframework.ai.vectorstore.VectorStore
-import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.jdbc.core.JdbcTemplate
-import java.sql.ResultSet
+import org.springframework.jdbc.core.RowMapper
 
-@NoRepositoryBean
 abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
     private val vectorStore: VectorStore,
     private val jdbcTemplate: JdbcTemplate,
@@ -16,7 +14,7 @@ abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
 ) {
     abstract val tableName: String
 
-    abstract fun buildQuestion(rs: ResultSet): TYPE
+    abstract val questionMapper: RowMapper<TYPE>
 
     open fun save(
         newQuestions: List<REQUEST>,
@@ -48,9 +46,7 @@ abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
 
         return jdbcTemplate.query(
             query,
-            { rs, _ ->
-                buildQuestion(rs)
-            },
+            questionMapper,
             storyName,
         )
     }
