@@ -12,7 +12,7 @@ import java.sql.ResultSet
 abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
     private val vectorStore: VectorStore,
     private val jdbcTemplate: JdbcTemplate,
-    private val additionalColumns: Map<String, (REQUEST) -> Any> = emptyMap(),
+    private val additionalMetadata: Map<String, (REQUEST) -> Any> = emptyMap(),
 ) {
     abstract val tableName: String
 
@@ -41,7 +41,7 @@ abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
         val query =
             """
             SELECT id, content, metadata->>'storyName' as storyName 
-            ${additionalColumns.keys.joinToString { ", metadata->>'$it' as $it" }}
+            ${additionalMetadata.keys.joinToString { ", metadata->>'$it' as $it" }}
             FROM $tableName
             WHERE metadata->>'storyName' = ?
             """.trimIndent()
@@ -62,7 +62,7 @@ abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
         buildMap {
             put("storyName", storyName)
             putAll(
-                additionalColumns.entries
+                additionalMetadata.entries
                     .associate { (key, value) -> key to value(question) },
             )
         }
