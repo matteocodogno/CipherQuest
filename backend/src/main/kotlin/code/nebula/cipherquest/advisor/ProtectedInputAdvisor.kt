@@ -1,6 +1,5 @@
 package code.nebula.cipherquest.advisor
 
-import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
@@ -17,8 +16,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProtectedInputAdvisor(
-    private val vectorStore: VectorStore,
     private val vectorStoreService: VectorStoreService,
+    private val protectedQuestionVectorStore: VectorStore,
 ) : CallAroundAdvisor {
     companion object {
         private const val SIMILARITY_THRESHOLD = 0.95
@@ -67,13 +66,12 @@ class ProtectedInputAdvisor(
      */
     fun hasMatchingProtectedDocuments(query: String) =
         (
-            vectorStore
+            protectedQuestionVectorStore
                 .similaritySearch(
                     SearchRequest
                         .builder()
                         .similarityThreshold(SIMILARITY_THRESHOLD)
                         .query(query)
-                        .filterExpression("type == '${DocumentType.PROTECTED}'")
                         .build(),
                 )?.size ?: 0
         ) > 0

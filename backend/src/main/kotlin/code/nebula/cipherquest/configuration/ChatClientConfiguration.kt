@@ -21,11 +21,14 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 
 @Configuration
+@Suppress("LongParameterList")
 class ChatClientConfiguration(
     private val messageContext: MessageContext,
     private val chatModel: ChatModel,
     private val vectorStore: VectorStore,
     private val vectorStoreService: VectorStoreService,
+    private val protectedQuestionVectorStore: VectorStore,
+    private val levelUpQuestionVectorStore: VectorStore,
     private val userLevelService: UserLevelService,
     private val gameConfig: GameConfig,
 ) {
@@ -44,8 +47,8 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
-                ProtectedInputAdvisor(vectorStore, vectorStoreService),
-                LevelUpAdvisor(vectorStore, userLevelService, messageContext),
+                ProtectedInputAdvisor(vectorStoreService, protectedQuestionVectorStore),
+                LevelUpAdvisor(levelUpQuestionVectorStore, userLevelService, messageContext),
                 VectorStoreChatMemoryAdvisor
                     .builder(vectorStore)
                     .chatMemoryRetrieveSize(gameConfig.ai.chat.historyMaxSize)
