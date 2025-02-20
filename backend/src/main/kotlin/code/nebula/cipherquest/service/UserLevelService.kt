@@ -115,7 +115,16 @@ class UserLevelService(
         request: CreateUserLevelRequest,
         storyName: String,
     ): UserLevel {
-        val username = request.email.substringBefore("@")
+        val baseUsername = request.email.substringBefore("@")
+
+        var counter = 1
+
+        val username =
+            generateSequence(
+                baseUsername,
+            ) { "$baseUsername${counter++}" }
+                .first { !userLevelRepository.existsUserLevelByUsername(it) }
+
         val uniqueCode = RandomStringUtils.randomAlphanumeric(UNIQUE_CODE_SIZE).uppercase()
 
         return userLevelRepository
