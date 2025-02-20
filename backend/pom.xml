@@ -28,7 +28,7 @@
     </scm>
     <properties>
         <java.version>21</java.version>
-        <kotlin.version>1.9.24</kotlin.version>
+            <kotlin.version>1.9.24</kotlin.version>
         <spring-ai.version>1.0.0-M6</spring-ai.version>
         <spring-cloud-gcp.version>5.10.0</spring-cloud-gcp.version>
     </properties>

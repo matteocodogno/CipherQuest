@@ -7,7 +7,7 @@ import com.google.cloud.storage.Storage
 import org.springframework.stereotype.Repository
 
 @Repository
-class StoryRepository(
+class GspStoryRepository(
     override val objectMapper: ObjectMapper,
     override val storage: Storage,
     private val cloudStorageProperties: CloudStorageProperties,
