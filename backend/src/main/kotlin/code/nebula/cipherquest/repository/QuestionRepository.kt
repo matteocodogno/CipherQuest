@@ -9,17 +9,17 @@ import org.springframework.jdbc.core.JdbcTemplate
 import java.sql.ResultSet
 
 @NoRepositoryBean
-abstract class QuestionRepository<S : QuestionRequest, T : Question>(
+abstract class QuestionRepository<REQUEST : QuestionRequest, TYPE : Question>(
     private val vectorStore: VectorStore,
     private val jdbcTemplate: JdbcTemplate,
-    private val additionalColumns: Map<String, (S) -> Any> = emptyMap(),
+    private val additionalColumns: Map<String, (REQUEST) -> Any> = emptyMap(),
 ) {
     abstract val tableName: String
 
-    abstract fun buildQuestion(rs: ResultSet): T
+    abstract fun buildQuestion(rs: ResultSet): TYPE
 
     open fun save(
-        newQuestions: List<S>,
+        newQuestions: List<REQUEST>,
         storyName: String,
     ) {
         findAllByStoryName(storyName)
@@ -37,7 +37,7 @@ abstract class QuestionRepository<S : QuestionRequest, T : Question>(
             }
     }
 
-    private fun findAllByStoryName(storyName: String): List<T> {
+    private fun findAllByStoryName(storyName: String): List<TYPE> {
         val query =
             """
             SELECT id, content, metadata->>'storyName' as storyName 
@@ -56,7 +56,7 @@ abstract class QuestionRepository<S : QuestionRequest, T : Question>(
     }
 
     private fun getDocumentMetadata(
-        question: S,
+        question: REQUEST,
         storyName: String,
     ): Map<String, Any> =
         buildMap {
