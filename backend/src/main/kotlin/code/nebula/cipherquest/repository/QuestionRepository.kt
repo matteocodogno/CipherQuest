@@ -12,9 +12,10 @@ import java.sql.ResultSet
 abstract class QuestionRepository<S : QuestionRequest, T : Question>(
     private val vectorStore: VectorStore,
     private val jdbcTemplate: JdbcTemplate,
-    private val tableName: String,
     private val additionalColumns: Map<String, (S) -> Any> = emptyMap(),
 ) {
+    abstract val tableName: String
+
     abstract fun buildQuestion(rs: ResultSet): T
 
     open fun save(

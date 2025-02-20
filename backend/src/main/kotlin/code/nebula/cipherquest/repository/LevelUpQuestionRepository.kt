@@ -15,9 +15,10 @@ class LevelUpQuestionRepository(
 ) : QuestionRepository<LevelUpQuestionRequest, LevelUpQuestion>(
         levelUpQuestionVectorStore,
         jdbcTemplate,
-        "level_up_question",
         mapOf("level" to LevelUpQuestionRequest::level),
     ) {
+    override val tableName = "level_up_question"
+
     override fun buildQuestion(rs: ResultSet) =
         LevelUpQuestion(
             id = UUID.fromString(rs.getString("id")),
