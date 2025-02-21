@@ -38,3 +38,18 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20250217095500-prize_story_name.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250220115000-create_story-table.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250220120000-level_up_question_story_fk.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250220122200-prize_story_fk.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250220122400-protected_question_story_fk.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250220140000-user-level_story_fk.sql

@@ -18,13 +18,22 @@ POST http://localhost:8080/api/rag/loadProtected/{{storyName}}
 
 GET http://localhost:8080/api/prize
 
+### POST story
+
+POST http://127.0.0.1:8080/api/story
+Content-Type: application/json
+
+{
+    "name": "overmind"
+}
+
 ### POST create a new user
 
 POST http://127.0.0.1:8080/api/user/{{storyName}}
 Content-Type: application/json
 
 {
-    "email": "andrea.rubino@aol.it"
+    "email": "test@mail.com"
 }
 
 ### history
