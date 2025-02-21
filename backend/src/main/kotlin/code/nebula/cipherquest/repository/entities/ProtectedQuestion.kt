@@ -10,7 +10,6 @@ data class ProtectedQuestion(
     @Id
     var id: String,
     var question: String,
-    var storyName: String,
     @ManyToOne
     @JoinColumn(name = "story_id", nullable = false)
     var story: Story,
