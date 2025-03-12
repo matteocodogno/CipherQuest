@@ -18,7 +18,14 @@ class PrizeService(
         storyName: String,
     ): List<Prize> =
         prizes
-            .map {
+            .filter {
+                prizeRepository.findByNameAndPositionAndDateAndStoryName(
+                    it.name,
+                    it.position,
+                    it.date,
+                    storyName,
+                ) == null
+            }.map {
                 Prize(
                     name = it.name,
                     position = it.position,
