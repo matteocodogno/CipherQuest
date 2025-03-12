@@ -11,4 +11,11 @@ interface PrizeRepository : ListCrudRepository<Prize, String> {
         storyName: String,
         date: LocalDate,
     ): List<Prize>
+
+    fun findByNameAndPositionAndDateAndStoryName(
+        name: String,
+        position: Int,
+        date: LocalDate,
+        storyName: String,
+    ): Prize?
 }
