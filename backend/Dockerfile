@@ -1,9 +1,8 @@
 # First stage: build the project and create a custom JRE
 FROM maven:3-eclipse-temurin-21 AS jre-builder
 
-RUN mkdir /usr/src/project
-COPY . /usr/src/project
 WORKDIR /usr/src/project
+COPY . .
 
 RUN --mount=type=cache,target=/root/.m2 mvn package -DskipTests && mv target/*.jar app.jar
 RUN jar xf app.jar
@@ -27,7 +26,6 @@ RUN jlink \
 
 # Second stage: extract the JAR file
 FROM eclipse-temurin:21-jre AS extractor
-RUN mkdir /opt/app
 WORKDIR /opt/app
 COPY --from=jre-builder /usr/src/project/app.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
@@ -48,8 +46,8 @@ ARG APPLICATION_USER=spring
 RUN addgroup --system $APPLICATION_USER && adduser --system $APPLICATION_USER --ingroup $APPLICATION_USER
 
 # Create a directory for the application
-RUN mkdir /project && chown -R $APPLICATION_USER /project
 WORKDIR /project
+RUN chown -R $APPLICATION_USER /project
 
 COPY --from=extractor /opt/app/dependencies/ ./
 COPY --from=extractor /opt/app/spring-boot-loader/ ./
