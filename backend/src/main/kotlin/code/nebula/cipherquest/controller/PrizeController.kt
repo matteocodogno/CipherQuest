@@ -3,6 +3,7 @@ package code.nebula.cipherquest.controller
 import code.nebula.cipherquest.models.requests.PrizeRequest
 import code.nebula.cipherquest.repository.entities.Prize
 import code.nebula.cipherquest.service.PrizeService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,6 +27,6 @@ class PrizeController(
     @ResponseStatus(HttpStatus.CREATED)
     fun addPrizes(
         @PathVariable storyName: String,
-        @RequestBody prizes: PrizeRequest,
+        @RequestBody @Valid prizes: PrizeRequest,
     ): List<Prize> = prizeService.addPrizes(prizes, storyName)
 }
