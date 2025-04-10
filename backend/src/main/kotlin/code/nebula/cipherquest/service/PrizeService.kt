@@ -16,23 +16,24 @@ class PrizeService(
 
     @Transactional
     fun addPrizes(
-        prizes: List<PrizeRequest>,
+        prizeRequest: PrizeRequest,
         storyName: String,
-    ): List<Prize> =
-        prizes
-            .filter {
-                prizeRepository.findByNameAndPositionAndDateAndStoryName(
-                    it.name,
-                    it.position,
-                    it.date,
-                    storyName,
-                ) == null
+    ): List<Prize> {
+        val takenPositions =
+            prizeRepository
+                .findAllByStoryNameAndDateOrderByPositionAsc(storyName, prizeRequest.date)
+                .map { it.position }
+
+        return prizeRequest.prizes
+            .filterNot {
+                takenPositions.contains(it.position)
             }.map {
                 Prize(
                     name = it.name,
                     position = it.position,
-                    date = it.date,
+                    date = prizeRequest.date,
                     storyName = storyName,
                 )
             }.let { prizeRepository.saveAll(it) }
+    }
 }
