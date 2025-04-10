@@ -26,6 +26,6 @@ class PrizeController(
     @ResponseStatus(HttpStatus.CREATED)
     fun addPrizes(
         @PathVariable storyName: String,
-        @RequestBody prizes: List<PrizeRequest>,
+        @RequestBody prizes: PrizeRequest,
     ): List<Prize> = prizeService.addPrizes(prizes, storyName)
 }
