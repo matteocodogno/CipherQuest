@@ -1,7 +1,6 @@
 package code.nebula.cipherquest.advisor
 
 import code.nebula.cipherquest.components.MessageContext
-import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.service.UserLevelService
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class LevelUpAdvisor(
-    private val vectorStore: VectorStore,
+    private val levelUpQuestionVectorStore: VectorStore,
     private val userLevelService: UserLevelService,
     private val messageContext: MessageContext,
 ) : CallAroundAdvisor {
@@ -45,13 +44,12 @@ class LevelUpAdvisor(
         val userLevel = userLevelService.getLevelByUser(userId)
 
         val matchedQuestionLevel =
-            vectorStore
+            levelUpQuestionVectorStore
                 .similaritySearch(
                     SearchRequest
                         .builder()
                         .query(query)
                         .similarityThreshold(LEVEL_UP_THRESHOLD)
-                        .filterExpression("type == '${DocumentType.QUESTION}'")
                         .build(),
                 )?.minByOrNull { document -> document.metadata["distance"].toString().toFloat() }
                 ?.metadata
