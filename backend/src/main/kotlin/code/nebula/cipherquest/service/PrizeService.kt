@@ -4,6 +4,7 @@ import code.nebula.cipherquest.models.requests.PrizeRequest
 import code.nebula.cipherquest.repository.PrizeRepository
 import code.nebula.cipherquest.repository.entities.Prize
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
@@ -13,6 +14,7 @@ class PrizeService(
     fun findAllByCurrentDate(storyName: String): List<Prize> =
         prizeRepository.findAllByStoryNameAndDateOrderByPositionAsc(storyName, LocalDate.now())
 
+    @Transactional
     fun addPrizes(
         prizes: List<PrizeRequest>,
         storyName: String,
