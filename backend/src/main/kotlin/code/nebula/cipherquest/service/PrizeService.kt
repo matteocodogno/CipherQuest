@@ -19,8 +19,8 @@ class PrizeService(
         prizeRequest: PrizeRequest,
         storyName: String,
     ): List<Prize> {
-        if (prizeRequest.prizes.isEmpty()) {
-            throw IllegalArgumentException("Prizes list cannot be empty")
+        require(prizeRequest.prizes.isNotEmpty()) {
+            "Prizes list cannot be empty"
         }
 
         val takenPositions =
