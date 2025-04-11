@@ -1,11 +1,13 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
+import code.nebula.cipherquest.exceptions.StoryNotFoundException
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
 import code.nebula.cipherquest.models.TimeFrameFilter
 import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
+import code.nebula.cipherquest.repository.entities.Story
 import code.nebula.cipherquest.repository.entities.UserLevel
 import jakarta.persistence.EntityNotFoundException
 import org.apache.commons.lang3.RandomStringUtils
@@ -18,6 +20,7 @@ import kotlin.random.Random.Default.nextLong
 class UserLevelService(
     private val userLevelRepository: UserLevelRepository,
     private val mailService: MailService,
+    private val storyService: StoryService,
 ) {
     companion object {
         private const val LEVEL_UP_COINS = 10
@@ -53,11 +56,15 @@ class UserLevelService(
         request: CreateUserLevelRequest,
         storyName: String,
     ): UserLevel {
+        val story =
+            storyService.findFirstByName(storyName)
+                ?: throw StoryNotFoundException("Story '$storyName' not found.")
+
         userLevelRepository.findFirstByEmail(request.email)?.let {
             throw UserAlreadyExistsException("User '${request.email}' already exists.")
         }
 
-        return saveUser(request, storyName)
+        return saveUser(request, story)
     }
 
     fun getLevelByUser(userId: String): UserLevel =
@@ -113,7 +120,7 @@ class UserLevelService(
 
     fun saveUser(
         request: CreateUserLevelRequest,
-        storyName: String,
+        story: Story,
     ): UserLevel {
         val baseUsername = request.email.substringBefore("@")
 
@@ -135,9 +142,10 @@ class UserLevelService(
                     username = username,
                     level = BotMessage.DEFAULT_LEVEL,
                     uniqueCode = uniqueCode,
+                    story = story,
                 ),
             ).also { user ->
-                mailService.sendUniqueCodeEmail(request.email, storyName, username, user.uniqueCode)
+                mailService.sendUniqueCodeEmail(request.email, story.name, username, user.uniqueCode)
             }
     }
 }

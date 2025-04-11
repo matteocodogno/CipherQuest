@@ -4,7 +4,7 @@ import code.nebula.cipherquest.models.CustomByteArrayResource
 import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.ProtectedQuestionRepository
-import code.nebula.cipherquest.repository.gcs.StoryRepository
+import code.nebula.cipherquest.repository.gcs.GspStoryRepository
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.ai.document.Document
@@ -21,7 +21,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("/rag")
 class RagController(
     val vectorStoreService: VectorStoreService,
-    private val storyRepository: StoryRepository,
+    private val storyRepository: GspStoryRepository,
     private val levelUpQuestionRepository: LevelUpQuestionRepository,
     private val protectedQuestionRepository: ProtectedQuestionRepository,
 ) {

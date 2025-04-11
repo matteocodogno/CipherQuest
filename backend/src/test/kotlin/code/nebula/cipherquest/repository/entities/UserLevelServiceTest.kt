@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
+import java.util.UUID
 import java.util.stream.Collectors
 import java.util.stream.Stream
 import kotlin.test.Test
@@ -105,6 +106,7 @@ class UserLevelServiceTest {
                 coins = coins,
                 createdAt = createdAt,
                 terminatedAt = OffsetDateTime.now(),
+                story = Story(UUID.randomUUID(), "name"),
             )
         } else {
             UserLevel(
@@ -115,6 +117,7 @@ class UserLevelServiceTest {
                 coins = coins,
                 createdAt = createdAt,
                 updatedAt = OffsetDateTime.now(),
+                story = Story(UUID.randomUUID(), "name"),
             )
         }
     }
