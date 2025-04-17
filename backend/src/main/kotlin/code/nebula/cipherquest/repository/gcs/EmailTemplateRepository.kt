@@ -22,5 +22,20 @@ class EmailTemplateRepository(
             "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
         )
 
-    fun findUniqueCodeByStoryName(storyName: String): Blob = download(getBlobId(storyName, "unique-code.html"))
+    fun findUniqueCodeByStoryName(storyName: String): Blob = download(getBlobId(storyName, "email-template.html"))
+
+    fun getAssetsByStoryName(storyName: String): List<Blob> =
+        runCatching {
+            val assetsFolder = "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/assets/"
+
+            storage
+                .list(
+                    cloudStorageProperties.emailTemplatesBucket.name,
+                    Storage.BlobListOption.prefix(assetsFolder),
+                    Storage.BlobListOption.includeFolders(false),
+                ).iterateAll()
+                .toList()
+        }.getOrElse {
+            emptyList()
+        }
 }
