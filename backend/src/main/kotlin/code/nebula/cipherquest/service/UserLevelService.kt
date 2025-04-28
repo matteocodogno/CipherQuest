@@ -3,7 +3,6 @@ package code.nebula.cipherquest.service
 import code.nebula.cipherquest.controller.request.ScoreboardEntry
 import code.nebula.cipherquest.exceptions.UserAlreadyExistsException
 import code.nebula.cipherquest.models.TimeFrameFilter
-import code.nebula.cipherquest.models.dto.BotMessage
 import code.nebula.cipherquest.models.requests.CreateUserLevelRequest
 import code.nebula.cipherquest.repository.UserLevelRepository
 import code.nebula.cipherquest.repository.entities.UserLevel
@@ -20,6 +19,7 @@ class UserLevelService(
     private val mailService: MailService,
 ) {
     companion object {
+        private const val DEFAULT_LEVEL = 1
         private const val LEVEL_UP_COINS = 10
         private const val MIN_USER_ID = 1_000_000_000L
         private const val MAX_USER_ID = 9_999_999_999L
@@ -133,7 +133,7 @@ class UserLevelService(
                     userId = nextLong(MIN_USER_ID, MAX_USER_ID).toString(),
                     email = request.email,
                     username = username,
-                    level = BotMessage.DEFAULT_LEVEL,
+                    level = DEFAULT_LEVEL,
                     uniqueCode = uniqueCode,
                 ),
             ).also { user ->
