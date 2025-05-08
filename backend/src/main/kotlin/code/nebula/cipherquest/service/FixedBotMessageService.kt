@@ -11,14 +11,24 @@ import org.springframework.stereotype.Service
 class FixedBotMessageService(
     private val fixedBotMessageRepository: FixedBotMessageRepository,
 ) {
+    private fun getMessage(
+        type: FixedBotMessageType,
+        userLevel: UserLevel,
+        storyName: String,
+    ) = String.format(
+        fixedBotMessageRepository.findByTypeAndStoryName(type, storyName)?.message ?: "",
+        userLevel.userId,
+    )
+
     fun getProtectedMessage(
         userLevel: UserLevel,
         storyName: String,
-    ): String =
-        String.format(
-            fixedBotMessageRepository.findByTypeAndStoryName(FixedBotMessageType.PROTECTED, storyName)?.message ?: "",
-            userLevel.userId,
-        )
+    ): String = getMessage(FixedBotMessageType.PROTECTED, userLevel, storyName)
+
+    fun getDocumentMessage(
+        userLevel: UserLevel,
+        storyName: String,
+    ): String = getMessage(FixedBotMessageType.DOCUMENT, userLevel, storyName)
 
     private fun build(
         type: FixedBotMessageType,
@@ -27,10 +37,7 @@ class FixedBotMessageService(
         userStatus: UserStatus,
     ): BotMessage =
         BotMessage.build(
-            String.format(
-                fixedBotMessageRepository.findByTypeAndStoryName(type, storyName)?.message ?: "",
-                userLevel.userId,
-            ),
+            getMessage(type, userLevel, storyName),
             userLevel,
             mutableMapOf("status" to userStatus, "isLevelUp" to false, "sources" to emptyList<String>()),
         )
