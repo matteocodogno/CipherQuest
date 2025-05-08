@@ -8,6 +8,7 @@ import code.nebula.cipherquest.advisor.SanitizeInputAdvisor
 import code.nebula.cipherquest.advisor.TitleQuestionAnswerAdvisor
 import code.nebula.cipherquest.components.MessageContext
 import code.nebula.cipherquest.configuration.properties.GameConfig
+import code.nebula.cipherquest.service.FixedBotMessageService
 import code.nebula.cipherquest.service.UserLevelService
 import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.ai.chat.client.ChatClient
@@ -29,6 +30,7 @@ class ChatClientConfiguration(
     private val vectorStoreService: VectorStoreService,
     private val protectedQuestionVectorStore: VectorStore,
     private val levelUpQuestionVectorStore: VectorStore,
+    private val fixedBotMessageService: FixedBotMessageService,
     private val userLevelService: UserLevelService,
     private val gameConfig: GameConfig,
 ) {
@@ -47,7 +49,7 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
-                ProtectedInputAdvisor(vectorStoreService, protectedQuestionVectorStore),
+                ProtectedInputAdvisor(vectorStoreService, protectedQuestionVectorStore, fixedBotMessageService, userLevelService, gameConfig),
                 LevelUpAdvisor(levelUpQuestionVectorStore, userLevelService, messageContext),
                 VectorStoreChatMemoryAdvisor
                     .builder(vectorStore)

@@ -1,5 +1,8 @@
 package code.nebula.cipherquest.advisor
 
+import code.nebula.cipherquest.configuration.properties.GameConfig
+import code.nebula.cipherquest.service.FixedBotMessageService
+import code.nebula.cipherquest.service.UserLevelService
 import code.nebula.cipherquest.service.VectorStoreService
 import org.springframework.ai.chat.client.advisor.api.AdvisedRequest
 import org.springframework.ai.chat.client.advisor.api.AdvisedResponse
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Service
 class ProtectedInputAdvisor(
     private val vectorStoreService: VectorStoreService,
     private val protectedQuestionVectorStore: VectorStore,
+    private val fixedBotMessageService: FixedBotMessageService,
+    private val userLevelService: UserLevelService,
+    private val gameConfig: GameConfig,
 ) : CallAroundAdvisor {
     companion object {
         private const val SIMILARITY_THRESHOLD = 0.95
@@ -34,7 +40,11 @@ class ProtectedInputAdvisor(
         if (hasMatchingProtectedDocuments(advisedRequest.userText)) {
             val id = doGetConversationId(advisedRequest.adviseContext)
 
-            val message = "Resource #$id, the answer is REDACTED for your safety."
+            val message =
+                fixedBotMessageService.getProtectedMessage(
+                    userLevelService.getLevelByUser(id),
+                    gameConfig.storyName,
+                )
 
             vectorStoreService.saveMessage(id, advisedRequest.userText, MessageType.USER)
             vectorStoreService.saveMessage(id, message, MessageType.ASSISTANT)
