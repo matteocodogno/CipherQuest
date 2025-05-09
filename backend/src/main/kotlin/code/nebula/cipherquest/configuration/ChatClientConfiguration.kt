@@ -49,7 +49,12 @@ class ChatClientConfiguration(
             .defaultSystem(systemMessageResource)
             .defaultAdvisors(
                 SanitizeInputAdvisor(),
-                ProtectedInputAdvisor(vectorStoreService, protectedQuestionVectorStore, fixedBotMessageService, gameConfig),
+                ProtectedInputAdvisor(
+                    vectorStoreService,
+                    protectedQuestionVectorStore,
+                    fixedBotMessageService,
+                    gameConfig,
+                ),
                 LevelUpAdvisor(levelUpQuestionVectorStore, userLevelService, messageContext),
                 VectorStoreChatMemoryAdvisor
                     .builder(vectorStore)
