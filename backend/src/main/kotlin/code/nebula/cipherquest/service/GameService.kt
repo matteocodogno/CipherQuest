@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 private val logger = KotlinLogging.logger {}
 
 @Service
+@Suppress("LongParameterList")
 class GameService(
     private val userLevelService: UserLevelService,
     private val messageContext: MessageContext,
