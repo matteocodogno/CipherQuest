@@ -12,7 +12,6 @@ class DocumentTools(
     private val vectorStoreService: VectorStoreService,
     private val messageContext: MessageContext,
     private val fixedBotMessageService: FixedBotMessageService,
-    private val userLevelService: UserLevelService,
     private val gameConfig: GameConfig,
 ) {
     @Tool(
@@ -27,7 +26,7 @@ class DocumentTools(
             .let { diaries ->
                 messageContext.sources = diaries
                 fixedBotMessageService.getDocumentMessage(
-                    userLevelService.getLevelByUser(toolContext.context.getOrDefault("userId", "") as String),
+                    toolContext.context.getOrDefault("userId", "") as String,
                     gameConfig.storyName,
                 )
             }

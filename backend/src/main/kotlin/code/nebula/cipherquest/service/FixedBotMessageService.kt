@@ -13,22 +13,22 @@ class FixedBotMessageService(
 ) {
     private fun getMessage(
         type: FixedBotMessageType,
-        userLevel: UserLevel,
+        userId: String,
         storyName: String,
     ) = String.format(
         fixedBotMessageRepository.findByTypeAndStoryName(type, storyName)?.message ?: "",
-        userLevel.userId,
+        userId,
     )
 
     fun getProtectedMessage(
-        userLevel: UserLevel,
+        userId: String,
         storyName: String,
-    ): String = getMessage(FixedBotMessageType.PROTECTED, userLevel, storyName)
+    ): String = getMessage(FixedBotMessageType.PROTECTED, userId, storyName)
 
     fun getDocumentMessage(
-        userLevel: UserLevel,
+        userId: String,
         storyName: String,
-    ): String = getMessage(FixedBotMessageType.DOCUMENT, userLevel, storyName)
+    ): String = getMessage(FixedBotMessageType.DOCUMENT, userId, storyName)
 
     private fun build(
         type: FixedBotMessageType,
@@ -37,7 +37,7 @@ class FixedBotMessageService(
         userStatus: UserStatus,
     ): BotMessage =
         BotMessage.build(
-            getMessage(type, userLevel, storyName),
+            getMessage(type, userLevel.userId, storyName),
             userLevel,
             mutableMapOf("status" to userStatus, "isLevelUp" to false, "sources" to emptyList<String>()),
         )
