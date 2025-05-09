@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 private val logger = KotlinLogging.logger {}
 
 @Service
+@Suppress("LongParameterList")
 class GameService(
     private val userLevelService: UserLevelService,
     private val messageContext: MessageContext,
@@ -18,6 +19,7 @@ class GameService(
     private val chatService: ChatService,
     private val gameConfig: GameConfig,
     private val cheatDetectionService: CheatDetectionService,
+    private val fixedBotMessageService: FixedBotMessageService,
 ) {
     /**
      * Determines if the user has won the game based on their query input and handles the victory process.
@@ -37,7 +39,7 @@ class GameService(
                 .containsMatchIn(userQuery.message)
         ) {
             userLevelService.hasWon(userQuery.user.userId)
-            BotMessage.buildWinMessage(userQuery.user)
+            fixedBotMessageService.buildWinMessage(userQuery.user, gameConfig.storyName)
         } else {
             null
         }
@@ -54,7 +56,7 @@ class GameService(
      */
     private fun gameOver(userQuery: UserQuery): BotMessage? =
         if (userQuery.user.coins <= 0) {
-            BotMessage.buildGameOverMessage(userQuery.user)
+            fixedBotMessageService.buildGameOverMessage(userQuery.user, gameConfig.storyName)
         } else {
             null
         }
@@ -73,7 +75,7 @@ class GameService(
 
         if (cheatDetectionService.checkIfCheating(userQuery)) {
             userLevelService.hasCheated(userId)
-            BotMessage.buildCheatMessage(userLevel)
+            fixedBotMessageService.buildCheatMessage(userLevel, gameConfig.storyName)
         }
 
         return null

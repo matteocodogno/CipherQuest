@@ -37,7 +37,8 @@ spring:
           starttls:
             enable: true
 
-overmind:
+cipher-quest:
+  story-name: overmind
   win-condition: ${WIN_CONDITION:.*WIN*}
   ai:
     rag:

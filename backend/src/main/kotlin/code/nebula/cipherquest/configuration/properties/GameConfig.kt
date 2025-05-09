@@ -2,8 +2,9 @@ package code.nebula.cipherquest.configuration.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "overmind")
+@ConfigurationProperties(prefix = "cipher-quest")
 data class GameConfig(
+    val storyName: String,
     val winCondition: String,
     val prompt: Prompt,
     val ai: Ai,
