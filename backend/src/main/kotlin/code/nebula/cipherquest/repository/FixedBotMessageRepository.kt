@@ -7,5 +7,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface FixedBotMessageRepository : ListCrudRepository<FixedBotMessage, String> {
-    fun findByTypeAndStoryName(type: FixedBotMessageType, storyName: String): FixedBotMessage?
+    fun findByTypeAndStoryName(
+        type: FixedBotMessageType,
+        storyName: String,
+    ): FixedBotMessage?
 }
