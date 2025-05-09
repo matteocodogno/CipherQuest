@@ -40,6 +40,28 @@ POST http://localhost:8080/api/rag/load/{{storyName}}
 
 GET http://localhost:8080/api/prize
 
+### POST create prizes
+
+POST http://localhost:8080/api/prize/{{storyName}}
+Content-Type: application/json
+
+{
+  "prizes": [
+    {
+      "name": "Backpack",
+      "position": 2
+    },
+    {
+      "name": "Lego set",
+      "position": 1
+    },
+    {
+      "name": "Water bottle",
+      "position": 3
+    }
+  ]
+}
+
 ### POST create a new user
 
 POST http://127.0.0.1:8080/api/user/{{storyName}}
