@@ -1,13 +1,12 @@
 package code.nebula.cipherquest.repository.entities
 
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
+import java.util.UUID
 
 @Entity
 data class LevelUpQuestion(
-    @Id
-    var id: String,
-    var level: Int,
-    var question: String,
-    var storyName: String,
-)
+    override val id: UUID? = null,
+    override val content: String,
+    override val storyName: String,
+    val level: Int,
+) : Question(id, content, storyName)

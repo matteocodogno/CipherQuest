@@ -1,18 +1,40 @@
 @userId = 8536759380
 @storyName = Overmind
 
+### POST request to add level up questions
+
+POST http://localhost:8080/api/question/levelUp/foo
+Content-Type: application/json
+
+[
+    {
+        "level": 2,
+        "content": "Level up question 1"
+    },
+    {
+        "level": 3,
+        "content": "Level up question 2"
+    }
+]
+
+### POST request to add protected questions
+
+POST http://localhost:8080/api/question/protected/foo
+Content-Type: application/json
+
+[
+    {
+        "content": "Protected question 1"
+    },
+    {
+        "content": "Protected question 2"
+    }
+]
+
 ### POST request to load documents on pgvector
 ### storyName: [overmind]
 
 POST http://localhost:8080/api/rag/load/{{storyName}}
-
-### POST request to load questions on pgvector
-
-POST http://localhost:8080/api/rag/loadQuestions/{{storyName}}
-
-### POST request to load protected on pgvector
-
-POST http://localhost:8080/api/rag/loadProtected/{{storyName}}
 
 ### GET prizes
 
