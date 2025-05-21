@@ -37,9 +37,12 @@ class VectorStoreService(
         vectorStoreRepository
             .getDocumentByFilename(filename, level)
 
-    fun getAllDiaryPages(level: Int): List<Source>? =
+    fun getDocumentsByType(
+        type: String,
+        level: Int,
+    ): List<Source>? =
         vectorStoreRepository
-            .getAllDiaryPages(level)
+            .getDocumentsByType(type, level)
 
     fun updateInfo(
         id: String,
