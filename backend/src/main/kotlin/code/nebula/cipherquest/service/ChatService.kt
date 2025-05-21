@@ -1,6 +1,5 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.models.UserQuery
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY
@@ -34,7 +33,7 @@ class ChatService(
                     .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, CHAT_MEMORY_MAX_SIZE)
                     .param(
                         QuestionAnswerAdvisor.FILTER_EXPRESSION,
-                        "type == '${DocumentType.DOCUMENT}' && level <= ${userQuery.user.level}",
+                        "type == 'DOCUMENT' && level <= ${userQuery.user.level}",
                     )
             }.call()
             .content()

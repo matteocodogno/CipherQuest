@@ -41,3 +41,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: sql/20250423143810-create-fixed-bot-message-table.sql
+  - include:
+      relativeToChangelogFile: true
+      file: sql/20250516145700-create-additional-document-table.sql

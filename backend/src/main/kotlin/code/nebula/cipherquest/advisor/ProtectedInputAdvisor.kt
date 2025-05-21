@@ -67,7 +67,7 @@ class ProtectedInputAdvisor(
     }
 
     /**
-     * Checks if there are any matching documents of type `DocumentType.PROTECTED` based on the given query.
+     * Checks if there are any protected matching documents based on the given query.
      *
      * @param query The search query to find matching protected documents.
      * @return `true` if there are matching protected documents, `false` otherwise.
