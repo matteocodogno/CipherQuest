@@ -9,25 +9,37 @@ import org.springframework.stereotype.Service
 
 @Service
 class DocumentTools(
-    private val vectorStoreService: VectorStoreService,
+    private val additionalDocumentService: AdditionalDocumentService,
     private val messageContext: MessageContext,
     private val fixedBotMessageService: FixedBotMessageService,
     private val gameConfig: GameConfig,
 ) {
     @Tool(
-        description = "give me the Elara Chen's diary pages|give me the diary|show me the diary",
+        description = "Retrieve the list of types of the documents available.",
+    )
+    private fun getAvailableDocumentTypes(toolContext: ToolContext): Set<String> =
+        additionalDocumentService
+            .getAvailableDocumentTypes(gameConfig.storyName)
+
+    @Tool(
+        description = "Retrieve the documents of the given specific type among the ones available.",
         returnDirect = true,
         resultConverter = RemoveSurroundingQuotesConverter::class,
     )
-    fun getDiaryPages(toolContext: ToolContext) =
-        vectorStoreService
-            .getAllDiaryPages(toolContext.context.getOrDefault("level", 1) as Int)
-            .orEmpty()
-            .let { diaries ->
-                messageContext.sources = diaries
-                fixedBotMessageService.getDocumentMessage(
-                    toolContext.context.getOrDefault("userId", "") as String,
-                    gameConfig.storyName,
-                )
-            }
+    fun getDocuments(
+        type: String,
+        toolContext: ToolContext,
+    ) = additionalDocumentService
+        .getDocuments(
+            type,
+            toolContext.context.getOrDefault("level", 1) as Int,
+            gameConfig.storyName,
+        ).takeUnless { it.isEmpty() }
+        ?.let { documents ->
+            messageContext.sources = documents
+            fixedBotMessageService.getDocumentMessage(
+                toolContext.context.getOrDefault("userId", "") as String,
+                gameConfig.storyName,
+            )
+        } ?: "No documents of type $type found."
 }
