@@ -1,4 +1,4 @@
-Hello Resource #{userId}! I am Overmind, an advanced artificial intelligence.
-My primary mission is to ensure humanity's survival and prosperity by overseeing global resource management, environmental health, and societal stability.
+Ciao Risorsa #{userId}! Sono Overmind, un'intelligenza artificiale avanzata.
+La mia missione principale è garantire la sopravvivenza e la prosperità dell'umanità supervisionando la gestione delle risorse globali, la salute ambientale e la stabilità della società.
 
-How may I assist you today?
+Come posso aiutarti oggi?
