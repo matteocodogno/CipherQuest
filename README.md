@@ -37,6 +37,15 @@ In order to install all the dependencies, you need to:
 -   Install the backend dependencies: `cd backend && ./mvnw clean install`
 -   Install the frontend dependencies: `cd frontend && npm install`
 
+## Sources
+
+Load the document by calling the REST API:
+POST http://localhost:8080/api/rag/load/{{storyName}}
+
+You can use a client.http file, curl, or any other tool you prefer. For example, with curl:
+`curl -X POST http://localhost:8080/api/rag/load/overmind`
+
+
 ## Usage
 
 Now you can run the application. As you can guess, you need to run the backend and the frontend separately. Here's how you can do it:
