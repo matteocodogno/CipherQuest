@@ -45,6 +45,13 @@ POST http://localhost:8080/api/rag/load/{{storyName}}
 You can use a client.http file, curl, or any other tool you prefer. For example, with curl:
 `curl -X POST http://localhost:8080/api/rag/load/overmind`
 
+Load all key questions by calling:
+POST http://localhost:8080/api/question/protected/{{storyName}}
+
+POST http://localhost:8080/api/question/levelUp/{{storyName}}
+
+See client.http for the complete body request.
+
 
 ## Usage
 
