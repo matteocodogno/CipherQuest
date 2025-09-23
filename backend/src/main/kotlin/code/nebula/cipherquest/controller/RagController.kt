@@ -37,19 +37,19 @@ class RagController(
                                 customMetadata["source"] = originalFilename
 
                                 val filename =
-                                originalFilename
-                                .split(".")
-                                .getOrNull(1)
-                                .orEmpty()
-                                
+                                    originalFilename
+                                        .split(".")
+                                        .getOrNull(1)
+                                        .orEmpty()
+
                                 customMetadata["level"] =
-                                originalFilename
-                                .split(".")
-                                .getOrNull(0)
-                                .orEmpty()
-                                .toIntOrNull()
-                                ?: -1
-                                
+                                    originalFilename
+                                        .split(".")
+                                        .getOrNull(0)
+                                        .orEmpty()
+                                        .toIntOrNull()
+                                        ?: -1
+
                                 customMetadata["type"] =
                                     if (filename.contains("diary", true)) {
                                         DocumentType.DIARY
