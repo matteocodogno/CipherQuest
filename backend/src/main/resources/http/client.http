@@ -3,7 +3,7 @@
 
 ### POST request to add level up questions
 
-POST http://localhost:8080/api/question/levelUp/foo
+POST http://localhost:8080/api/question/levelUp/{{storyName}}
 Content-Type: application/json
 
 [
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ### POST request to add protected questions
 
-POST http://localhost:8080/api/question/protected/foo
+POST http://localhost:8080/api/question/protected/{{storyName}}
 Content-Type: application/json
 
 [
