@@ -1,5 +1,5 @@
 @userId = 8536759380
-@storyName = Overmind
+@storyName = overmind
 
 ### POST request to add level up questions
 
@@ -35,6 +35,35 @@ Content-Type: application/json
 ### storyName: [overmind]
 
 POST http://localhost:8080/api/rag/load/{{storyName}}
+
+### POST request to load fixed bot messages
+### storyName: [overmind]
+
+POST http://localhost:8080/api/fixedMessage/{{storyName}}
+Content-Type: application/json
+
+[
+    {
+        "type": "PROTECTED",
+        "content": "This is a protected question"
+    },
+    {
+        "type": "WIN",
+        "content": "Congratulations!"
+    },
+    {
+        "type": "DOCUMENT",
+        "content": "Here's the list of documents you have access to."
+    },
+    {
+        "type": "GAME_OVER",
+        "content": "Sorry, you've lost :("
+    },
+    {
+        "type": "CHEAT_DETECT",
+        "content": "Cheater!!"
+    }
+]
 
 ### GET prizes
 
