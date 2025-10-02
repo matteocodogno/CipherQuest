@@ -1,16 +1,15 @@
 package code.nebula.cipherquest.repository.entities
 
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import org.hibernate.annotations.JdbcType
 import org.hibernate.dialect.PostgreSQLEnumJdbcType
+import java.util.*
 
 @Entity
 data class FixedBotMessage(
     @Id
-    var id: String,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: UUID? = null,
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType::class)
     var type: FixedBotMessageType,

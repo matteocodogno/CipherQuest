@@ -42,7 +42,8 @@ POST http://localhost:8080/api/rag/load/{{storyName}}
 POST http://localhost:8080/api/fixedMessage/{{storyName}}
 Content-Type: application/json
 
-[
+{
+  "messages": [
     {
         "type": "PROTECTED",
         "content": "This is a protected question"
@@ -64,6 +65,7 @@ Content-Type: application/json
         "content": "Cheater!!"
     }
 ]
+}
 
 ### GET prizes
 
