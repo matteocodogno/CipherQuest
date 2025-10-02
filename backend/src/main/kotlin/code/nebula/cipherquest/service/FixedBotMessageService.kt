@@ -2,10 +2,13 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.UserStatus
 import code.nebula.cipherquest.models.dto.BotMessage
+import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
 import code.nebula.cipherquest.repository.FixedBotMessageRepository
+import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import code.nebula.cipherquest.repository.entities.UserLevel
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class FixedBotMessageService(
@@ -58,4 +61,21 @@ class FixedBotMessageService(
             userLevel,
             mutableMapOf("status" to userStatus, "isLevelUp" to false, "sources" to emptyList<String>()),
         )
+
+    @Transactional
+    fun addFixedBotMessages(
+        fixedBotMessageRequest: FixedBotMessageRequest,
+        storyName: String,
+    ): List<FixedBotMessage> {
+        require(fixedBotMessageRequest.messages.isNotEmpty()) {
+            "Fixed bot message list cannot be empty"
+        }
+        return fixedBotMessageRequest.messages.map {
+            FixedBotMessage(
+                type = it.type,
+                message = it.content,
+                storyName = storyName,
+            )
+        }.let { fixedBotMessageRepository.saveAll(it) }
+    }
 }
