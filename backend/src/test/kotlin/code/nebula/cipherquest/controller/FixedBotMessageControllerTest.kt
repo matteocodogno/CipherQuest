@@ -1,6 +1,5 @@
-package code.nebula.cipherquest.Controller
+package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.controller.FixedMessageController
 import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
@@ -19,12 +18,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 
-
 @WebMvcTest(FixedMessageController::class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class FixedMessageControllerTest {
-
+class FixedBotMessageControllerTest {
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -33,33 +30,36 @@ class FixedMessageControllerTest {
 
     @Test
     fun addFixedBotMessagesTest() {
-        val request = FixedBotMessageRequest(
-            messages = listOf(
-                code.nebula.cipherquest.models.requests.FixedBotMessage(
-                    type = FixedBotMessageType.PROTECTED,
-                    content = "This question is protected"
-                )
+        val request =
+            FixedBotMessageRequest(
+                messages =
+                    listOf(
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "This question is protected",
+                        ),
+                    ),
             )
-        )
 
-        val expected = listOf(
-            FixedBotMessage(
-                type = FixedBotMessageType.PROTECTED,
-                message = "This question is protected",
-                storyName = "overmind"
+        val expected =
+            listOf(
+                FixedBotMessage(
+                    type = FixedBotMessageType.PROTECTED,
+                    message = "This question is protected",
+                    storyName = "overmind",
+                ),
             )
-        )
 
         `when`(
-            fixedBotMessageService.addFixedBotMessages(request, "overmind")
+            fixedBotMessageService.addFixedBotMessages(request, "overmind"),
         ).thenReturn(expected)
 
-        mockMvc.perform(
-            post("/fixedMessage/overmind")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(ObjectMapper().writeValueAsString(request))
-        )
-            .andExpect(status().isOk)
+        mockMvc
+            .perform(
+                post("/fixedMessage/overmind")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(ObjectMapper().writeValueAsString(request)),
+            ).andExpect(status().isOk)
             .andExpect(jsonPath("$[0].type").value("PROTECTED"))
             .andExpect(jsonPath("$[0].message").value("This question is protected"))
             .andExpect(jsonPath("$[0].storyName").value("overmind"))

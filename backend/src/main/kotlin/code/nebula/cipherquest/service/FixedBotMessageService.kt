@@ -70,12 +70,13 @@ class FixedBotMessageService(
         require(fixedBotMessageRequest.messages.isNotEmpty()) {
             "Fixed bot message list cannot be empty"
         }
-        return fixedBotMessageRequest.messages.map {
-            FixedBotMessage(
-                type = it.type,
-                message = it.content,
-                storyName = storyName,
-            )
-        }.let { fixedBotMessageRepository.saveAll(it) }
+        return fixedBotMessageRequest.messages
+            .map {
+                FixedBotMessage(
+                    type = it.type,
+                    message = it.content,
+                    storyName = storyName,
+                )
+            }.let { fixedBotMessageRepository.saveAll(it) }
     }
 }
