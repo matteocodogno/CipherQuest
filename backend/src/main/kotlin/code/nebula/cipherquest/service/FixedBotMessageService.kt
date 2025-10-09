@@ -80,6 +80,7 @@ class FixedBotMessageService(
             .filterNot {
                 takenTypes.contains(it.type)
             }.map {
+                require(it.content.isNotBlank()) { "FixedBotMessage list should contain at least one entry" }
                 FixedBotMessage(
                     type = it.type,
                     message = it.content,

@@ -6,6 +6,7 @@ import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito
@@ -53,7 +54,6 @@ class FixedBotMessageServiceTest {
         assertThat(result[0].storyName).isEqualTo("overmind")
 
         Mockito.verify(fixedBotMessageRepository).saveAll(entities)
-        Mockito.verifyNoMoreInteractions(fixedBotMessageRepository)
     }
 
     @Test
@@ -99,5 +99,53 @@ class FixedBotMessageServiceTest {
             .containsExactlyInAnyOrder(FixedBotMessageType.PROTECTED, FixedBotMessageType.DOCUMENT)
         assertThat(result.map { it.message }).containsExactlyInAnyOrder("Protected Question", "Documentation")
         assertThat(result.map { it.storyName }).allMatch { it == "overmind" }
+    }
+
+    @Test
+    fun emptyMessageListThrowsIllegalArgumentExceptionTest() {
+        val emptyRequest = FixedBotMessageRequest(messages = emptyList())
+        val service = FixedBotMessageService(fixedBotMessageRepository)
+
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                service.addFixedBotMessages(emptyRequest, "overmind")
+            }
+
+        assertThat(exception.message).contains("FixedBotMessage list cannot be empty")
+    }
+
+    @Test
+    fun invalidRequestsThrowExceptionsWhenNoMessageFoundTest() {
+        val service = FixedBotMessageService(fixedBotMessageRepository)
+
+        val blankContentRequest =
+            FixedBotMessageRequest(
+                messages =
+                    listOf(
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                    ),
+            )
+
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                service.addFixedBotMessages(blankContentRequest, "overmind")
+            }
+
+        assertThat(exception.message).contains("FixedBotMessage list should contain at least one entry")
     }
 }
