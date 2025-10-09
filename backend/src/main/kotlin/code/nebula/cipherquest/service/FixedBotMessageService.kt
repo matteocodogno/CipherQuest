@@ -68,7 +68,7 @@ class FixedBotMessageService(
         storyName: String,
     ): List<FixedBotMessage> {
         require(fixedBotMessageRequest.messages.isNotEmpty()) {
-            "Fixed bot message list cannot be empty"
+            "FixedBotMessage list cannot be empty"
         }
         return fixedBotMessageRequest.messages
             .map {

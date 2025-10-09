@@ -43,28 +43,28 @@ POST http://localhost:8080/api/fixedMessage/{{storyName}}
 Content-Type: application/json
 
 {
-  "messages": [
-    {
-        "type": "PROTECTED",
-        "content": "This is a protected question"
-    },
-    {
-        "type": "WIN",
-        "content": "Congratulations!"
-    },
-    {
-        "type": "DOCUMENT",
-        "content": "Here's the list of documents you have access to."
-    },
-    {
-        "type": "GAME_OVER",
-        "content": "Sorry, you've lost :("
-    },
-    {
-        "type": "CHEAT_DETECT",
-        "content": "Cheater!!"
-    }
-]
+    "messages": [
+        {
+            "type": "PROTECTED",
+            "content": "This is a protected question"
+        },
+        {
+            "type": "WIN",
+            "content": "Congratulations!"
+        },
+        {
+            "type": "DOCUMENT",
+            "content": "Here's the list of documents you have access to."
+        },
+        {
+            "type": "GAME_OVER",
+            "content": "Sorry, you've lost :("
+        },
+        {
+            "type": "CHEAT_DETECT",
+            "content": "Cheater!!"
+        }
+    ]
 }
 
 ### GET prizes
@@ -77,20 +77,20 @@ POST http://localhost:8080/api/prize/{{storyName}}
 Content-Type: application/json
 
 {
-  "prizes": [
-    {
-      "name": "Backpack",
-      "position": 2
-    },
-    {
-      "name": "Lego set",
-      "position": 1
-    },
-    {
-      "name": "Water bottle",
-      "position": 3
-    }
-  ]
+    "prizes": [
+        {
+            "name": "Backpack",
+            "position": 2
+        },
+        {
+            "name": "Lego set",
+            "position": 1
+        },
+        {
+            "name": "Water bottle",
+            "position": 3
+        }
+    ]
 }
 
 ### POST create a new user

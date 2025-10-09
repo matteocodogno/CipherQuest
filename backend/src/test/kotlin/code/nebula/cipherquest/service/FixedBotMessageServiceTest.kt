@@ -6,17 +6,16 @@ import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mock
 import org.mockito.Mockito
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.test.context.ActiveProfiles
 
-@WebMvcTest(FixedBotMessageService::class)
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension::class)
 @ActiveProfiles("test")
 class FixedBotMessageServiceTest {
-    @MockBean
+    @Mock
     lateinit var fixedBotMessageRepository: FixedBotMessageRepository
 
     @Test
