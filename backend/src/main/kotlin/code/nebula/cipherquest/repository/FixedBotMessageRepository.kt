@@ -11,4 +11,6 @@ interface FixedBotMessageRepository : ListCrudRepository<FixedBotMessage, String
         type: FixedBotMessageType,
         storyName: String,
     ): FixedBotMessage?
+
+    fun findByStoryName(storyName: String): List<FixedBotMessage>
 }

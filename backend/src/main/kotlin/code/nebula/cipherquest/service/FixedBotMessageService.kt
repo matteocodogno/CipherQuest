@@ -70,8 +70,16 @@ class FixedBotMessageService(
         require(fixedBotMessageRequest.messages.isNotEmpty()) {
             "FixedBotMessage list cannot be empty"
         }
+
+        val takenTypes =
+            fixedBotMessageRepository
+                .findByStoryName(storyName)
+                .map { it.type }
+
         return fixedBotMessageRequest.messages
-            .map {
+            .filterNot {
+                takenTypes.contains(it.type)
+            }.map {
                 FixedBotMessage(
                     type = it.type,
                     message = it.content,
