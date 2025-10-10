@@ -26,6 +26,7 @@ class GCloudService(
 ) {
     @Transactional
     fun loadContent(storyName: String): GameDataFile {
+        require(storyName.isNotBlank()) { "storyName cannot be blank" }
         val blob =
             storage[
                 cloudStorageProperties.storiesBucket.name,
