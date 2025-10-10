@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
 
 data class FixedBotMessage(
-    val type: FixedBotMessageType,
+    val type: FixedBotMessageType = FixedBotMessageType.DOCUMENT,
     @field:NotBlank(message = "Content cannot be blank")
     val content: String = "",
 )
