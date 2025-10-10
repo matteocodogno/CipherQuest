@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
 
 data class FixedBotMessage(
-    val type: FixedBotMessageType,
+    val type: FixedBotMessageType = FixedBotMessageType.DOCUMENT,
     @field:NotBlank(message = "Content cannot be blank")
-    val content: String,
+    val content: String = "",
 )
 
 data class FixedBotMessageRequest(
     @field:NotEmpty(message = "FixedBotMessage list should contain at least one entry")
     @field:Valid
-    val messages: List<FixedBotMessage>,
+    val messages: List<FixedBotMessage> = emptyList(),
 )
