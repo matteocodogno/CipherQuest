@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.web.server.ResponseStatusException
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 
 @WebMvcTest(FixedMessageController::class)
@@ -124,5 +126,31 @@ class FixedBotMessageControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestJson),
             ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun failUponInvalidStoryNameTest() {
+        val request =
+            FixedBotMessageRequest(
+                messages =
+                    listOf(
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                    ),
+            )
+        `when`(fixedBotMessageService.addFixedBotMessages(request, "invalid"))
+            .thenThrow(ResponseStatusException(HttpStatus.NOT_FOUND, "Story not found"))
+        mockMvc
+            .perform(
+                post("/gcloud/loadContent/invalid")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(ObjectMapper().writeValueAsString(request)),
+            ).andExpect(status().isNotFound)
     }
 }

@@ -38,10 +38,16 @@ class GCloudService(
         val json = String(blob.getContent())
         val gameData = mapper.readValue(json, GameDataFile::class.java)
 
-        val levelUpQuestions = gameData.levelUpQuestions.map { LevelUpQuestionRequest(level = it.level, content = it.content) }
+        val levelUpQuestions =
+            gameData.levelUpQuestions
+                .map { LevelUpQuestionRequest(level = it.level, content = it.content) }
         val protectedQuestions = gameData.protectedQuestions.map { ProtectedQuestionRequest(it.content) }
         val fixedBotMessages =
-            FixedBotMessageRequest(messages = gameData.fixedBotMessages.map { FixedBotMessage(type = it.type, content = it.content) })
+            FixedBotMessageRequest(
+                messages =
+                    gameData.fixedBotMessages
+                        .map { FixedBotMessage(type = it.type, content = it.content) },
+            )
         val prizeRequest = PrizeRequest(prizes = gameData.prizes.map { Prize(name = it.name, position = it.position) })
 
         levelUpQuestionRepository.save(levelUpQuestions, storyName)
