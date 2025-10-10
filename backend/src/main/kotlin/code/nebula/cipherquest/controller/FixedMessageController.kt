@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.service.FixedBotMessageService
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,6 +18,6 @@ class FixedMessageController(
     @PostMapping("/{storyName}")
     fun addFixedBotMessages(
         @PathVariable storyName: String,
-        @Valid @RequestBody messages: FixedBotMessageRequest,
+        @Valid @RequestBody messages: FixedBotMessagesRequest,
     ): List<FixedBotMessage> = fixedBotMessageService.addFixedBotMessages(messages, storyName)
 }

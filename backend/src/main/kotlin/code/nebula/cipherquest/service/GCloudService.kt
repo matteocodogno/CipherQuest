@@ -2,12 +2,9 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import code.nebula.cipherquest.models.dto.GameDataFile
-import code.nebula.cipherquest.models.requests.FixedBotMessage
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
-import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.Prize
 import code.nebula.cipherquest.models.requests.PrizeRequest
-import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -38,14 +35,16 @@ class GCloudService(
         val json = String(blob.getContent())
         val gameData = mapper.readValue(json, GameDataFile::class.java)
 
-        val levelUpQuestions = gameData.levelUpQuestions.map { LevelUpQuestionRequest(level = it.level, content = it.content) }
-        val protectedQuestions = gameData.protectedQuestions.map { ProtectedQuestionRequest(it.content) }
         val fixedBotMessages =
-            FixedBotMessageRequest(messages = gameData.fixedBotMessages.map { FixedBotMessage(type = it.type, content = it.content) })
+            FixedBotMessagesRequest(
+                messages =
+                    gameData.fixedBotMessages
+                        .map { FixedBotMessagesRequest.FixedBotMessageRequest(type = it.type, content = it.content) },
+            )
         val prizeRequest = PrizeRequest(prizes = gameData.prizes.map { Prize(name = it.name, position = it.position) })
 
-        levelUpQuestionRepository.save(levelUpQuestions, storyName)
-        protectedQuestionRepository.save(protectedQuestions, storyName)
+        levelUpQuestionRepository.save(gameData.levelUpQuestions, storyName)
+        protectedQuestionRepository.save(gameData.protectedQuestions, storyName)
         prizeService.addPrizes(prizeRequest, storyName)
         fixedBotMessageService.addFixedBotMessages(fixedBotMessages, storyName)
 

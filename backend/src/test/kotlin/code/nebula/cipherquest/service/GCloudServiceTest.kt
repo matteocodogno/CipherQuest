@@ -2,7 +2,7 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import code.nebula.cipherquest.models.dto.GameDataFile
-import code.nebula.cipherquest.models.requests.FixedBotMessage
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
 import code.nebula.cipherquest.models.requests.Prize
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
@@ -53,7 +53,10 @@ class GCloudServiceTest {
             GameDataFile(
                 levelUpQuestions = listOf(LevelUpQuestionRequest(level = 1, content = "Q1")),
                 protectedQuestions = listOf(ProtectedQuestionRequest("Secret")),
-                fixedBotMessages = listOf(FixedBotMessage(type = FixedBotMessageType.DOCUMENT, content = "Hello")),
+                fixedBotMessages =
+                    listOf(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(type = FixedBotMessageType.DOCUMENT, content = "Hello"),
+                    ),
                 prizes = listOf(Prize(name = "Gold", position = 1)),
             )
 

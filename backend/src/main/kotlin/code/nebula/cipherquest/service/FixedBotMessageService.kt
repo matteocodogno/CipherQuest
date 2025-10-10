@@ -2,7 +2,7 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.UserStatus
 import code.nebula.cipherquest.models.dto.BotMessage
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.FixedBotMessageRepository
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
@@ -64,10 +64,10 @@ class FixedBotMessageService(
 
     @Transactional
     fun addFixedBotMessages(
-        fixedBotMessageRequest: FixedBotMessageRequest,
+        fixedBotMessagesRequest: FixedBotMessagesRequest,
         storyName: String,
     ): List<FixedBotMessage> {
-        require(fixedBotMessageRequest.messages.isNotEmpty()) {
+        require(fixedBotMessagesRequest.messages.isNotEmpty()) {
             "FixedBotMessage list cannot be empty"
         }
 
@@ -76,7 +76,7 @@ class FixedBotMessageService(
                 .findByStoryName(storyName)
                 .map { it.type }
 
-        return fixedBotMessageRequest.messages
+        return fixedBotMessagesRequest.messages
             .filterNot {
                 takenTypes.contains(it.type)
             }.map {
