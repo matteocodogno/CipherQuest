@@ -1,6 +1,11 @@
 @userId = 8536759380
 @storyName = overmind
 
+### POST request to load level up/protected questions, fixedbotmessages, and prizes
+
+POST http://localhost:8080/api/gcloud/loadContent/{{storyName}}
+
+
 ### POST request to add level up questions
 
 POST http://localhost:8080/api/question/levelUp/{{storyName}}
@@ -77,20 +82,20 @@ POST http://localhost:8080/api/prize/{{storyName}}
 Content-Type: application/json
 
 {
-    "prizes": [
-        {
-            "name": "Backpack",
-            "position": 2
-        },
-        {
-            "name": "Lego set",
-            "position": 1
-        },
-        {
-            "name": "Water bottle",
-            "position": 3
-        }
-    ]
+  "prizes": [
+    {
+      "name": "Backpack",
+      "position": 2
+    },
+    {
+      "name": "Lego set",
+      "position": 1
+    },
+    {
+      "name": "Water bottle",
+      "position": 3
+    }
+  ]
 }
 
 ### POST create a new user
