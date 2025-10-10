@@ -82,20 +82,20 @@ POST http://localhost:8080/api/prize/{{storyName}}
 Content-Type: application/json
 
 {
-  "prizes": [
-    {
-      "name": "Backpack",
-      "position": 2
-    },
-    {
-      "name": "Lego set",
-      "position": 1
-    },
-    {
-      "name": "Water bottle",
-      "position": 3
-    }
-  ]
+    "prizes": [
+        {
+            "name": "Backpack",
+            "position": 2
+        },
+        {
+            "name": "Lego set",
+            "position": 1
+        },
+        {
+            "name": "Water bottle",
+            "position": 3
+        }
+    ]
 }
 
 ### POST create a new user
