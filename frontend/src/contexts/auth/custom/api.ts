@@ -28,6 +28,10 @@ export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
     throw new Error('Username already exists.');
   }
 
+  if (response.status === 403) {
+    throw new Error('Access Denied');
+  }
+
   const jsonResponse = await response.json();
   const user = UserLevel.parse(jsonResponse);
   logger.debug('signIn', user);

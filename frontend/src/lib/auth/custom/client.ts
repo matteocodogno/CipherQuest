@@ -23,10 +23,15 @@ const authClientBuilder = () => ({
       initializeGameSessionInfo();
 
       return {};
-    } catch {
-      return {
-        error: 'Email address already exists. Use another address please.',
-      };
+    } catch (err: unknown) {
+      if ( err instanceof Error && err.message === 'Access Denied') {
+        return {
+          error: 'Access denied: Invalid reCAPTCHA verification.',
+        };
+      } else {
+        return {
+          error: 'Email address already exists. Use another address please.'}
+      }
     }
   },
 

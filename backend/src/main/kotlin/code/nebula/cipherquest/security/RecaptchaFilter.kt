@@ -37,7 +37,12 @@ class RecaptchaFilter(
 
             if (!recaptchaResponse?.success!!) {
                 log.info("Invalid reCAPTCHA token")
-                throw IllegalArgumentException("Invalid reCAPTCHA token")
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid reCAPTCHA token")
+            }
+
+            if (recaptchaResponse.score!! < 0.5) {
+                log.info("Access Denied")
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied")
             }
         }
 
