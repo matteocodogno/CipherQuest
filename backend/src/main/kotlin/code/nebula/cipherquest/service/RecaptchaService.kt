@@ -38,7 +38,6 @@ class RecaptchaService(
                 requestEntity,
                 RecaptchaResponse::class.java,
             )
-        println(response.body)
         return response.body
     }
 }
