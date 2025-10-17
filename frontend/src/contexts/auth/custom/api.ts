@@ -19,6 +19,7 @@ export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'recaptcha': data.recaptchaToken ?? '',
     },
     body: JSON.stringify(data),
   });
