@@ -3,6 +3,7 @@ import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
 
 export type SignUpParams = {
+  recaptchaToken: string | null;
   email: string;
   firstName?: string;
   lastName?: string;
@@ -12,7 +13,9 @@ export const getRandomArbitrary = (min: number, max: number) =>
   Math.ceil(Math.random() * (max - min) + min);
 
 const authClientBuilder = () => ({
-  signUp: async (params: SignUpParams): Promise<{ error?: string }> => {
+  signUp: async (
+    params: SignUpParams & { recaptchaToken?: string | null }
+  ): Promise<{ error?: string }> => {
     try {
       const user = await signUpApi(params);
 
