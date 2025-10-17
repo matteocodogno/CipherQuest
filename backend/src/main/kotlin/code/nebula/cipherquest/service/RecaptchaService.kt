@@ -12,10 +12,11 @@ import org.springframework.web.client.RestTemplate
 
 @Service
 class RecaptchaService(
-    @Value("\${recaptcha.secret-key}") private val secretKey: String,
-    @Value("\${recaptcha.verify-url}") private val verifyUrl: String,
+    @Value("\${recaptcha.secret-key:dummy-secret}") private val secretKey: String,
+    @Value("\${recaptcha.verify-url:https://www.google.com/recaptcha/api/siteverify}")
+    private val verifyUrl: String,
 ) {
-    private val restTemplate = RestTemplate()
+    private val restTemplate: RestTemplate = RestTemplate()
 
     fun validateToken(recaptchaToken: String): RecaptchaResponse? {
         val headers =

@@ -57,7 +57,7 @@ class RecaptchaFilterTest {
                 RecaptchaResponse(
                     success = false,
                     score = 0.0,
-                    challege_ts = null,
+                    challengeTs = null,
                     hostname = null,
                     action = null,
                 ),
@@ -81,7 +81,7 @@ class RecaptchaFilterTest {
                 RecaptchaResponse(
                     success = true,
                     score = 0.4,
-                    challege_ts = null,
+                    challengeTs = null,
                     hostname = null,
                     action = null,
                 ),
@@ -105,7 +105,7 @@ class RecaptchaFilterTest {
                 RecaptchaResponse(
                     success = true,
                     score = 0.9,
-                    challege_ts = null,
+                    challengeTs = null,
                     hostname = null,
                     action = null,
                 ),

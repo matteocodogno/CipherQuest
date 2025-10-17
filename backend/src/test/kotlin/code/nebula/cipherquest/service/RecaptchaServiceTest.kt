@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -20,16 +18,13 @@ import org.springframework.test.web.client.response.MockRestResponseCreators.wit
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
 import org.springframework.web.client.RestTemplate
 
-@SpringBootTest
 class RecaptchaServiceTest {
-    @Value("\${recaptcha.verify-url}")
-    private lateinit var verifyUrl: String
-
     private lateinit var restTemplate: RestTemplate
     private lateinit var mockServer: MockRestServiceServer
     private lateinit var recaptchaService: RecaptchaService
 
     private val secretKey = "test-secret-key"
+    private val verifyUrl = "https://www.google.com/recaptcha/api/siteverify"
 
     @BeforeEach
     fun setUp() {

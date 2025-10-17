@@ -14,6 +14,10 @@ import java.io.IOException
 class RecaptchaFilter(
     private val recaptchaService: RecaptchaService,
 ) : OncePerRequestFilter() {
+    companion object {
+        private const val THRESHOLD_SCORE = 0.5
+    }
+
     @Throws(ServletException::class, IOException::class)
     public override fun doFilterInternal(
         request: HttpServletRequest,
@@ -25,9 +29,7 @@ class RecaptchaFilter(
         ) {
             val recaptcha = request.getHeader("recaptcha")
 
-            if (recaptcha.isNullOrBlank()) {
-                throw IllegalArgumentException("Missing reCAPTCHA token")
-            }
+            require(!recaptcha.isNullOrBlank()) { "Missing reCAPTCHA token" }
 
             val recaptchaResponse: RecaptchaResponse? = recaptchaService.validateToken(recaptcha)
 
@@ -36,7 +38,7 @@ class RecaptchaFilter(
                 return
             }
 
-            if (recaptchaResponse.score!! < 0.5) {
+            if (recaptchaResponse.score!! < THRESHOLD_SCORE) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied")
                 return
             }
