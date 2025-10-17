@@ -46,7 +46,6 @@ const InnerSignInForm = (): ReactElement => {
       }
 
       const token = await executeRecaptcha('login');
-      console.log('token:', token);
 
       const { error } = await authClient.signUp({...values, recaptchaToken: token,});
 
