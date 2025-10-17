@@ -1,4 +1,4 @@
-package code.nebula.cipherquest.service.converter
+package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.dto.RecaptchaResponse
 import org.springframework.beans.factory.annotation.Value
