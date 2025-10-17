@@ -23,7 +23,9 @@ class RecaptchaFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (request.method.equals("POST", ignoreCase = true)) {
+        if (request.method.equals("POST", ignoreCase = true) &&
+            request.requestURI.startsWith("/api/user/")
+        ) {
             val recaptcha = request.getHeader("recaptcha")
 
             if (recaptcha.isNullOrBlank()) {
