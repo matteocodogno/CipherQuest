@@ -100,7 +100,9 @@ info:
     version: '@project.version@'
 
 
-
+recaptcha:
+  secret-key: GOOGLE_CAPTCHA_SECRET_KEY
+  verify-url: https://www.google.com/recaptcha/api/siteverify
 
 
 

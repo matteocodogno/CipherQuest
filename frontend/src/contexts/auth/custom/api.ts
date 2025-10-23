@@ -19,12 +19,17 @@ export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'recaptcha': data.recaptchaToken ?? '',
     },
     body: JSON.stringify(data),
   });
 
   if (response.status === 409) {
     throw new Error('Username already exists.');
+  }
+
+  if (response.status === 403) {
+    throw new Error('Access Denied');
   }
 
   const jsonResponse = await response.json();
