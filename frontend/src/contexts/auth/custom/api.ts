@@ -14,27 +14,40 @@ const UserLevel = z.object({
 
 export type UserLevel = z.infer<typeof UserLevel>;
 
-export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
+export type RecaptchaVersion = 'v3' | 'v2';
+
+export const signUpApi = async (
+  data: SignUpParams & { recaptchaVersion?: RecaptchaVersion }
+): Promise<UserLevel> => {
   const response = await fetch(`/api/user/${STORY_NAME}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'recaptcha': data.recaptchaToken ?? '',
+      'recaptcha-version': data.recaptchaVersion ?? 'v3',
     },
     body: JSON.stringify(data),
   });
 
+  const payload = await response.json().catch(() => null);
+
   if (response.status === 409) {
-    throw new Error('Username already exists.');
+    throw new Error(payload?.message || 'Username already exists.');
+  }
+
+  if (response.status === 428 && payload?.error === 'RECAPTCHA_V2_REQUIRED') {
+    throw new Error('RECAPTCHA_V2_REQUIRED');
   }
 
   if (response.status === 403) {
-    throw new Error('Access Denied');
+    throw new Error(payload?.message || 'Access Denied');
   }
 
-  const jsonResponse = await response.json();
-  const user = UserLevel.parse(jsonResponse);
-  logger.debug('signIn', user);
+  if (!response.ok) {
+    throw new Error(payload?.message || 'Unexpected error');
+  }
 
+  const user = UserLevel.parse(payload);
+  logger.debug('signIn', user);
   return user;
 };
