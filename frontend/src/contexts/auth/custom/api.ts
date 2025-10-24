@@ -44,7 +44,7 @@ export const signUpApi = async (
   }
 
   if (!response.ok) {
-    throw new Error(payload?.message || 'Unexpected error');
+    throw new Error(payload?.message || 'Access Denied. Please try again');
   }
 
   const user = UserLevel.parse(payload);
