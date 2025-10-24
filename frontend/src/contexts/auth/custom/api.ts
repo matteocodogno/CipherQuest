@@ -1,7 +1,7 @@
-import {STORY_NAME} from '@/constants.ts'
-import {SignUpParams} from '@/lib/auth/custom/client.ts';
-import {z} from 'zod';
-import {ErrorMessages} from'@/types/errorMessages';
+import { STORY_NAME } from '@/constants.ts';
+import { SignUpParams } from '@/lib/auth/custom/client.ts';
+import { z } from 'zod';
+import { ErrorMessages } from '@/types/errorMessages';
 
 const UserLevel = z.object({
   userId: z.string(),
@@ -14,15 +14,22 @@ const UserLevel = z.object({
 
 export type UserLevel = z.infer<typeof UserLevel>;
 
-export const signUpApi = async (data: SignUpParams): Promise<UserLevel> => {
+export type RecaptchaVersion = 'v3' | 'v2';
+
+export const signUpApi = async (
+  data: SignUpParams & { recaptchaVersion?: RecaptchaVersion },
+): Promise<UserLevel> => {
   const response = await fetch(`/api/user/${STORY_NAME}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'recaptcha': data.recaptchaToken ?? '',
+      recaptcha: data.recaptchaToken ?? '',
+      'recaptcha-version': data.recaptchaVersion ?? 'v3',
     },
     body: JSON.stringify(data),
   });
+
+  await response.json().catch(() => null);
 
   if (response.status === 409) {
     throw new Error(ErrorMessages.EMAIL_ALREADY_TAKEN);
