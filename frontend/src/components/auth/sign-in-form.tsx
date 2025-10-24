@@ -150,7 +150,7 @@ const InnerSignInForm = (): ReactElement => {
           {showV2 && (
             <ReCAPTCHA
               ref={v2Ref}
-              sitekey={import.meta.env.VITE_RECAPTCHA_V2_SITE_KEY as string} // v2 Checkbox site key
+              sitekey={import.meta.env.VITE_RECAPTCHA_V2_SITE_KEY as string}
               onChange={(token) => setV2Token(token ?? '')}
               onExpired={() => setV2Token('')}
               onErrored={() =>

@@ -51,7 +51,7 @@ const authClientBuilder = () => ({
         return { error: 'Access denied: Invalid reCAPTCHA verification.' };
       }
 
-      return { error: 'Unexpected error. Please try again.' };
+      return { error: 'Access Denied. Please try again.' };
     }
   },
 

@@ -1,7 +1,7 @@
+import { ErrorMessages } from '@/types/errorMessages';
 import { STORY_NAME } from '@/constants.ts';
 import { SignUpParams } from '@/lib/auth/custom/client.ts';
 import { z } from 'zod';
-import { ErrorMessages } from '@/types/errorMessages';
 
 const UserLevel = z.object({
   userId: z.string(),
