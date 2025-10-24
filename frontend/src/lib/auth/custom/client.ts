@@ -1,24 +1,27 @@
 import type { User } from '@/types/user';
 import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
-import {ErrorMessages} from'@/types/errorMessages';
+import { ErrorMessages } from '@/types/errorMessages';
+
+export type RecaptchaVersion = 'v3' | 'v2';
 
 export type SignUpParams = {
   recaptchaToken: string | null;
+  recaptchaVersion?: RecaptchaVersion;
   email: string;
   firstName?: string;
   lastName?: string;
 };
 
-export const getRandomArbitrary = (min: number, max: number) =>
-  Math.ceil(Math.random() * (max - min) + min);
-
 const authClientBuilder = () => ({
   signUp: async (
-    params: SignUpParams & { recaptchaToken?: string | null }
+    params: SignUpParams & { recaptchaToken?: string | null },
   ): Promise<{ error?: string }> => {
     try {
-      const user = await signUpApi(params);
+      const user = await signUpApi({
+        ...params,
+        recaptchaVersion: params.recaptchaVersion ?? 'v3',
+      });
 
       localStorage.setItem('user', JSON.stringify(user));
       initializeGameSessionInfo();
@@ -39,6 +42,16 @@ const authClientBuilder = () => ({
         default:
           return { error: ErrorMessages.UNKNOWN_ERROR };
       }
+
+      if (err instanceof Error && err.message === 'RECAPTCHA_V2_REQUIRED') {
+        return { error: 'RECAPTCHA_V2_REQUIRED' };
+      }
+
+      if (err instanceof Error && err.message === 'Access Denied') {
+        return { error: 'Access denied: Invalid reCAPTCHA verification.' };
+      }
+
+      return { error: 'Unexpected error. Please try again.' };
     }
   },
 
