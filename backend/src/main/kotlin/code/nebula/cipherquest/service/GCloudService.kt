@@ -3,7 +3,6 @@ package code.nebula.cipherquest.service
 import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
-import code.nebula.cipherquest.models.requests.PrizesRequest
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service
 class GCloudService(
     private val storage: Storage,
     private val cloudStorageProperties: CloudStorageProperties,
-    private val prizeService: PrizeService,
     private val fixedBotMessageService: FixedBotMessageService,
     private val levelUpQuestionRepository: LevelUpQuestionRepository,
     private val protectedQuestionRepository: ProtectedQuestionRepository,
@@ -40,16 +38,9 @@ class GCloudService(
                     gameData.fixedBotMessages
                         .map { FixedBotMessagesRequest.FixedBotMessageRequest(type = it.type, content = it.content) },
             )
-        val prizesRequest =
-            PrizesRequest(
-                prizes =
-                    gameData.prizes
-                        .map { PrizesRequest.PrizeRequest(name = it.name, position = it.position) },
-            )
 
         levelUpQuestionRepository.save(gameData.levelUpQuestions, storyName)
         protectedQuestionRepository.save(gameData.protectedQuestions, storyName)
-        prizeService.addPrizes(prizesRequest, storyName)
         fixedBotMessageService.addFixedBotMessages(fixedBotMessages, storyName)
 
         return gameData

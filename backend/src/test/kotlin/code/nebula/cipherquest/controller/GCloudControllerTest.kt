@@ -34,7 +34,6 @@ class GCloudControllerTest {
                 levelUpQuestions = emptyList(),
                 protectedQuestions = emptyList(),
                 fixedBotMessages = emptyList(),
-                prizes = emptyList(),
             )
 
         `when`(gCloudService.loadContent("invalid")).thenReturn(mockData)

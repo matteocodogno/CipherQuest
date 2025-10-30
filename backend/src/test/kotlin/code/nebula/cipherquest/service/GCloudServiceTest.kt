@@ -4,7 +4,6 @@ import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
-import code.nebula.cipherquest.models.requests.PrizesRequest
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.ProtectedQuestionRepository
@@ -22,7 +21,6 @@ import org.mockito.Mockito.`when`
 class GCloudServiceTest {
     private val storage = mock(Storage::class.java)
     private val cloudStorageProperties = mock(CloudStorageProperties::class.java)
-    private val prizeService = mock(PrizeService::class.java)
     private val fixedBotMessageService = mock(FixedBotMessageService::class.java)
     private val levelUpQuestionRepository = mock(LevelUpQuestionRepository::class.java)
     private val protectedQuestionRepository = mock(ProtectedQuestionRepository::class.java)
@@ -32,7 +30,6 @@ class GCloudServiceTest {
         GCloudService(
             storage,
             cloudStorageProperties,
-            prizeService,
             fixedBotMessageService,
             levelUpQuestionRepository,
             protectedQuestionRepository,
@@ -57,7 +54,6 @@ class GCloudServiceTest {
                     listOf(
                         FixedBotMessagesRequest.FixedBotMessageRequest(type = FixedBotMessageType.DOCUMENT, content = "Hello"),
                     ),
-                prizes = listOf(PrizesRequest.PrizeRequest(name = "Gold", position = 1)),
             )
 
         val mockBlob = mock(Blob::class.java)
@@ -75,7 +71,6 @@ class GCloudServiceTest {
         assertEquals(mockGameData.levelUpQuestions.size, result.levelUpQuestions.size)
         assertEquals(mockGameData.protectedQuestions.size, result.protectedQuestions.size)
         assertEquals(mockGameData.fixedBotMessages.size, result.fixedBotMessages.size)
-        assertEquals(mockGameData.prizes.size, result.prizes.size)
     }
 
     @Test
