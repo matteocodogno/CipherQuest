@@ -5,6 +5,7 @@ import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
+import code.nebula.cipherquest.repository.GCloudRepository
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
@@ -25,14 +26,14 @@ class GCloudServiceTest {
     private val levelUpQuestionRepository = mock(LevelUpQuestionRepository::class.java)
     private val protectedQuestionRepository = mock(ProtectedQuestionRepository::class.java)
     private val bucketProperties = mock(CloudStorageProperties.BucketProperties::class.java)
+    private val gCloudRepository = mock(GCloudRepository::class.java)
 
     private val service =
         GCloudService(
-            storage,
-            cloudStorageProperties,
             fixedBotMessageService,
             levelUpQuestionRepository,
             protectedQuestionRepository,
+            gCloudRepository,
         )
 
     init {
