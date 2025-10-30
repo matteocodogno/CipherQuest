@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.models.requests.PrizeRequest
+import code.nebula.cipherquest.models.requests.PrizesRequest
 import code.nebula.cipherquest.repository.PrizeRepository
 import code.nebula.cipherquest.repository.entities.Prize
 import org.springframework.stereotype.Service
@@ -16,26 +16,26 @@ class PrizeService(
 
     @Transactional
     fun addPrizes(
-        prizeRequest: PrizeRequest,
+        prizesRequest: PrizesRequest,
         storyName: String,
     ): List<Prize> {
-        require(prizeRequest.prizes.isNotEmpty()) {
+        require(prizesRequest.prizes.isNotEmpty()) {
             "Prizes list cannot be empty"
         }
 
         val takenPositions =
             prizeRepository
-                .findAllByStoryNameAndDateOrderByPositionAsc(storyName, prizeRequest.date)
+                .findAllByStoryNameAndDateOrderByPositionAsc(storyName, prizesRequest.date)
                 .map { it.position }
 
-        return prizeRequest.prizes
+        return prizesRequest.prizes
             .filterNot {
                 takenPositions.contains(it.position)
             }.map {
                 Prize(
                     name = it.name,
                     position = it.position,
-                    date = prizeRequest.date,
+                    date = prizesRequest.date,
                     storyName = storyName,
                 )
             }.let { prizeRepository.saveAll(it) }
