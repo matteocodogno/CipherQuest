@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import code.nebula.cipherquest.service.FixedBotMessageService
@@ -33,10 +33,10 @@ class FixedBotMessageControllerTest {
     @Test
     fun addFixedBotMessagesTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "This question is protected",
                         ),
@@ -69,7 +69,7 @@ class FixedBotMessageControllerTest {
 
     @Test
     fun emptyListReturnsBadRequestTest() {
-        val request = FixedBotMessageRequest(messages = emptyList())
+        val request = FixedBotMessagesRequest(messages = emptyList())
 
         mockMvc
             .perform(
@@ -82,14 +82,14 @@ class FixedBotMessageControllerTest {
     @Test
     fun blankContentReturnsBadRequestTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
@@ -131,14 +131,14 @@ class FixedBotMessageControllerTest {
     @Test
     fun failUponInvalidStoryNameTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),

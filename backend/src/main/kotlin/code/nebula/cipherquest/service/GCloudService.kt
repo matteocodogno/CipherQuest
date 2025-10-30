@@ -2,8 +2,7 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import code.nebula.cipherquest.models.dto.GameDataFile
-import code.nebula.cipherquest.models.requests.FixedBotMessage
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.Prize
 import code.nebula.cipherquest.models.requests.PrizeRequest
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
@@ -37,10 +36,10 @@ class GCloudService(
         val gameData = mapper.readValue(json, GameDataFile::class.java)
 
         val fixedBotMessages =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     gameData.fixedBotMessages
-                        .map { FixedBotMessage(type = it.type, content = it.content) },
+                        .map { FixedBotMessagesRequest.FixedBotMessageRequest(type = it.type, content = it.content) },
             )
         val prizeRequest = PrizeRequest(prizes = gameData.prizes.map { Prize(name = it.name, position = it.position) })
 

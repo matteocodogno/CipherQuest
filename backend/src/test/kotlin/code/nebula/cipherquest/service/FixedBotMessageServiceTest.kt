@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.FixedBotMessageRepository
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
@@ -22,10 +22,10 @@ class FixedBotMessageServiceTest {
     @Test
     fun saveAllCorrectlyCalledTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "This question is protected",
                         ),
@@ -59,14 +59,14 @@ class FixedBotMessageServiceTest {
     @Test
     fun twoMessagesCorrectlyStoredTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "Protected Question",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.DOCUMENT,
                             content = "Documentation",
                         ),
@@ -103,7 +103,7 @@ class FixedBotMessageServiceTest {
 
     @Test
     fun emptyMessageListThrowsIllegalArgumentExceptionTest() {
-        val emptyRequest = FixedBotMessageRequest(messages = emptyList())
+        val emptyRequest = FixedBotMessagesRequest(messages = emptyList())
         val service = FixedBotMessageService(fixedBotMessageRepository)
 
         val exception =
@@ -119,22 +119,22 @@ class FixedBotMessageServiceTest {
         val service = FixedBotMessageService(fixedBotMessageRepository)
 
         val blankContentRequest =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
