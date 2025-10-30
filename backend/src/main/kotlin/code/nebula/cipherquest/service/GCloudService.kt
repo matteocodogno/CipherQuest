@@ -41,7 +41,11 @@ class GCloudService(
                         .map { FixedBotMessagesRequest.FixedBotMessageRequest(type = it.type, content = it.content) },
             )
         val prizesRequest =
-            PrizesRequest(prizes = gameData.prizes.map { PrizesRequest.PrizeRequest(name = it.name, position = it.position) })
+            PrizesRequest(
+                prizes =
+                    gameData.prizes
+                        .map { PrizesRequest.PrizeRequest(name = it.name, position = it.position) },
+            )
 
         levelUpQuestionRepository.save(gameData.levelUpQuestions, storyName)
         protectedQuestionRepository.save(gameData.protectedQuestions, storyName)

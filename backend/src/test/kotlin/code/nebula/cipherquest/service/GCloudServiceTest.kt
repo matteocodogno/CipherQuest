@@ -4,7 +4,7 @@ import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
-import code.nebula.cipherquest.models.requests.Prize
+import code.nebula.cipherquest.models.requests.PrizesRequest
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
 import code.nebula.cipherquest.repository.LevelUpQuestionRepository
 import code.nebula.cipherquest.repository.ProtectedQuestionRepository
@@ -57,7 +57,7 @@ class GCloudServiceTest {
                     listOf(
                         FixedBotMessagesRequest.FixedBotMessageRequest(type = FixedBotMessageType.DOCUMENT, content = "Hello"),
                     ),
-                prizes = listOf(Prize(name = "Gold", position = 1)),
+                prizes = listOf(PrizesRequest.PrizeRequest(name = "Gold", position = 1)),
             )
 
         val mockBlob = mock(Blob::class.java)
