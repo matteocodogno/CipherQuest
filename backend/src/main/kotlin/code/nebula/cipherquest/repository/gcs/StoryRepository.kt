@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository
 class StoryRepository(
     override val objectMapper: ObjectMapper,
     override val storage: Storage,
-    private val cloudStorageProperties: CloudStorageProperties,
-) : GcsStreamRepository(objectMapper, storage) {
+    override val cloudStorageProperties: CloudStorageProperties,
+) : GcsStreamRepository(objectMapper, storage, cloudStorageProperties) {
     fun findByStoryName(storyName: String): List<Blob> =
         storage
             .list(
