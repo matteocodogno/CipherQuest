@@ -2,8 +2,6 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
-import code.nebula.cipherquest.repository.LevelUpQuestionRepository
-import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import code.nebula.cipherquest.repository.gcs.GcsStreamRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
@@ -14,8 +12,7 @@ import java.lang.Boolean.TRUE
 @Service
 class GCloudService(
     private val fixedBotMessageService: FixedBotMessageService,
-    private val levelUpQuestionRepository: LevelUpQuestionRepository,
-    private val protectedQuestionRepository: ProtectedQuestionRepository,
+    private val actionableQuestionService: ActionableQuestionService,
     @Qualifier("emailTemplateRepository") private val gcsStreamRepository: GcsStreamRepository,
 ) {
     @Transactional
@@ -33,8 +30,8 @@ class GCloudService(
                 messages = gameData.fixedBotMessages,
             )
 
-        levelUpQuestionRepository.save(gameData.levelUpQuestions, storyName)
-        protectedQuestionRepository.save(gameData.protectedQuestions, storyName)
+        actionableQuestionService.addLevelUpQuestion(gameData.levelUpQuestions, storyName)
+        actionableQuestionService.addProtectedQuestion(gameData.protectedQuestions, storyName)
         fixedBotMessageService.addFixedBotMessages(fixedBotMessagesRequest, storyName, TRUE)
 
         return gameData
