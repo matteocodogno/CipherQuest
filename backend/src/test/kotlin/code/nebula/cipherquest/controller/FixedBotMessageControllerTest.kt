@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 import java.lang.Boolean.FALSE
 
-@WebMvcTest(FixedMessageController::class)
+@WebMvcTest(FixedBotMessageController::class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class FixedBotMessageControllerTest {
@@ -59,7 +59,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessages/add/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isOk)
@@ -74,7 +74,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessages/add/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isBadRequest)
@@ -99,7 +99,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessages/add/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isBadRequest)
@@ -111,7 +111,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessages/add/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(invalidJson),
             ).andExpect(status().isBadRequest)
@@ -123,7 +123,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessages/add/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestJson),
             ).andExpect(status().isBadRequest)

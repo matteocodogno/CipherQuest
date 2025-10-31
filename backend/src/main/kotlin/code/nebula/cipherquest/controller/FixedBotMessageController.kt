@@ -12,8 +12,8 @@ import java.lang.Boolean.FALSE
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/FixedBotMessages")
-class FixedMessageController(
+@RequestMapping("/fixedBotMessages")
+class FixedBotMessageController(
     private val fixedBotMessageService: FixedBotMessageService,
 ) {
     @PostMapping("/add/{storyName}")
