@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.repository.gcs
 
+import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.storage.Blob
 import com.google.cloud.storage.BlobId
@@ -12,6 +13,7 @@ import java.nio.channels.Channels
 open class GcsStreamRepository(
     open val objectMapper: ObjectMapper,
     open val storage: Storage,
+    open val cloudStorageProperties: CloudStorageProperties,
 ) {
     @Async
     open fun save(
@@ -27,4 +29,22 @@ open class GcsStreamRepository(
     }
 
     fun download(blobId: BlobId): Blob = storage.get(blobId)
+
+    fun getBlobIdEmail(
+        storyName: String,
+        filename: String,
+    ): BlobId =
+        BlobId.of(
+            cloudStorageProperties.emailTemplatesBucket.name,
+            "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
+        )
+
+    fun getBlobIdStory(
+        storyName: String,
+        filename: String,
+    ): BlobId =
+        BlobId.of(
+            cloudStorageProperties.storiesBucket.name,
+            "${cloudStorageProperties.storiesBucket.folder}/$storyName/$filename",
+        )
 }
