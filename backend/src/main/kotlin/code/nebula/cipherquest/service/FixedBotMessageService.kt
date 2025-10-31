@@ -7,12 +7,14 @@ import code.nebula.cipherquest.repository.FixedBotMessageRepository
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import code.nebula.cipherquest.repository.entities.UserLevel
+import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class FixedBotMessageService(
     private val fixedBotMessageRepository: FixedBotMessageRepository,
+    private val entityManager: EntityManager,
 ) {
     /**
      * Retrieves a message template based on the provided message type and story name.
@@ -66,20 +68,24 @@ class FixedBotMessageService(
     fun addFixedBotMessages(
         fixedBotMessagesRequest: FixedBotMessagesRequest,
         storyName: String,
+        initialize: Boolean,
     ): List<FixedBotMessage> {
         require(fixedBotMessagesRequest.messages.isNotEmpty()) {
             "FixedBotMessage list cannot be empty"
         }
 
-        val takenTypes =
-            fixedBotMessageRepository
-                .findByStoryName(storyName)
-                .map { it.type }
+        if (initialize) {
+            fixedBotMessageRepository.deleteAllByStoryName(storyName)
+            entityManager.flush()
+        } else {
+            val insertTypes: List<FixedBotMessageType> = fixedBotMessagesRequest.messages.map { it.type }
+
+            fixedBotMessageRepository.deleteAllByStoryNameAndTypeIn(storyName, insertTypes)
+            entityManager.flush()
+        }
 
         return fixedBotMessagesRequest.messages
-            .filterNot {
-                takenTypes.contains(it.type)
-            }.map {
+            .map {
                 require(it.content.isNotBlank()) { "FixedBotMessage list should contain at least one entry" }
                 FixedBotMessage(
                     type = it.type,
