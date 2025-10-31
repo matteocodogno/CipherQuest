@@ -4,8 +4,6 @@ import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
-import code.nebula.cipherquest.repository.LevelUpQuestionRepository
-import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import code.nebula.cipherquest.repository.gcs.GcsStreamRepository
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,10 +22,7 @@ class GCloudServiceTest {
     lateinit var fixedBotMessageService: FixedBotMessageService
 
     @Mock
-    lateinit var levelUpQuestionRepository: LevelUpQuestionRepository
-
-    @Mock
-    lateinit var protectedQuestionRepository: ProtectedQuestionRepository
+    lateinit var actionableQuestionService: ActionableQuestionService
 
     @Mock
     lateinit var gcsStreamRepository: GcsStreamRepository
@@ -73,8 +68,8 @@ class GCloudServiceTest {
         assertEquals(1, result.protectedQuestions.size)
         assertEquals(1, result.fixedBotMessages.size)
 
-        verify(levelUpQuestionRepository).save(result.levelUpQuestions, storyName)
-        verify(protectedQuestionRepository).save(result.protectedQuestions, storyName)
+        verify(actionableQuestionService).addLevelUpQuestion(result.levelUpQuestions, storyName)
+        verify(actionableQuestionService).addProtectedQuestion(result.protectedQuestions, storyName)
         verify(fixedBotMessageService).addFixedBotMessages(
             FixedBotMessagesRequest(messages = result.fixedBotMessages),
             storyName,
@@ -99,7 +94,6 @@ class GCloudServiceTest {
                 .of("bucket", "stories/$storyName/loadContent.json")
 
         `when`(gcsStreamRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
-        // your repo’s download() throws IllegalArgumentException on missing blob, so stub that:
         `when`(gcsStreamRepository.download(blobId))
             .thenThrow(IllegalArgumentException("File not found in bucket "))
 
@@ -119,7 +113,7 @@ class GCloudServiceTest {
         `when`(gcsStreamRepository.download(blobId)).thenReturn(blob)
         `when`(blob.getContent()).thenReturn("not-valid-json".toByteArray())
 
-        org.junit.jupiter.api.assertThrows<com.fasterxml.jackson.core.JsonProcessingException> {
+        assertThrows<com.fasterxml.jackson.core.JsonProcessingException> {
             service.loadContent(storyName)
         }
     }
