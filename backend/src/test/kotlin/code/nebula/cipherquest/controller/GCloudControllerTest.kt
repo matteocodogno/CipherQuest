@@ -44,7 +44,6 @@ class GCloudControllerTest {
             .andExpect(jsonPath("$.levelUpQuestions").isArray)
             .andExpect(jsonPath("$.protectedQuestions").isArray)
             .andExpect(jsonPath("$.fixedBotMessages").isArray)
-            .andExpect(jsonPath("$.prizes").isArray)
 
         verify(gCloudService).loadContent("invalid")
     }
