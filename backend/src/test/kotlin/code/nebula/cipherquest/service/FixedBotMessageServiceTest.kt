@@ -4,6 +4,7 @@ import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.FixedBotMessageRepository
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
+import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -12,12 +13,14 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.test.context.ActiveProfiles
+import java.lang.Boolean.FALSE
 
 @ExtendWith(MockitoExtension::class)
 @ActiveProfiles("test")
 class FixedBotMessageServiceTest {
     @Mock
     lateinit var fixedBotMessageRepository: FixedBotMessageRepository
+    private var entityManager: EntityManager = Mockito.mock(EntityManager::class.java)
 
     @Test
     fun saveAllCorrectlyCalledTest() {
@@ -45,8 +48,8 @@ class FixedBotMessageServiceTest {
             .`when`(fixedBotMessageRepository.saveAll(entities))
             .thenReturn(entities)
 
-        val service = FixedBotMessageService(fixedBotMessageRepository)
-        val result = service.addFixedBotMessages(request, "overmind")
+        val service = FixedBotMessageService(fixedBotMessageRepository, entityManager)
+        val result = service.addFixedBotMessages(request, "overmind", FALSE)
 
         assertThat(result).hasSize(1)
         assertThat(result[0].type).isEqualTo(FixedBotMessageType.PROTECTED)
@@ -91,8 +94,8 @@ class FixedBotMessageServiceTest {
             .`when`(fixedBotMessageRepository.saveAll(entities))
             .thenReturn(entities)
 
-        val service = FixedBotMessageService(fixedBotMessageRepository)
-        val result = service.addFixedBotMessages(request, "overmind")
+        val service = FixedBotMessageService(fixedBotMessageRepository, entityManager)
+        val result = service.addFixedBotMessages(request, "overmind", FALSE)
 
         assertThat(result).hasSize(2)
         assertThat(result.map { it.type })
@@ -104,11 +107,11 @@ class FixedBotMessageServiceTest {
     @Test
     fun emptyMessageListThrowsIllegalArgumentExceptionTest() {
         val emptyRequest = FixedBotMessagesRequest(messages = emptyList())
-        val service = FixedBotMessageService(fixedBotMessageRepository)
+        val service = FixedBotMessageService(fixedBotMessageRepository, entityManager)
 
         val exception =
             assertThrows<IllegalArgumentException> {
-                service.addFixedBotMessages(emptyRequest, "overmind")
+                service.addFixedBotMessages(emptyRequest, "overmind", FALSE)
             }
 
         assertThat(exception.message).contains("FixedBotMessage list cannot be empty")
@@ -116,7 +119,7 @@ class FixedBotMessageServiceTest {
 
     @Test
     fun invalidRequestsThrowExceptionsWhenNoMessageFoundTest() {
-        val service = FixedBotMessageService(fixedBotMessageRepository)
+        val service = FixedBotMessageService(fixedBotMessageRepository, entityManager)
 
         val blankContentRequest =
             FixedBotMessagesRequest(
@@ -143,7 +146,7 @@ class FixedBotMessageServiceTest {
 
         val exception =
             assertThrows<IllegalArgumentException> {
-                service.addFixedBotMessages(blankContentRequest, "overmind")
+                service.addFixedBotMessages(blankContentRequest, "overmind", FALSE)
             }
 
         assertThat(exception.message).contains("FixedBotMessage list should contain at least one entry")

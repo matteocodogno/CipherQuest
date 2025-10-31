@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.server.ResponseStatusException
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
+import java.lang.Boolean.FALSE
 
 @WebMvcTest(FixedMessageController::class)
 @AutoConfigureMockMvc
@@ -53,7 +54,7 @@ class FixedBotMessageControllerTest {
             )
 
         `when`(
-            fixedBotMessageService.addFixedBotMessages(request, "overmind"),
+            fixedBotMessageService.addFixedBotMessages(request, "overmind", FALSE),
         ).thenReturn(expected)
 
         mockMvc
@@ -144,7 +145,7 @@ class FixedBotMessageControllerTest {
                         ),
                     ),
             )
-        `when`(fixedBotMessageService.addFixedBotMessages(request, "invalid"))
+        `when`(fixedBotMessageService.addFixedBotMessages(request, "invalid", FALSE))
             .thenThrow(ResponseStatusException(HttpStatus.NOT_FOUND, "Story not found"))
         mockMvc
             .perform(

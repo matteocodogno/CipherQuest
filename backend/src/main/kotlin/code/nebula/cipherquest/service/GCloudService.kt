@@ -8,6 +8,7 @@ import code.nebula.cipherquest.repository.ProtectedQuestionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.lang.Boolean.TRUE
 
 @Service
 class GCloudService(
@@ -32,7 +33,7 @@ class GCloudService(
 
         levelUpQuestionRepository.save(gameData.levelUpQuestions, storyName)
         protectedQuestionRepository.save(gameData.protectedQuestions, storyName)
-        fixedBotMessageService.addFixedBotMessages(fixedBotMessagesRequest, storyName)
+        fixedBotMessageService.addFixedBotMessages(fixedBotMessagesRequest, storyName, TRUE)
 
         return gameData
     }

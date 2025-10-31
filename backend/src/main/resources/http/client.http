@@ -44,7 +44,7 @@ POST http://localhost:8080/api/rag/load/{{storyName}}
 ### POST request to load fixed bot messages
 ### storyName: [overmind]
 
-POST http://localhost:8080/api/fixedMessage/{{storyName}}
+POST http://localhost:8080/api/FixedBotMessages/add/{{storyName}}
 Content-Type: application/json
 
 {
