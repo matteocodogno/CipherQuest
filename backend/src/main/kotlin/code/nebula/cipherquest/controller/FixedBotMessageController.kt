@@ -8,17 +8,16 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.lang.Boolean.FALSE
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/fixedBotMessages")
+@RequestMapping("/fixedBotMessage")
 class FixedBotMessageController(
     private val fixedBotMessageService: FixedBotMessageService,
 ) {
-    @PostMapping("/add/{storyName}")
+    @PostMapping("/{storyName}")
     fun addFixedBotMessages(
         @PathVariable storyName: String,
         @Valid @RequestBody messages: FixedBotMessagesRequest,
-    ): List<FixedBotMessage> = fixedBotMessageService.addFixedBotMessages(messages, storyName, FALSE)
+    ): List<FixedBotMessage> = fixedBotMessageService.addFixedBotMessages(messages, storyName)
 }

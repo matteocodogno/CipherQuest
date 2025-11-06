@@ -59,7 +59,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedBotMessages/add/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isOk)
@@ -74,7 +74,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedBotMessages/add/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isBadRequest)
@@ -99,7 +99,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedBotMessages/add/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isBadRequest)
@@ -111,7 +111,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedBotMessages/add/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(invalidJson),
             ).andExpect(status().isBadRequest)
@@ -123,7 +123,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedBotMessages/add/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestJson),
             ).andExpect(status().isBadRequest)
