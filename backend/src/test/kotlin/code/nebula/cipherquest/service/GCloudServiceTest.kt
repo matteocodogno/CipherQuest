@@ -6,6 +6,7 @@ import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import code.nebula.cipherquest.repository.gcs.GcsStreamRepository
+import code.nebula.cipherquest.repository.gcs.StoryRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -26,6 +27,9 @@ class GCloudServiceTest {
 
     @Mock
     lateinit var gcsStreamRepository: GcsStreamRepository
+
+    @Mock
+    lateinit var storyRepository: StoryRepository
 
     @Mock
     lateinit var blob: com.google.cloud.storage.Blob
@@ -58,7 +62,7 @@ class GCloudServiceTest {
                 .ObjectMapper()
                 .writeValueAsString(game)
 
-        `when`(gcsStreamRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
+        `when`(storyRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
         `when`(gcsStreamRepository.download(blobId)).thenReturn(blob)
         `when`(blob.getContent()).thenReturn(json.toByteArray())
 
@@ -93,7 +97,7 @@ class GCloudServiceTest {
             com.google.cloud.storage.BlobId
                 .of("bucket", "stories/$storyName/loadContent.json")
 
-        `when`(gcsStreamRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
+        `when`(storyRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
         `when`(gcsStreamRepository.download(blobId))
             .thenThrow(IllegalArgumentException("File not found in bucket "))
 
@@ -109,7 +113,7 @@ class GCloudServiceTest {
             com.google.cloud.storage.BlobId
                 .of("bucket", "stories/$storyName/loadContent.json")
 
-        `when`(gcsStreamRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
+        `when`(storyRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
         `when`(gcsStreamRepository.download(blobId)).thenReturn(blob)
         `when`(blob.getContent()).thenReturn("not-valid-json".toByteArray())
 

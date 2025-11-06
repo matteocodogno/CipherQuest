@@ -3,6 +3,7 @@ package code.nebula.cipherquest.repository.gcs
 import code.nebula.cipherquest.configuration.properties.CloudStorageProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.storage.Blob
+import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageException
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -40,4 +41,13 @@ class EmailTemplateRepository(
             logger.error(e) { "Failed to retrieve assets for story: $storyName" }
             emptyList()
         }
+
+    fun getBlobIdEmail(
+        storyName: String,
+        filename: String,
+    ): BlobId =
+        BlobId.of(
+            cloudStorageProperties.emailTemplatesBucket.name,
+            "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
+        )
 }

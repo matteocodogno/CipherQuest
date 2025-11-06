@@ -29,22 +29,4 @@ open class GcsStreamRepository(
     }
 
     fun download(blobId: BlobId): Blob = storage.get(blobId)
-
-    fun getBlobIdEmail(
-        storyName: String,
-        filename: String,
-    ): BlobId =
-        BlobId.of(
-            cloudStorageProperties.emailTemplatesBucket.name,
-            "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
-        )
-
-    fun getBlobIdStory(
-        storyName: String,
-        filename: String,
-    ): BlobId =
-        BlobId.of(
-            cloudStorageProperties.storiesBucket.name,
-            "${cloudStorageProperties.storiesBucket.folder}/$storyName/$filename",
-        )
 }
