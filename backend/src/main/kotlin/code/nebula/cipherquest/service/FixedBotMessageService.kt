@@ -68,7 +68,7 @@ class FixedBotMessageService(
     fun addFixedBotMessages(
         fixedBotMessagesRequest: FixedBotMessagesRequest,
         storyName: String,
-        initialize: Boolean,
+        initialize: Boolean = false,
     ): List<FixedBotMessage> {
         require(fixedBotMessagesRequest.messages.isNotEmpty()) {
             "FixedBotMessage list cannot be empty"
@@ -76,13 +76,12 @@ class FixedBotMessageService(
 
         if (initialize) {
             fixedBotMessageRepository.deleteAllByStoryName(storyName)
-            entityManager.flush()
         } else {
             val insertTypes: List<FixedBotMessageType> = fixedBotMessagesRequest.messages.map { it.type }
-
             fixedBotMessageRepository.deleteAllByStoryNameAndTypeIn(storyName, insertTypes)
-            entityManager.flush()
         }
+
+        entityManager.flush()
 
         return fixedBotMessagesRequest.messages
             .map {
