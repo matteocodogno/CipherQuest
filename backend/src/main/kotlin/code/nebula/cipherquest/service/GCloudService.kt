@@ -2,11 +2,9 @@ package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
-import code.nebula.cipherquest.repository.gcs.GcsStreamRepository
 import code.nebula.cipherquest.repository.gcs.StoryRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.lang.Boolean.TRUE
 
@@ -14,14 +12,13 @@ import java.lang.Boolean.TRUE
 class GCloudService(
     private val fixedBotMessageService: FixedBotMessageService,
     private val actionableQuestionService: ActionableQuestionService,
-    @param:Qualifier("storyRepository") private val gcsStreamRepository: GcsStreamRepository,
     private val storyRepository: StoryRepository,
 ) {
     @Transactional
     fun loadContent(storyName: String): GameDataFile {
         require(storyName.isNotBlank()) { "storyName cannot be blank" }
         val blobId = storyRepository.getBlobIdStory(storyName, "loadContent.json")
-        val blob = gcsStreamRepository.download(blobId)
+        val blob = storyRepository.download(blobId)
         val mapper = ObjectMapper()
 
         val json = String(blob.getContent())

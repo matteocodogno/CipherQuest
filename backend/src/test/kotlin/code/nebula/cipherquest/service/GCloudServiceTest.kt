@@ -5,8 +5,9 @@ import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.models.requests.LevelUpQuestionRequest
 import code.nebula.cipherquest.models.requests.ProtectedQuestionRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
-import code.nebula.cipherquest.repository.gcs.GcsStreamRepository
 import code.nebula.cipherquest.repository.gcs.StoryRepository
+import com.google.cloud.storage.Blob
+import com.google.cloud.storage.BlobId
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,6 +17,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 
 @ExtendWith(MockitoExtension::class)
 class GCloudServiceTest {
@@ -26,13 +28,10 @@ class GCloudServiceTest {
     lateinit var actionableQuestionService: ActionableQuestionService
 
     @Mock
-    lateinit var gcsStreamRepository: GcsStreamRepository
-
-    @Mock
     lateinit var storyRepository: StoryRepository
 
     @Mock
-    lateinit var blob: com.google.cloud.storage.Blob
+    lateinit var blob: Blob
 
     @InjectMocks
     lateinit var service: GCloudService
@@ -41,8 +40,7 @@ class GCloudServiceTest {
     fun loadContentSuccessTest() {
         val storyName = "overmind"
         val blobId =
-            com.google.cloud.storage.BlobId
-                .of("bucket", "stories/$storyName/loadContent.json")
+            BlobId.of("bucket", "stories/$storyName/loadContent.json")
 
         val game =
             GameDataFile(
@@ -57,13 +55,10 @@ class GCloudServiceTest {
                     ),
             )
 
-        val json =
-            com.fasterxml.jackson.databind
-                .ObjectMapper()
-                .writeValueAsString(game)
+        val json = ObjectMapper().writeValueAsString(game)
 
         `when`(storyRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
-        `when`(gcsStreamRepository.download(blobId)).thenReturn(blob)
+        `when`(storyRepository.download(blobId)).thenReturn(blob)
         `when`(blob.getContent()).thenReturn(json.toByteArray())
 
         val result = service.loadContent(storyName)
@@ -94,11 +89,11 @@ class GCloudServiceTest {
     fun throwsWhenFileNotFoundInBucketTest() {
         val storyName = "nonexistent"
         val blobId =
-            com.google.cloud.storage.BlobId
+            BlobId
                 .of("bucket", "stories/$storyName/loadContent.json")
 
         `when`(storyRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
-        `when`(gcsStreamRepository.download(blobId))
+        `when`(storyRepository.download(blobId))
             .thenThrow(IllegalArgumentException("File not found in bucket "))
 
         assertThrows<IllegalArgumentException> {
@@ -114,7 +109,7 @@ class GCloudServiceTest {
                 .of("bucket", "stories/$storyName/loadContent.json")
 
         `when`(storyRepository.getBlobIdStory(storyName, "loadContent.json")).thenReturn(blobId)
-        `when`(gcsStreamRepository.download(blobId)).thenReturn(blob)
+        `when`(storyRepository.download(blobId)).thenReturn(blob)
         `when`(blob.getContent()).thenReturn("not-valid-json".toByteArray())
 
         assertThrows<com.fasterxml.jackson.core.JsonProcessingException> {

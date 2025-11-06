@@ -28,5 +28,7 @@ open class GcsStreamRepository(
             .use(writer)
     }
 
-    fun download(blobId: BlobId): Blob = storage.get(blobId)
+    fun download(blobId: BlobId): Blob =
+        storage.get(blobId)
+            ?: throw IllegalArgumentException("File not found in bucket ")
 }
