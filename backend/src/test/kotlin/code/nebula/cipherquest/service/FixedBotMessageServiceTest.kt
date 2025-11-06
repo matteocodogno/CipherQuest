@@ -6,7 +6,7 @@ import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.assertj.core.api.Assertions.tuple
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -14,13 +14,13 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.lenient
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.test.context.ActiveProfiles
-import java.lang.Boolean.FALSE
+import java.lang.Boolean.TRUE
 
 @ExtendWith(MockitoExtension::class)
 @ActiveProfiles("test")
@@ -65,17 +65,20 @@ class FixedBotMessageServiceTest {
                 ),
             )
 
-        Mockito
-            .`when`(fixedBotMessageRepository.saveAll(entities))
-            .thenReturn(entities)
+        doReturn(entities).`when`(fixedBotMessageRepository).saveAll(entities)
 
         val service = FixedBotMessageService(fixedBotMessageRepository, entityManager)
-        val result = service.addFixedBotMessages(request, "overmind", FALSE)
+        val result = service.addFixedBotMessages(request, "overmind")
 
-        assertThat(result).hasSize(1)
-        assertThat(result[0].type).isEqualTo(FixedBotMessageType.PROTECTED)
-        assertThat(result[0].message).isEqualTo("This question is protected")
-        assertThat(result[0].storyName).isEqualTo("overmind")
+        assertThat(result)
+            .extracting("type", "message", "storyName")
+            .containsExactly(
+                tuple(
+                    FixedBotMessageType.PROTECTED,
+                    "This question is protected",
+                    "overmind",
+                ),
+            )
 
         verify(fixedBotMessageRepository).saveAll(entities)
     }
@@ -111,18 +114,15 @@ class FixedBotMessageServiceTest {
                 ),
             )
 
-        Mockito
-            .`when`(fixedBotMessageRepository.saveAll(entities))
-            .thenReturn(entities)
+        doReturn(entities).`when`(fixedBotMessageRepository).saveAll(entities)
 
         val service = FixedBotMessageService(fixedBotMessageRepository, entityManager)
-        val result = service.addFixedBotMessages(request, "overmind", FALSE)
+        val result = service.addFixedBotMessages(request, "overmind")
 
-        assertThat(result).hasSize(2)
-        assertThat(result.map { it.type })
-            .containsExactlyInAnyOrder(FixedBotMessageType.PROTECTED, FixedBotMessageType.DOCUMENT)
-        assertThat(result.map { it.message }).containsExactlyInAnyOrder("Protected Question", "Documentation")
-        assertThat(result.map { it.storyName }).allMatch { it == "overmind" }
+        assertThat(result).extracting("type", "message", "storyName").containsExactlyInAnyOrder(
+            tuple(FixedBotMessageType.PROTECTED, "Protected Question", "overmind"),
+            tuple(FixedBotMessageType.DOCUMENT, "Documentation", "overmind"),
+        )
     }
 
     @Test
@@ -132,7 +132,7 @@ class FixedBotMessageServiceTest {
 
         val exception =
             assertThrows<IllegalArgumentException> {
-                service.addFixedBotMessages(emptyRequest, "overmind", FALSE)
+                service.addFixedBotMessages(emptyRequest, "overmind")
             }
 
         assertThat(exception.message).contains("FixedBotMessage list cannot be empty")
@@ -167,7 +167,7 @@ class FixedBotMessageServiceTest {
 
         val exception =
             assertThrows<IllegalArgumentException> {
-                service.addFixedBotMessages(blankContentRequest, "overmind", FALSE)
+                service.addFixedBotMessages(blankContentRequest, "overmind")
             }
 
         assertThat(exception.message).contains("FixedBotMessage list should contain at least one entry")
@@ -190,7 +190,8 @@ class FixedBotMessageServiceTest {
                     ),
             )
 
-        val result = service.addFixedBotMessages(request, "overmind", initialize = true)
+        val result =
+            service.addFixedBotMessages(request, "overmind", TRUE)
 
         verify(fixedBotMessageRepository).deleteAllByStoryName("overmind")
         verify(entityManager).flush()
@@ -198,15 +199,13 @@ class FixedBotMessageServiceTest {
             .deleteAllByStoryNameAndTypeIn(anyString(), anyList())
 
         verify(fixedBotMessageRepository).saveAll(anyList())
-        assertEquals(2, result.size)
 
-        assertEquals("overmind", result[0].storyName)
-        assertEquals(FixedBotMessageType.PROTECTED, result[0].type)
-        assertEquals("Protected Question", result[0].message)
-
-        assertEquals("overmind", result[1].storyName)
-        assertEquals(FixedBotMessageType.DOCUMENT, result[1].type)
-        assertEquals("Documentation", result[1].message)
+        assertThat(result)
+            .extracting("storyName", "type", "message")
+            .containsExactly(
+                tuple("overmind", FixedBotMessageType.PROTECTED, "Protected Question"),
+                tuple("overmind", FixedBotMessageType.DOCUMENT, "Documentation"),
+            )
     }
 
     @Test
@@ -226,7 +225,7 @@ class FixedBotMessageServiceTest {
                     ),
             )
 
-        service.addFixedBotMessages(request, "overmind", initialize = false)
+        service.addFixedBotMessages(request, "overmind")
 
         verify(fixedBotMessageRepository)
             .deleteAllByStoryNameAndTypeIn(
