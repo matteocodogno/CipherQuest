@@ -1,5 +1,6 @@
 package code.nebula.cipherquest.security
 
+import code.nebula.cipherquest.models.ErrorType
 import code.nebula.cipherquest.models.RecaptchaVersion
 import code.nebula.cipherquest.models.dto.RecaptchaResponse
 import code.nebula.cipherquest.service.RecaptchaService
@@ -69,7 +70,7 @@ class RecaptchaFilter(
             sendJson(
                 response,
                 HttpServletResponse.SC_BAD_REQUEST,
-                "RECAPTCHA_MISSING",
+                ErrorType.RECAPTCHA_MISSING,
                 "Missing reCAPTCHA token",
             )
             return
@@ -84,7 +85,7 @@ class RecaptchaFilter(
             sendJson(
                 response,
                 HttpServletResponse.SC_FORBIDDEN,
-                "RECAPTCHA_INVALID",
+                ErrorType.RECAPTCHA_INVALID,
                 "Invalid reCAPTCHA token",
             )
             return
@@ -97,7 +98,7 @@ class RecaptchaFilter(
                 sendJson(
                     response,
                     PRECONDITION_REQUIRED,
-                    "RECAPTCHA_V2_REQUIRED",
+                    ErrorType.RECAPTCHA_V2_REQUIRED,
                     "Please complete reCAPTCHA v2.",
                 )
                 return
@@ -107,7 +108,7 @@ class RecaptchaFilter(
                 sendJson(
                     response,
                     HttpServletResponse.SC_FORBIDDEN,
-                    "RECAPTCHA_DENIED",
+                    ErrorType.RECAPTCHA_DENIED,
                     "Access denied",
                 )
                 return
@@ -122,7 +123,7 @@ class RecaptchaFilter(
     private fun sendJson(
         res: HttpServletResponse,
         status: Int,
-        code: String,
+        code: ErrorType,
         message: String,
     ) {
         res.status = status
