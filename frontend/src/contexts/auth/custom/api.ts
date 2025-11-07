@@ -1,7 +1,6 @@
-import { STORY_NAME } from '@/constants.ts'
-import { SignUpParams } from '@/lib/auth/custom/client.ts';
-import { logger } from '@/lib/default-loggger.ts';
-import { z } from 'zod';
+import {STORY_NAME} from '@/constants.ts'
+import {SignUpParams} from '@/lib/auth/custom/client.ts';
+import {z} from 'zod';
 
 const UserLevel = z.object({
   userId: z.string(),
@@ -47,7 +46,5 @@ export const signUpApi = async (
     throw new Error(payload?.message || 'Access Denied. Please try again');
   }
 
-  const user = UserLevel.parse(payload);
-  logger.debug('signIn', user);
-  return user;
+  return UserLevel.parse(payload);
 };

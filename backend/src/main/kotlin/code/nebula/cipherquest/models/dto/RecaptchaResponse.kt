@@ -2,8 +2,6 @@ package code.nebula.cipherquest.models.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-enum class RecaptchaVersion { V2, V3 }
-
 data class RecaptchaResponse(
     val success: Boolean = false,
     val score: Double? = null,

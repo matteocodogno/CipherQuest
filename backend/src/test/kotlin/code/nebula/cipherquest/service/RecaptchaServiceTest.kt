@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.service
 
-import code.nebula.cipherquest.models.dto.RecaptchaVersion
+import code.nebula.cipherquest.models.RecaptchaVersion
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
