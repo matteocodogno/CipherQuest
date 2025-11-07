@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.models.requests.FixedBotMessageRequest
+import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
 import code.nebula.cipherquest.security.RecaptchaFilter
@@ -11,26 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.FilterType
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.web.server.ResponseStatusException
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
+import java.lang.Boolean.FALSE
 
-@WebMvcTest(
-    controllers = [FixedMessageController::class],
-    excludeFilters = [
-        ComponentScan.Filter(
-            type = FilterType.ASSIGNABLE_TYPE,
-            value = [RecaptchaFilter::class],
-        ),
-    ],
-)
-@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(FixedBotMessageController::class)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class FixedBotMessageControllerTest {
     @Autowired
@@ -42,10 +35,10 @@ class FixedBotMessageControllerTest {
     @Test
     fun addFixedBotMessagesTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "This question is protected",
                         ),
@@ -62,12 +55,12 @@ class FixedBotMessageControllerTest {
             )
 
         `when`(
-            fixedBotMessageService.addFixedBotMessages(request, "overmind"),
+            fixedBotMessageService.addFixedBotMessages(request, "overmind", FALSE),
         ).thenReturn(expected)
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isOk)
@@ -78,11 +71,11 @@ class FixedBotMessageControllerTest {
 
     @Test
     fun emptyListReturnsBadRequestTest() {
-        val request = FixedBotMessageRequest(messages = emptyList())
+        val request = FixedBotMessagesRequest(messages = emptyList())
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isBadRequest)
@@ -91,14 +84,14 @@ class FixedBotMessageControllerTest {
     @Test
     fun blankContentReturnsBadRequestTest() {
         val request =
-            FixedBotMessageRequest(
+            FixedBotMessagesRequest(
                 messages =
                     listOf(
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
-                        code.nebula.cipherquest.models.requests.FixedBotMessage(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
                             type = FixedBotMessageType.PROTECTED,
                             content = "   ",
                         ),
@@ -107,7 +100,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(ObjectMapper().writeValueAsString(request)),
             ).andExpect(status().isBadRequest)
@@ -119,7 +112,7 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(invalidJson),
             ).andExpect(status().isBadRequest)
@@ -131,9 +124,35 @@ class FixedBotMessageControllerTest {
 
         mockMvc
             .perform(
-                post("/fixedMessage/overmind")
+                post("/fixedBotMessage/overmind")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestJson),
             ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun failUponInvalidStoryNameTest() {
+        val request =
+            FixedBotMessagesRequest(
+                messages =
+                    listOf(
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                        FixedBotMessagesRequest.FixedBotMessageRequest(
+                            type = FixedBotMessageType.PROTECTED,
+                            content = "   ",
+                        ),
+                    ),
+            )
+        `when`(fixedBotMessageService.addFixedBotMessages(request, "invalid", FALSE))
+            .thenThrow(ResponseStatusException(HttpStatus.NOT_FOUND, "Story not found"))
+        mockMvc
+            .perform(
+                post("/gcloud/loadContent/invalid")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(ObjectMapper().writeValueAsString(request)),
+            ).andExpect(status().isNotFound)
     }
 }
