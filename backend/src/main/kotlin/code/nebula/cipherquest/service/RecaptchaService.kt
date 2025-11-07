@@ -13,9 +13,9 @@ import org.springframework.web.client.RestTemplate
 
 @Service
 class RecaptchaService(
-    @Value("\${recaptcha.v3.secret-key:dummy-v3-secret}") private val v3SecretKey: String,
-    @Value("\${recaptcha.v2.secret-key:dummy-v2-secret}") private val v2SecretKey: String,
-    @Value("\${recaptcha.verify-url:https://www.google.com/recaptcha/api/siteverify}")
+    @param:Value("\${recaptcha.v3.secret-key:dummy-v3-secret}") private val v3SecretKey: String,
+    @param:Value("\${recaptcha.v2.secret-key:dummy-v2-secret}") private val v2SecretKey: String,
+    @param:Value("\${recaptcha.verify-url:https://www.google.com/recaptcha/api/siteverify}")
     private val verifyUrl: String,
 ) {
     private val restTemplate = RestTemplate()
