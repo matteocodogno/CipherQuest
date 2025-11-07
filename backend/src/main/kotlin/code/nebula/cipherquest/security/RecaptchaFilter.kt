@@ -1,7 +1,7 @@
 package code.nebula.cipherquest.security
 
+import code.nebula.cipherquest.models.RecaptchaVersion
 import code.nebula.cipherquest.models.dto.RecaptchaResponse
-import code.nebula.cipherquest.models.dto.RecaptchaVersion
 import code.nebula.cipherquest.service.RecaptchaService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

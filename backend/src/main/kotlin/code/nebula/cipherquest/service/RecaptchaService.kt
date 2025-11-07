@@ -1,7 +1,7 @@
 package code.nebula.cipherquest.service
 
+import code.nebula.cipherquest.models.RecaptchaVersion
 import code.nebula.cipherquest.models.dto.RecaptchaResponse
-import code.nebula.cipherquest.models.dto.RecaptchaVersion
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
