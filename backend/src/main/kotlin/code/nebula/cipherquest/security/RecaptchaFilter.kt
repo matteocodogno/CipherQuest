@@ -30,47 +30,58 @@ class RecaptchaFilter(
             return
         }
 
-        var proceed = true
-
-        fun deny(
-            status: Int,
-            code: String,
-            message: String,
-        ) {
-            sendJson(response, status, code, message)
-            proceed = false
-        }
-
         val token = request.getHeader("recaptcha")
         if (token.isNullOrBlank()) {
-            deny(HttpServletResponse.SC_BAD_REQUEST, "RECAPTCHA_MISSING", "Missing reCAPTCHA token")
-        } else {
-            val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
-            val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
-            val recaptchaResponse = recaptchaService.validateToken(token, version)
+            sendJson(
+                response,
+                HttpServletResponse.SC_BAD_REQUEST,
+                "RECAPTCHA_MISSING",
+                "Missing reCAPTCHA token",
+            )
+            return
+        }
 
-            if (recaptchaFail(recaptchaResponse)) {
-                deny(HttpServletResponse.SC_FORBIDDEN, "RECAPTCHA_INVALID", "Invalid reCAPTCHA token")
-            } else if (version == RecaptchaVersion.V3) {
-                val score = recaptchaResponse?.score ?: PLACEHOLDER_SCORE
+        val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
+        val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
 
-                if (score in MID_THRESHOLD..<HIGH_THRESHOLD) {
-                    deny(
-                        PRECONDITION_REQUIRED,
-                        "RECAPTCHA_V2_REQUIRED",
-                        "Please complete reCAPTCHA v2.",
-                    )
-                } else if (score < MID_THRESHOLD) {
-                    deny(HttpServletResponse.SC_FORBIDDEN, "RECAPTCHA_DENIED", "Access denied")
-                }
-                // v3 success -> allow
+        val recaptchaResponse = recaptchaService.validateToken(token, version)
+
+        if (recaptchaFail(recaptchaResponse)) {
+            sendJson(
+                response,
+                HttpServletResponse.SC_FORBIDDEN,
+                "RECAPTCHA_INVALID",
+                "Invalid reCAPTCHA token",
+            )
+            return
+        }
+
+        if (version == RecaptchaVersion.V3) {
+            val score = recaptchaResponse?.score ?: PLACEHOLDER_SCORE
+
+            if (score in MID_THRESHOLD..<HIGH_THRESHOLD) {
+                sendJson(
+                    response,
+                    PRECONDITION_REQUIRED,
+                    "RECAPTCHA_V2_REQUIRED",
+                    "Please complete reCAPTCHA v2.",
+                )
+                return
             }
-            // v2 success → allow
+
+            if (score < MID_THRESHOLD) {
+                sendJson(
+                    response,
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "RECAPTCHA_DENIED",
+                    "Access denied",
+                )
+                return
+            }
         }
 
-        if (proceed) {
-            filterChain.doFilter(request, response)
-        }
+        filterChain.doFilter(request, response)
+
         return
     }
 
