@@ -42,6 +42,9 @@ class FixedBotMessageControllerTest {
     @MockBean
     lateinit var fixedBotMessageService: FixedBotMessageService
 
+    @MockBean
+    lateinit var recaptchaFilter: RecaptchaFilter
+
     @Test
     fun addFixedBotMessagesTest() {
         val request =
