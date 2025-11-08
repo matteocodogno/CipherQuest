@@ -1,6 +1,7 @@
 package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.dto.GameDataFile
+import code.nebula.cipherquest.security.RecaptchaFilter
 import code.nebula.cipherquest.service.GCloudService
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
@@ -18,7 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.server.ResponseStatusException
 
 @WebMvcTest(GCloudController::class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class GCloudControllerTest {
     @Autowired
@@ -26,6 +27,9 @@ class GCloudControllerTest {
 
     @MockBean
     lateinit var gCloudService: GCloudService
+
+    @MockBean
+    lateinit var recaptchaFilter: RecaptchaFilter
 
     @Test
     fun successUponValidFileTest() {
@@ -52,6 +56,7 @@ class GCloudControllerTest {
     fun failUponInvalidStoryNameTest() {
         `when`(gCloudService.loadContent("invalid"))
             .thenThrow(ResponseStatusException(HttpStatus.NOT_FOUND, "Story not found"))
+
         mockMvc
             .perform(post("/gcloud/loadContent/invalid"))
             .andExpect(status().isNotFound)

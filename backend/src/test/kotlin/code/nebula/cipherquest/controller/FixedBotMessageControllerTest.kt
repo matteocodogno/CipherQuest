@@ -23,7 +23,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 import java.lang.Boolean.FALSE
 
 @WebMvcTest(FixedBotMessageController::class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class FixedBotMessageControllerTest {
     @Autowired
@@ -31,6 +31,9 @@ class FixedBotMessageControllerTest {
 
     @MockBean
     lateinit var fixedBotMessageService: FixedBotMessageService
+
+    @MockBean
+    lateinit var recaptchaFilter: RecaptchaFilter
 
     @Test
     fun addFixedBotMessagesTest() {
