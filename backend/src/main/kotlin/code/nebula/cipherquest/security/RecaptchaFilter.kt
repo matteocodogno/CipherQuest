@@ -1,8 +1,8 @@
 package code.nebula.cipherquest.security
 
+import code.nebula.cipherquest.exceptions.RecaptchaException
 import code.nebula.cipherquest.models.ErrorType
 import code.nebula.cipherquest.models.RecaptchaVersion
-import code.nebula.cipherquest.models.dto.RecaptchaResponse
 import code.nebula.cipherquest.service.RecaptchaService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -26,63 +26,63 @@ class RecaptchaFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (!(request.method.equals("POST", true) && request.requestURI.startsWith("/api/user/"))) {
+        if (!(
+                request.method.equals("POST", true) &&
+                    request.requestURI.startsWith("/api/user/")
+            )
+        ) {
             filterChain.doFilter(request, response)
             return
         }
 
-        val token = request.getHeader("recaptcha")
-        if (token.isNullOrBlank()) {
-            sendJson(
-                response,
-                HttpServletResponse.SC_BAD_REQUEST,
-                ErrorType.RECAPTCHA_MISSING,
-                "Missing reCAPTCHA token",
-            )
-            return
-        }
+        try {
+            val token =
+                request.getHeader("recaptcha")
+                    ?: throw RecaptchaException(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        ErrorType.RECAPTCHA_MISSING,
+                        "Missing reCAPTCHA token",
+                    )
 
-        val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
-        val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
+            val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
+            val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
 
-        val recaptchaResponse = recaptchaService.validateToken(token, version)
+            val recaptchaResponse = recaptchaService.validateToken(token, version)
 
-        if (recaptchaFail(recaptchaResponse)) {
-            sendJson(
-                response,
-                HttpServletResponse.SC_FORBIDDEN,
-                ErrorType.RECAPTCHA_INVALID,
-                "Invalid reCAPTCHA token",
-            )
-            return
-        }
-
-        if (version == RecaptchaVersion.V3) {
-            val score = recaptchaResponse?.score ?: PLACEHOLDER_SCORE
-
-            if (score in MID_THRESHOLD..<HIGH_THRESHOLD) {
-                sendJson(
-                    response,
-                    PRECONDITION_REQUIRED,
-                    ErrorType.RECAPTCHA_V2_REQUIRED,
-                    "Please complete reCAPTCHA v2.",
-                )
-                return
-            }
-
-            if (score < MID_THRESHOLD) {
-                sendJson(
-                    response,
+            if (recaptchaResponse == null ||
+                !recaptchaResponse.success
+            ) {
+                throw RecaptchaException(
                     HttpServletResponse.SC_FORBIDDEN,
-                    ErrorType.RECAPTCHA_DENIED,
-                    "Access denied",
+                    ErrorType.RECAPTCHA_INVALID,
+                    "Invalid reCAPTCHA token",
                 )
-                return
             }
+
+            if (version == RecaptchaVersion.V3) {
+                val score = recaptchaResponse.score ?: PLACEHOLDER_SCORE
+
+                when {
+                    score in MID_THRESHOLD..<HIGH_THRESHOLD ->
+                        throw RecaptchaException(
+                            PRECONDITION_REQUIRED,
+                            ErrorType.RECAPTCHA_V2_REQUIRED,
+                            "Please complete reCAPTCHA v2.",
+                        )
+
+                    score < MID_THRESHOLD ->
+                        throw RecaptchaException(
+                            HttpServletResponse.SC_FORBIDDEN,
+                            ErrorType.RECAPTCHA_DENIED,
+                            "Access denied",
+                        )
+                }
+            }
+
+            filterChain.doFilter(request, response)
+        } catch (ex: RecaptchaException) {
+            sendJson(response, ex.status, ex.type, ex.message)
         }
-
-        filterChain.doFilter(request, response)
-
         return
     }
 
@@ -96,10 +96,7 @@ class RecaptchaFilter(
         res.contentType = "application/json"
         res.characterEncoding = "UTF-8"
         val json = """{"error":"$code","message":"$message"}"""
-        res.writer.use { it.write(json) }
+        res.writer.write(json)
+        res.writer.flush()
     }
-
-    private fun recaptchaFail(recaptchaResponse: RecaptchaResponse?) =
-        recaptchaResponse == null ||
-            !recaptchaResponse.success
 }
