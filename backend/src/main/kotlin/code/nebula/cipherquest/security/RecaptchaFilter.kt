@@ -84,16 +84,14 @@ class RecaptchaFilter(
         res.writer.flush()
     }
 
-    private fun validateV3Score(score: Double?) {
-        val s = score ?: PLACEHOLDER_SCORE
-
-        if (s < MID_THRESHOLD) {
+    private fun validateV3Score(score: Double) {
+        if (score < MID_THRESHOLD) {
             throw RecaptchaException(
                 HttpServletResponse.SC_FORBIDDEN,
                 ErrorType.RECAPTCHA_DENIED,
                 "Access denied",
             )
-        } else if (s < HIGH_THRESHOLD) {
+        } else if (score < HIGH_THRESHOLD) {
             throw RecaptchaException(
                 PRECONDITION_REQUIRED,
                 ErrorType.RECAPTCHA_V2_REQUIRED,
