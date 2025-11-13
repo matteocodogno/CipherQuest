@@ -16,6 +16,7 @@ class RecaptchaFilter(
 ) : OncePerRequestFilter() {
     companion object {
         private const val THRESHOLD_SCORE = 0.5
+        private const val PLACEHOLDER_SCORE = 0.0
     }
 
     @Throws(ServletException::class, IOException::class)
@@ -33,12 +34,14 @@ class RecaptchaFilter(
 
             val recaptchaResponse: RecaptchaResponse? = recaptchaService.validateToken(recaptcha)
 
-            if (!recaptchaResponse?.success!!) {
+            require(recaptchaResponse != null) { "Missing reCAPTCHA response" }
+
+            if (!recaptchaResponse.success) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid reCAPTCHA token")
                 return
             }
 
-            if (recaptchaResponse.score!! < THRESHOLD_SCORE) {
+            if ((recaptchaResponse.score ?: PLACEHOLDER_SCORE) < THRESHOLD_SCORE) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied")
                 return
             }
