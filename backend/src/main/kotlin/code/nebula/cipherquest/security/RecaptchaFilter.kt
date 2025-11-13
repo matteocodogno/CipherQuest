@@ -60,23 +60,7 @@ class RecaptchaFilter(
             }
 
             if (version == RecaptchaVersion.V3) {
-                val score = recaptchaResponse.score ?: PLACEHOLDER_SCORE
-
-                when {
-                    score in MID_THRESHOLD..<HIGH_THRESHOLD ->
-                        throw RecaptchaException(
-                            PRECONDITION_REQUIRED,
-                            ErrorType.RECAPTCHA_V2_REQUIRED,
-                            "Please complete reCAPTCHA v2.",
-                        )
-
-                    score < MID_THRESHOLD ->
-                        throw RecaptchaException(
-                            HttpServletResponse.SC_FORBIDDEN,
-                            ErrorType.RECAPTCHA_DENIED,
-                            "Access denied",
-                        )
-                }
+                validateV3Score(recaptchaResponse.score ?: PLACEHOLDER_SCORE)
             }
 
             filterChain.doFilter(request, response)
@@ -98,5 +82,23 @@ class RecaptchaFilter(
         val json = """{"error":"$code","message":"$message"}"""
         res.writer.write(json)
         res.writer.flush()
+    }
+
+    private fun validateV3Score(score: Double?) {
+        val s = score ?: PLACEHOLDER_SCORE
+
+        if (s < MID_THRESHOLD) {
+            throw RecaptchaException(
+                HttpServletResponse.SC_FORBIDDEN,
+                ErrorType.RECAPTCHA_DENIED,
+                "Access denied",
+            )
+        } else if (s < HIGH_THRESHOLD) {
+            throw RecaptchaException(
+                PRECONDITION_REQUIRED,
+                ErrorType.RECAPTCHA_V2_REQUIRED,
+                "Please complete reCAPTCHA v2.",
+            )
+        }
     }
 }
