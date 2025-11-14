@@ -19,6 +19,7 @@ class RecaptchaFilter(
         private const val MID_THRESHOLD = 0.6
         private const val PLACEHOLDER_SCORE = 0.0
         private const val PRECONDITION_REQUIRED = 428
+        private const val GOOGLE_RECAPTCHA_HEADER = "recaptcha"
     }
 
     public override fun doFilterInternal(
@@ -37,7 +38,7 @@ class RecaptchaFilter(
 
         try {
             val token =
-                request.getHeader("recaptcha")
+                request.getHeader(GOOGLE_RECAPTCHA_HEADER)
                     ?: throw RecaptchaException(
                         HttpServletResponse.SC_BAD_REQUEST,
                         ErrorType.RECAPTCHA_MISSING,
