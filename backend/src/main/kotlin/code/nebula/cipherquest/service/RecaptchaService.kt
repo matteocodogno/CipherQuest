@@ -3,13 +3,10 @@ package code.nebula.cipherquest.service
 import code.nebula.cipherquest.models.RecaptchaVersion
 import code.nebula.cipherquest.models.dto.RecaptchaResponse
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.RestClient
 
 @Service
 class RecaptchaService(
@@ -17,27 +14,25 @@ class RecaptchaService(
     @param:Value("\${recaptcha.v2.secret-key:dummy-v2-secret}") private val v2SecretKey: String,
     @param:Value("\${recaptcha.verify-url:https://www.google.com/recaptcha/api/siteverify}")
     private val verifyUrl: String,
+    restClientBuilder: RestClient.Builder,
 ) {
-    private val restTemplate = RestTemplate()
+    private val restClient = restClientBuilder.build()
 
     fun validateToken(
         recaptchaToken: String,
         version: RecaptchaVersion,
     ): RecaptchaResponse? {
-        val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_FORM_URLENCODED }
         val body =
             LinkedMultiValueMap<String, String>().apply {
                 add("secret", if (version == RecaptchaVersion.V3) v3SecretKey else v2SecretKey)
                 add("response", recaptchaToken)
             }
-        val requestEntity = HttpEntity(body, headers)
-        val response =
-            restTemplate.exchange(
-                verifyUrl,
-                HttpMethod.POST,
-                requestEntity,
-                RecaptchaResponse::class.java,
-            )
-        return response.body
+        return restClient
+            .post()
+            .uri(verifyUrl)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(body)
+            .retrieve()
+            .body(RecaptchaResponse::class.java)
     }
 }

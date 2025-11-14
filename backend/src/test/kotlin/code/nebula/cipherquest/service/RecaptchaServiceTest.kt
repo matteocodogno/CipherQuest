@@ -21,11 +21,11 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.request
 import org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
 import org.springframework.web.client.HttpClientErrorException
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.RestClient
 
 class RecaptchaServiceTest {
     private lateinit var service: RecaptchaService
-    private lateinit var restTemplate: RestTemplate
+    private lateinit var restClientBuilder: RestClient.Builder
     private lateinit var server: MockRestServiceServer
 
     private val v3Secret = "v3-test-secret"
@@ -34,14 +34,15 @@ class RecaptchaServiceTest {
 
     @BeforeEach
     fun setUp() {
-        service = RecaptchaService(v3Secret, v2Secret, verifyUrl)
-
-        restTemplate = RestTemplate()
-        val field = RecaptchaService::class.java.getDeclaredField("restTemplate")
-        field.isAccessible = true
-        field.set(service, restTemplate)
-
-        server = MockRestServiceServer.bindTo(restTemplate).build()
+        restClientBuilder = RestClient.builder()
+        server = MockRestServiceServer.bindTo(restClientBuilder).build()
+        service =
+            RecaptchaService(
+                v3SecretKey = v3Secret,
+                v2SecretKey = v2Secret,
+                verifyUrl = verifyUrl,
+                restClientBuilder = restClientBuilder,
+            )
     }
 
     @Test
