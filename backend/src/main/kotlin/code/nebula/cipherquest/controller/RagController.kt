@@ -1,7 +1,6 @@
 package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.CustomByteArrayResource
-import code.nebula.cipherquest.models.DocumentType
 import code.nebula.cipherquest.repository.gcs.StoryRepository
 import code.nebula.cipherquest.service.VectorStoreService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -36,12 +35,6 @@ class RagController(
                             .apply {
                                 customMetadata["source"] = originalFilename
 
-                                val filename =
-                                    originalFilename
-                                        .split(".")
-                                        .getOrNull(1)
-                                        .orEmpty()
-
                                 customMetadata["level"] =
                                     originalFilename
                                         .split(".")
@@ -49,12 +42,7 @@ class RagController(
                                         .orEmpty()
                                         .toInt()
 
-                                customMetadata["type"] =
-                                    if (filename.contains("diary", true)) {
-                                        DocumentType.DIARY
-                                    } else {
-                                        DocumentType.DOCUMENT
-                                    }
+                                customMetadata["type"] = "DOCUMENT"
                             }.get()
                     }
                 }

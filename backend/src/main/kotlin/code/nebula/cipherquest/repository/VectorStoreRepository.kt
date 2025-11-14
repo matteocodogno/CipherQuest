@@ -53,11 +53,14 @@ class VectorStoreRepository(
         return jdbcTemplate.queryForObject(sql, String::class.java, "%$source%", level)
     }
 
-    fun getAllDiaryPages(level: Int?): List<Source> {
+    fun getDocumentsByType(
+        type: String,
+        level: Int?,
+    ): List<Source> {
         val sql =
             """
             SELECT id, metadata->>'source' as title FROM vector_store
-            WHERE metadata->>'type' = 'DIARY'
+            WHERE metadata->>'type' = '$type'
             and (metadata->>'level')::integer <= ?;
             """.trimIndent()
         return jdbcTemplate.query(
