@@ -65,10 +65,21 @@ class RecaptchaFilter(
             }
 
             filterChain.doFilter(request, response)
-        } catch (ex: RecaptchaException) {
-            sendJson(response, ex.status, ex.type, ex.message)
+        } catch (ex: Exception) {
+            when (ex) {
+                is RecaptchaException ->
+                    sendJson(response, ex.status, ex.type, ex.message)
+
+                else -> {
+                    sendJson(
+                        response,
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        ErrorType.UNEXPECTED_ERROR,
+                        "Unexpected error",
+                    )
+                }
+            }
         }
-        return
     }
 
     private fun sendJson(
