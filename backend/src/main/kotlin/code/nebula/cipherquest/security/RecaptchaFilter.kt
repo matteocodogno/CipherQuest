@@ -86,14 +86,13 @@ class RecaptchaFilter(
     }
 
     private fun validateV3Score(score: Double) {
-        if (score < MID_THRESHOLD) {
-            throw RecaptchaException(
+        when {
+            score < MID_THRESHOLD -> throw RecaptchaException(
                 HttpServletResponse.SC_FORBIDDEN,
                 ErrorType.RECAPTCHA_DENIED,
                 "Access denied",
             )
-        } else if (score < HIGH_THRESHOLD) {
-            throw RecaptchaException(
+            score < HIGH_THRESHOLD && score > MID_THRESHOLD -> throw RecaptchaException(
                 PRECONDITION_REQUIRED,
                 ErrorType.RECAPTCHA_V2_REQUIRED,
                 "Please complete reCAPTCHA v2.",
