@@ -3,6 +3,7 @@ package code.nebula.cipherquest.controller
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
+import code.nebula.cipherquest.security.RecaptchaFilter
 import code.nebula.cipherquest.service.FixedBotMessageService
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -22,7 +23,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 import java.lang.Boolean.FALSE
 
 @WebMvcTest(FixedBotMessageController::class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class FixedBotMessageControllerTest {
     @Autowired
@@ -30,6 +31,9 @@ class FixedBotMessageControllerTest {
 
     @MockBean
     lateinit var fixedBotMessageService: FixedBotMessageService
+
+    @MockBean
+    lateinit var recaptchaFilter: RecaptchaFilter
 
     @Test
     fun addFixedBotMessagesTest() {
