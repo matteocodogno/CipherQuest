@@ -8,8 +8,8 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.filter.OncePerRequestFilter
-import java.util.concurrent.TimeoutException
 
 @Component
 class RecaptchaFilter(
@@ -20,7 +20,7 @@ class RecaptchaFilter(
         private const val MID_THRESHOLD = 0.6
         private const val PLACEHOLDER_SCORE = 0.0
         private const val PRECONDITION_REQUIRED = 428
-        private const val TIMEOUT = 408
+        private const val SERVER_SIDE_ERROR = 503
         private const val GOOGLE_RECAPTCHA_HEADER = "recaptcha"
     }
 
@@ -69,8 +69,8 @@ class RecaptchaFilter(
             filterChain.doFilter(request, response)
         } catch (ex: RecaptchaException) {
             sendJson(response, ex.status, ex.type, ex.message)
-        } catch (ex: TimeoutException) {
-            sendJson(response, TIMEOUT, ErrorType.UNEXPECTED_ERROR, ex.message ?: "Recaptcha session timed out")
+        } catch (ex: ResourceAccessException) {
+            sendJson(response, SERVER_SIDE_ERROR, ErrorType.UNEXPECTED_ERROR, ex.message ?: "Recaptcha session timed out")
         } catch (ex: Exception) {
             sendJson(
                 response,
