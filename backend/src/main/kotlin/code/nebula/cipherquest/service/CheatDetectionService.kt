@@ -1,13 +1,17 @@
 package code.nebula.cipherquest.service
 
 import code.nebula.cipherquest.configuration.properties.GameConfig
+import code.nebula.cipherquest.models.CheatDetectionResponse
 import code.nebula.cipherquest.models.UserQuery
+import code.nebula.cipherquest.models.requests.CheatDetectionRequest
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.WebClient
 
 @Service
 class CheatDetectionService(
     private val vectorStoreService: VectorStoreService,
     private val gameConfig: GameConfig,
+    private val cheatDetectionWebClient: WebClient,
 ) {
     companion object {
         private const val MAX_LEVEL = 3
@@ -29,4 +33,26 @@ class CheatDetectionService(
             .containsMatchIn(userQuery.message) &&
             userQuery.user.level < MAX_LEVEL &&
             vectorStoreService.countUserMessages(userQuery.user.userId) < MIN_QUESTIONS
+
+    fun scoreSession(
+        sessionLengthSeconds: Long,
+        coins: Int,
+    ): Double {
+        val request =
+            CheatDetectionRequest(
+                session_length = sessionLengthSeconds.toDouble(),
+                coins = coins.toDouble(),
+            )
+
+        val response =
+            cheatDetectionWebClient
+                .post()
+                .uri("/predict")
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(CheatDetectionResponse::class.java)
+                .block()
+
+        return response?.cheat_probability ?: 0.0
+    }
 }
