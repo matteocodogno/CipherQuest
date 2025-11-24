@@ -1,11 +1,15 @@
 from fastapi import FastAPI
+from pathlib import Path
 from pydantic import BaseModel
 import joblib
 import pandas as pd
 
 app = FastAPI()
 
-bundle = joblib.load("cheat_detector_rf.joblib")
+ROOT_DIR = Path(__file__).resolve().parents[2]
+MODEL_PATH = ROOT_DIR / "models" / "cheat_detector_rf.joblib"
+
+bundle = joblib.load(MODEL_PATH)
 model = bundle["model"]
 feature_cols = bundle["feature_cols"]
 
