@@ -6,6 +6,7 @@ import code.nebula.cipherquest.models.UserQuery
 import code.nebula.cipherquest.models.requests.CheatDetectionRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import java.time.Duration
 
 @Service
 class CheatDetectionService(
@@ -32,7 +33,8 @@ class CheatDetectionService(
         Regex(gameConfig.winCondition)
             .containsMatchIn(userQuery.message) &&
             userQuery.user.level < MAX_LEVEL &&
-            vectorStoreService.countUserMessages(userQuery.user.userId) < MIN_QUESTIONS
+            vectorStoreService.countUserMessages(userQuery.user.userId) < MIN_QUESTIONS &&
+            scoreSession(sessionLengthSeconds(userQuery), userQuery.user.coins) < 7.0
 
     fun scoreSession(
         sessionLengthSeconds: Long,
@@ -55,4 +57,10 @@ class CheatDetectionService(
 
         return response?.cheat_probability ?: 0.0
     }
+
+    fun sessionLengthSeconds(userQuery: UserQuery): Long =
+        Duration
+            .between(userQuery.user.createdAt, userQuery.user.terminatedAt)
+            .seconds
+            .coerceAtLeast(0L)
 }
