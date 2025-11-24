@@ -1,4 +1,12 @@
 services:
+  cheat-detection:
+    build:
+      context: ../cheat-detection
+      dockerfile: Dockerfile
+    container_name: cheat-detection
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
   postgres:
     image: pgvector/pgvector:pg16
     volumes:
