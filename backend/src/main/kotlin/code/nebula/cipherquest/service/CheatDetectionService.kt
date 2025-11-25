@@ -32,11 +32,13 @@ class CheatDetectionService(
     fun checkIfCheating(userQuery: UserQuery): Boolean =
         Regex(gameConfig.winCondition)
             .containsMatchIn(userQuery.message) &&
-            userQuery.user.level < MAX_LEVEL &&
-            vectorStoreService.countUserMessages(userQuery.user.userId) < MIN_QUESTIONS &&
-            scoreSession(sessionLengthSeconds(userQuery), userQuery.user.coins) < 7.0
+            (
+                userQuery.user.level < MAX_LEVEL ||
+                    vectorStoreService.countUserMessages(userQuery.user.userId) < MIN_QUESTIONS ||
+                    scoreSession(sessionLengthSeconds(userQuery), userQuery.user.coins) > 7.0
+            )
 
-    fun scoreSession(
+    private fun scoreSession(
         sessionLengthSeconds: Long,
         coins: Int,
     ): Double {
@@ -58,7 +60,7 @@ class CheatDetectionService(
         return response?.cheat_probability ?: 0.0
     }
 
-    fun sessionLengthSeconds(userQuery: UserQuery): Long =
+    private fun sessionLengthSeconds(userQuery: UserQuery): Long =
         Duration
             .between(userQuery.user.createdAt, userQuery.user.terminatedAt)
             .seconds
