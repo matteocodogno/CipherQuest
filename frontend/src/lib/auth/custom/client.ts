@@ -1,6 +1,7 @@
 import type { User } from '@/types/user';
 import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
+import {ErrorMessages} from'@/types/errorMessages';
 
 export type SignUpParams = {
   recaptchaToken: string | null;
@@ -24,13 +25,19 @@ const authClientBuilder = () => ({
 
       return {};
     } catch (err: unknown) {
-      if ( err instanceof Error && err.message === 'Access Denied') {
-        return {
-          error: 'Access denied: Invalid reCAPTCHA verification.',
-        };
-      } else {
-        return {
-          error: 'Email address already exists. Use another address please.'}
+      if (!(err instanceof Error)) {
+        return { error: ErrorMessages.UNKNOWN_ERROR };
+      }
+
+      switch (err.message) {
+        case ErrorMessages.INVALID_RECAPTCHA:
+          return { error: ErrorMessages.INVALID_RECAPTCHA };
+
+        case ErrorMessages.EMAIL_ALREADY_TAKEN:
+          return { error: ErrorMessages.EMAIL_ALREADY_TAKEN };
+
+        default:
+          return { error: ErrorMessages.UNKNOWN_ERROR };
       }
     }
   },
