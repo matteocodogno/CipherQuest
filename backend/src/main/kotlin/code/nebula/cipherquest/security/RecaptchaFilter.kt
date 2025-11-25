@@ -24,6 +24,7 @@ class RecaptchaFilter(
         private const val GOOGLE_RECAPTCHA_HEADER = "recaptcha"
     }
 
+    @Suppress("TooGenericExceptionCaught")
     public override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -100,7 +101,12 @@ class RecaptchaFilter(
         } catch (ex: RecaptchaException) {
             sendJson(response, ex.status, ex.type, ex.message)
         } catch (ex: ResourceAccessException) {
-            sendJson(response, SERVER_SIDE_ERROR, ErrorType.UNEXPECTED_ERROR, ex.message ?: "Recaptcha session timed out")
+            sendJson(
+                response,
+                SERVER_SIDE_ERROR,
+                ErrorType.UNEXPECTED_ERROR,
+                ex.message ?: "Recaptcha session timed out",
+            )
         } catch (ex: Exception) {
             sendJson(
                 response,
