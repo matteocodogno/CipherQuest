@@ -15,18 +15,9 @@ private val logger = KotlinLogging.logger {}
 class EmailTemplateRepository(
     override val objectMapper: ObjectMapper,
     override val storage: Storage,
-    private val cloudStorageProperties: CloudStorageProperties,
-) : GcsStreamRepository(objectMapper, storage) {
-    private fun getBlobId(
-        storyName: String,
-        filename: String,
-    ): BlobId =
-        BlobId.of(
-            cloudStorageProperties.emailTemplatesBucket.name,
-            "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
-        )
-
-    fun findUniqueCodeByStoryName(storyName: String): Blob = download(getBlobId(storyName, "email-template.html"))
+    override val cloudStorageProperties: CloudStorageProperties,
+) : GcsStreamRepository(objectMapper, storage, cloudStorageProperties) {
+    fun findUniqueCodeByStoryName(storyName: String): Blob = download(getBlobIdEmail(storyName, "email-template.html"))
 
     /**
      * Retrieves all assets associated with a given story from the email templates bucket.
@@ -50,4 +41,13 @@ class EmailTemplateRepository(
             logger.error(e) { "Failed to retrieve assets for story: $storyName" }
             emptyList()
         }
+
+    fun getBlobIdEmail(
+        storyName: String,
+        filename: String,
+    ): BlobId =
+        BlobId.of(
+            cloudStorageProperties.emailTemplatesBucket.name,
+            "${cloudStorageProperties.emailTemplatesBucket.folder}/$storyName/$filename",
+        )
 }

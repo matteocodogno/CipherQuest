@@ -1,6 +1,6 @@
 package code.nebula.cipherquest.controller
 
-import code.nebula.cipherquest.models.requests.PrizeRequest
+import code.nebula.cipherquest.models.requests.PrizesRequest
 import code.nebula.cipherquest.repository.entities.Prize
 import code.nebula.cipherquest.service.PrizeService
 import jakarta.validation.Valid
@@ -27,6 +27,6 @@ class PrizeController(
     @ResponseStatus(HttpStatus.CREATED)
     fun addPrizes(
         @PathVariable storyName: String,
-        @RequestBody @Valid prizes: PrizeRequest,
+        @RequestBody @Valid prizes: PrizesRequest,
     ): List<Prize> = prizeService.addPrizes(prizes, storyName)
 }

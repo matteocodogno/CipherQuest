@@ -1,6 +1,11 @@
 @userId = 8536759380
 @storyName = overmind
 
+### POST request to load level up/protected questions, fixedbotmessages, and prizes
+
+POST http://localhost:8080/api/gcloud/loadContent/{{storyName}}
+
+
 ### POST request to add level up questions
 
 POST http://localhost:8080/api/question/levelUp/{{storyName}}
@@ -39,7 +44,7 @@ POST http://localhost:8080/api/rag/load/{{storyName}}
 ### POST request to load fixed bot messages
 ### storyName: [overmind]
 
-POST http://localhost:8080/api/fixedMessage/{{storyName}}
+POST http://localhost:8080/api/fixedBotMessage/{{storyName}}
 Content-Type: application/json
 
 {
