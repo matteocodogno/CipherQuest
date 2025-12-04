@@ -2,6 +2,7 @@ package code.nebula.cipherquest.controller
 
 import code.nebula.cipherquest.models.dto.GameDataFile
 import code.nebula.cipherquest.service.GCloudService
+import code.nebula.cipherquest.service.RecaptchaService
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -26,6 +27,9 @@ class GCloudControllerTest {
 
     @MockBean
     lateinit var gCloudService: GCloudService
+
+    @MockBean
+    lateinit var recaptchaService: RecaptchaService
 
     @Test
     fun successUponValidFileTest() {
