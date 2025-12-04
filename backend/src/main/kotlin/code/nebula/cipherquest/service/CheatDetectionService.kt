@@ -17,6 +17,7 @@ class CheatDetectionService(
     companion object {
         private const val MAX_LEVEL = 3
         private const val MIN_QUESTIONS = 6
+        private const val CHEATING_THRESHOLD = 7.0
     }
 
     /**
@@ -35,7 +36,7 @@ class CheatDetectionService(
             (
                 userQuery.user.level < MAX_LEVEL ||
                     vectorStoreService.countUserMessages(userQuery.user.userId) < MIN_QUESTIONS ||
-                    scoreSession(sessionLengthSeconds(userQuery), userQuery.user.coins) > 7.0
+                    scoreSession(sessionLengthSeconds(userQuery), userQuery.user.coins) > CHEATING_THRESHOLD
             )
 
     private fun scoreSession(
@@ -44,7 +45,7 @@ class CheatDetectionService(
     ): Double {
         val request =
             CheatDetectionRequest(
-                session_length = sessionLengthSeconds.toDouble(),
+                sessionLength = sessionLengthSeconds.toDouble(),
                 coins = coins.toDouble(),
             )
 
@@ -57,7 +58,7 @@ class CheatDetectionService(
                 .bodyToMono(CheatDetectionResponse::class.java)
                 .block()
 
-        return response?.cheat_probability ?: 0.0
+        return response?.cheatProbability ?: 0.0
     }
 
     private fun sessionLengthSeconds(userQuery: UserQuery): Long =

@@ -102,7 +102,7 @@ class CheatDetectionServiceTest {
         `when`(requestBodySpec.retrieve()).thenReturn(responseSpec)
         `when`(
             responseSpec.bodyToMono(CheatDetectionResponse::class.java),
-        ).thenReturn(Mono.just(CheatDetectionResponse(cheat_probability = 8.0)))
+        ).thenReturn(Mono.just(CheatDetectionResponse(cheatProbability = 8.0)))
 
         val result = service.checkIfCheating(userQuery)
 
