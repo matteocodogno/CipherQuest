@@ -24,7 +24,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 import java.lang.Boolean.FALSE
 
 @WebMvcTest(
-    controllers = [FixedMessageController::class],
+    controllers = [FixedBotMessageController::class],
     excludeFilters = [
         ComponentScan.Filter(
             type = FilterType.ASSIGNABLE_TYPE,
