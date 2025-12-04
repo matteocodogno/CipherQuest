@@ -1,4 +1,5 @@
 import { Controller, useForm } from 'react-hook-form';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha} from 'react-google-recaptcha-v3';
 import { ReactElement, useCallback, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -21,8 +22,9 @@ type Values = zod.infer<typeof schema>;
 
 const defaultValues = { email: '' } satisfies Values;
 
-export const SignInForm = (): ReactElement => {
+const InnerSignInForm = (): ReactElement => {
   const { checkSession } = useUser();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -37,7 +39,15 @@ export const SignInForm = (): ReactElement => {
     async (values: Values): Promise<void> => {
       setIsPending(true);
 
-      const { error } = await authClient.signUp(values);
+      if (!executeRecaptcha) {
+        console.error('reCAPTCHA not yet available');
+        setIsPending(false);
+        return;
+      }
+
+      const token = await executeRecaptcha('login');
+
+      const { error } = await authClient.signUp({...values, recaptchaToken: token,});
 
       if (error) {
         setError('root', { type: 'server', message: error });
@@ -48,7 +58,7 @@ export const SignInForm = (): ReactElement => {
       // Refresh the auth state
       await checkSession?.();
     },
-    [checkSession, setError],
+    [checkSession, executeRecaptcha, setError],
   );
 
   return (
@@ -62,6 +72,7 @@ export const SignInForm = (): ReactElement => {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+
         <Box
           sx={{
             display: 'flex',
@@ -110,5 +121,13 @@ export const SignInForm = (): ReactElement => {
         </Box>
       </form>
     </Box>
+  );
+};
+
+export const SignInForm = (): ReactElement => {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}>
+      <InnerSignInForm />
+    </GoogleReCaptchaProvider>
   );
 };

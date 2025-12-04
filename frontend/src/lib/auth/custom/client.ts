@@ -1,8 +1,10 @@
 import type { User } from '@/types/user';
 import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
+import {ErrorMessages} from'@/types/errorMessages';
 
 export type SignUpParams = {
+  recaptchaToken: string | null;
   email: string;
   firstName?: string;
   lastName?: string;
@@ -12,7 +14,9 @@ export const getRandomArbitrary = (min: number, max: number) =>
   Math.ceil(Math.random() * (max - min) + min);
 
 const authClientBuilder = () => ({
-  signUp: async (params: SignUpParams): Promise<{ error?: string }> => {
+  signUp: async (
+    params: SignUpParams & { recaptchaToken?: string | null }
+  ): Promise<{ error?: string }> => {
     try {
       const user = await signUpApi(params);
 
@@ -20,10 +24,21 @@ const authClientBuilder = () => ({
       initializeGameSessionInfo();
 
       return {};
-    } catch {
-      return {
-        error: 'Email address already exists. Use another address please.',
-      };
+    } catch (err: unknown) {
+      if (!(err instanceof Error)) {
+        return { error: ErrorMessages.UNKNOWN_ERROR };
+      }
+
+      switch (err.message) {
+        case ErrorMessages.INVALID_RECAPTCHA:
+          return { error: ErrorMessages.INVALID_RECAPTCHA };
+
+        case ErrorMessages.EMAIL_ALREADY_TAKEN:
+          return { error: ErrorMessages.EMAIL_ALREADY_TAKEN };
+
+        default:
+          return { error: ErrorMessages.UNKNOWN_ERROR };
+      }
     }
   },
 
