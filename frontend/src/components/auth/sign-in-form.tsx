@@ -188,7 +188,7 @@ const InnerSignInForm = (): ReactElement => {
 
 export const SignInForm = (): ReactElement => {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY as string}>
+    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY as string}>
       <InnerSignInForm />
     </GoogleReCaptchaProvider>
   );

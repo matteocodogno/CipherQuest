@@ -31,19 +31,17 @@ const authClientBuilder = () => ({
       if (!(err instanceof Error)) {
         return { error: ErrorMessages.UNKNOWN_ERROR };
       }
-      console.error(err);
       switch (err.message) {
-        case ErrorMessages.INVALID_RECAPTCHA:
-          return { error: ErrorMessages.INVALID_RECAPTCHA };
-
         case ErrorMessages.EMAIL_ALREADY_TAKEN:
           return { error: ErrorMessages.EMAIL_ALREADY_TAKEN };
+
+        case ErrorMessages.INVALID_RECAPTCHA:
+          return { error: ErrorMessages.INVALID_RECAPTCHA };
 
         case ErrorMessages.PRECONDITION_REQUIRED:
           return { error: ErrorMessages.PRECONDITION_REQUIRED };
 
         default:
-          console.error(err.message);
           return { error: ErrorMessages.UNKNOWN_ERROR };
       }
     }

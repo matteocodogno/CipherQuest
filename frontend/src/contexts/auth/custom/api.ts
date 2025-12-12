@@ -29,7 +29,7 @@ export const signUpApi = async (
     body: JSON.stringify(data),
   });
 
-await response.json().catch(() => null);
+const body = await response.json().catch(() => null);
 
   if (response.status === 409) {
     throw new Error(ErrorMessages.EMAIL_ALREADY_TAKEN);
@@ -42,6 +42,5 @@ await response.json().catch(() => null);
   if(response.status === 428) {
     throw new Error(ErrorMessages.PRECONDITION_REQUIRED);
   }
-
-  return UserLevel.parse(response);
+  return UserLevel.parse(body);
 };

@@ -16,7 +16,7 @@ class RecaptchaFilter(
     private val recaptchaService: RecaptchaService,
 ) : OncePerRequestFilter() {
     companion object {
-        private const val HIGH_THRESHOLD = 0.8
+        private const val HIGH_THRESHOLD = 1
         private const val MID_THRESHOLD = 0.6
         private const val PLACEHOLDER_SCORE = 0.0
         private const val PRECONDITION_REQUIRED = 428
@@ -46,7 +46,6 @@ class RecaptchaFilter(
                 val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
 
                 val recaptchaResponse = recaptchaService.validateToken(token, version)
-
                 if (recaptchaResponse == null ||
                     !recaptchaResponse.success
                 ) {
