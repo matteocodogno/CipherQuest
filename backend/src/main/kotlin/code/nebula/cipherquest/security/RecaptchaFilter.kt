@@ -16,7 +16,7 @@ class RecaptchaFilter(
     private val recaptchaService: RecaptchaService,
 ) : OncePerRequestFilter() {
     companion object {
-        private const val HIGH_THRESHOLD = 1
+        private const val HIGH_THRESHOLD = 0.8
         private const val MID_THRESHOLD = 0.6
         private const val PLACEHOLDER_SCORE = 0.0
         private const val PRECONDITION_REQUIRED = 428
