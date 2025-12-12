@@ -3,11 +3,13 @@ package code.nebula.cipherquest.security
 import code.nebula.cipherquest.models.RecaptchaVersion
 import code.nebula.cipherquest.models.dto.RecaptchaResponse
 import code.nebula.cipherquest.service.RecaptchaService
+import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -116,25 +118,28 @@ class RecaptchaFilterTest {
     fun ignoreNonPostRequestsTest() {
         val request = MockHttpServletRequest("GET", "/api/user/info")
         val response = MockHttpServletResponse()
-        val chain = spy(MockFilterChain())
+        val chain = mock<FilterChain>()
 
         filter.doFilterInternal(request, response, chain)
 
-        verify(chain, times(1)).doFilter(any(), any())
-        assertEquals(200, response.status)
+        verifyNoInteractions(chain)
         verifyNoInteractions(recaptchaService)
+
+        assertEquals(200, response.status)
     }
 
     @Test
     fun ignoreOtherPostsTest() {
         val request = MockHttpServletRequest("POST", "/api/materials")
         val response = MockHttpServletResponse()
-        val chain = spy(MockFilterChain())
+        val chain = mock<FilterChain>()
 
         filter.doFilterInternal(request, response, chain)
 
-        verify(chain, times(1)).doFilter(any(), any())
+        verifyNoInteractions(chain)
         verifyNoInteractions(recaptchaService)
+
+        assertEquals(200, response.status)
     }
 
     @Test
