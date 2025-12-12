@@ -1,29 +1,49 @@
 import type { User } from '@/types/user';
 import { initializeGameSessionInfo } from '@/lib/game/localStore';
 import { signUpApi } from '@/contexts/auth/custom/api.ts';
+import { ErrorMessages } from '@/types/errorMessages';
+
+export type RecaptchaVersion = 'v3' | 'v2';
 
 export type SignUpParams = {
+  recaptchaToken: string | null;
+  recaptchaVersion?: RecaptchaVersion;
   email: string;
   firstName?: string;
   lastName?: string;
 };
 
-export const getRandomArbitrary = (min: number, max: number) =>
-  Math.ceil(Math.random() * (max - min) + min);
-
 const authClientBuilder = () => ({
-  signUp: async (params: SignUpParams): Promise<{ error?: string }> => {
+  signUp: async (
+    params: SignUpParams & { recaptchaToken?: string | null },
+  ): Promise<{ error?: string }> => {
     try {
-      const user = await signUpApi(params);
+      const user = await signUpApi({
+        ...params,
+        recaptchaVersion: params.recaptchaVersion ?? 'v3',
+      });
 
       localStorage.setItem('user', JSON.stringify(user));
       initializeGameSessionInfo();
 
       return {};
-    } catch {
-      return {
-        error: 'Email address already exists. Use another address please.',
-      };
+    } catch (err: unknown) {
+      if (!(err instanceof Error)) {
+        return { error: ErrorMessages.UNKNOWN_ERROR };
+      }
+      switch (err.message) {
+        case ErrorMessages.EMAIL_ALREADY_TAKEN:
+          return { error: ErrorMessages.EMAIL_ALREADY_TAKEN };
+
+        case ErrorMessages.INVALID_RECAPTCHA:
+          return { error: ErrorMessages.INVALID_RECAPTCHA };
+
+        case ErrorMessages.PRECONDITION_REQUIRED:
+          return { error: ErrorMessages.PRECONDITION_REQUIRED };
+
+        default:
+          return { error: ErrorMessages.UNKNOWN_ERROR };
+      }
     }
   },
 

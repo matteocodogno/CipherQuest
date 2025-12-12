@@ -3,6 +3,7 @@ package code.nebula.cipherquest.controller
 import code.nebula.cipherquest.models.requests.FixedBotMessagesRequest
 import code.nebula.cipherquest.repository.entities.FixedBotMessage
 import code.nebula.cipherquest.repository.entities.FixedBotMessageType
+import code.nebula.cipherquest.security.RecaptchaFilter
 import code.nebula.cipherquest.service.FixedBotMessageService
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
@@ -21,8 +24,16 @@ import org.springframework.web.server.ResponseStatusException
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 import java.lang.Boolean.FALSE
 
-@WebMvcTest(FixedBotMessageController::class)
-@AutoConfigureMockMvc
+@WebMvcTest(
+    controllers = [FixedBotMessageController::class],
+    excludeFilters = [
+        ComponentScan.Filter(
+            type = FilterType.ASSIGNABLE_TYPE,
+            value = [RecaptchaFilter::class],
+        ),
+    ],
+)
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class FixedBotMessageControllerTest {
     @Autowired
@@ -30,6 +41,9 @@ class FixedBotMessageControllerTest {
 
     @MockBean
     lateinit var fixedBotMessageService: FixedBotMessageService
+
+    @MockBean
+    lateinit var recaptchaFilter: RecaptchaFilter
 
     @Test
     fun addFixedBotMessagesTest() {
