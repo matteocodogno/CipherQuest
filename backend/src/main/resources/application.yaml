@@ -103,9 +103,9 @@ info:
 recaptcha:
   verify-url: https://www.google.com/recaptcha/api/siteverify
   v3:
-    secret-key: GOOGLE_CAPTCHA_SECRET_KEY
+    secret-key: 6LfcnewrAAAAAKJReJCqqD5HJxVMaIbO1MvKA21M
   v2:
-    secret-key: GOOGLE_CAPTCHA_SECRET_KEY
+    secret-key: 6LdoWfUrAAAAAAQpsmYoJHwaXQeZiIUXbmwtvA4V
 
 
 

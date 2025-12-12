@@ -29,7 +29,7 @@ export const signUpApi = async (
     body: JSON.stringify(data),
   });
 
-  await response.json().catch(() => null);
+await response.json().catch(() => null);
 
   if (response.status === 409) {
     throw new Error(ErrorMessages.EMAIL_ALREADY_TAKEN);
@@ -39,6 +39,9 @@ export const signUpApi = async (
     throw new Error(ErrorMessages.INVALID_RECAPTCHA);
   }
 
-  const jsonResponse = await response.json();
-  return UserLevel.parse(jsonResponse);
+  if(response.status === 428) {
+    throw new Error(ErrorMessages.PRECONDITION_REQUIRED);
+  }
+
+  return UserLevel.parse(response);
 };

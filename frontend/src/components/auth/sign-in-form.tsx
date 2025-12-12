@@ -4,6 +4,7 @@ import { ReactElement, useCallback, useRef, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { ErrorMessages } from '@/types/errorMessages';
 import { Flag } from '@phosphor-icons/react';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -59,7 +60,7 @@ const InnerSignInForm = (): ReactElement => {
             recaptchaVersion: 'v3',
           });
 
-          if (res.error === 'RECAPTCHA_V2_REQUIRED') {
+          if (res.error === ErrorMessages.PRECONDITION_REQUIRED) {
             setShowV2(true);
             setError('root', {
               type: 'server',
@@ -187,7 +188,7 @@ const InnerSignInForm = (): ReactElement => {
 
 export const SignInForm = (): ReactElement => {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY as string}>
+    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY as string}>
       <InnerSignInForm />
     </GoogleReCaptchaProvider>
   );

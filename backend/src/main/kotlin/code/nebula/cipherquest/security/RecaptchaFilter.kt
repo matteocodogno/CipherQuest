@@ -33,87 +33,52 @@ class RecaptchaFilter(
         if (request.method.equals("POST", ignoreCase = true) &&
             request.requestURI.startsWith("/api/user/")
         ) {
-            val recaptcha = request.getHeader("recaptcha")
+            try {
+                val token =
+                    request.getHeader(GOOGLE_RECAPTCHA_HEADER)
+                        ?: throw RecaptchaException(
+                            HttpServletResponse.SC_BAD_REQUEST,
+                            ErrorType.RECAPTCHA_MISSING,
+                            "Missing reCAPTCHA token",
+                        )
 
-            if (recaptcha.isNullOrBlank()) {
-                sendJson(response, HttpServletResponse.SC_BAD_REQUEST, "RECAPTCHA_MISSING", "Missing reCAPTCHA token")
-                return
-            }
+                val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
+                val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
 
-            val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
-            val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
+                val recaptchaResponse = recaptchaService.validateToken(token, version)
 
-            val recaptchaResponse: RecaptchaResponse? = recaptchaService.validateToken(recaptcha, version)
-
-             if (recaptchaResponse == null || !recaptchaResponse.success) {
-                sendJson(response, HttpServletResponse.SC_FORBIDDEN, "RECAPTCHA_INVALID", "Invalid reCAPTCHA token")
-
-                return
-            }
-
-            if (version == RecaptchaVersion.V3) {
-                val score = recaptchaResponse.score ?: 0.0
-                when {
-                    score >= HIGH_THRESHOLD -> { /* allow */ }
-                    score >= MID_THRESHOLD -> {
-                        sendJson(response, 428, "RECAPTCHA_V2_REQUIRED", "Please complete reCAPTCHA v2.")
-                        return
-                    }
-                    else -> {
-                        sendJson(response, HttpServletResponse.SC_FORBIDDEN, "RECAPTCHA_DENIED", "Access denied")
-                        return
-                    }
-                }
-            } else {
-                // v2 success → allow
-            }
-        }
-
-        try {
-            val token =
-                request.getHeader(GOOGLE_RECAPTCHA_HEADER)
-                    ?: throw RecaptchaException(
-                        HttpServletResponse.SC_BAD_REQUEST,
-                        ErrorType.RECAPTCHA_MISSING,
-                        "Missing reCAPTCHA token",
+                if (recaptchaResponse == null ||
+                    !recaptchaResponse.success
+                ) {
+                    throw RecaptchaException(
+                        HttpServletResponse.SC_FORBIDDEN,
+                        ErrorType.RECAPTCHA_INVALID,
+                        "Invalid reCAPTCHA token",
                     )
+                }
 
-            val versionHeader = request.getHeader("recaptcha-version")?.lowercase()
-            val version = if (versionHeader == "v2") RecaptchaVersion.V2 else RecaptchaVersion.V3
+                if (version == RecaptchaVersion.V3) {
+                    validateV3Score(recaptchaResponse.score ?: PLACEHOLDER_SCORE)
+                }
 
-            val recaptchaResponse = recaptchaService.validateToken(token, version)
-
-            if (recaptchaResponse == null ||
-                !recaptchaResponse.success
-            ) {
-                throw RecaptchaException(
-                    HttpServletResponse.SC_FORBIDDEN,
-                    ErrorType.RECAPTCHA_INVALID,
-                    "Invalid reCAPTCHA token",
+                filterChain.doFilter(request, response)
+            } catch (ex: RecaptchaException) {
+                sendJson(response, ex.status, ex.type, ex.message)
+            } catch (ex: ResourceAccessException) {
+                sendJson(
+                    response,
+                    SERVER_SIDE_ERROR,
+                    ErrorType.UNEXPECTED_ERROR,
+                    ex.message ?: "Recaptcha session timed out",
+                )
+            } catch (ex: Exception) {
+                sendJson(
+                    response,
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    ErrorType.UNEXPECTED_ERROR,
+                    ex.message ?: "Unexpected Recaptcha error",
                 )
             }
-
-            if (version == RecaptchaVersion.V3) {
-                validateV3Score(recaptchaResponse.score ?: PLACEHOLDER_SCORE)
-            }
-
-            filterChain.doFilter(request, response)
-        } catch (ex: RecaptchaException) {
-            sendJson(response, ex.status, ex.type, ex.message)
-        } catch (ex: ResourceAccessException) {
-            sendJson(
-                response,
-                SERVER_SIDE_ERROR,
-                ErrorType.UNEXPECTED_ERROR,
-                ex.message ?: "Recaptcha session timed out",
-            )
-        } catch (ex: Exception) {
-            sendJson(
-                response,
-                HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                ErrorType.UNEXPECTED_ERROR,
-                ex.message ?: "Unexpected Recaptcha error",
-            )
         }
     }
 
@@ -138,6 +103,7 @@ class RecaptchaFilter(
                 ErrorType.RECAPTCHA_DENIED,
                 "Access denied",
             )
+
             score < HIGH_THRESHOLD && score > MID_THRESHOLD -> throw RecaptchaException(
                 PRECONDITION_REQUIRED,
                 ErrorType.RECAPTCHA_V2_REQUIRED,

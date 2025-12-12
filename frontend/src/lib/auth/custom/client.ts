@@ -31,7 +31,7 @@ const authClientBuilder = () => ({
       if (!(err instanceof Error)) {
         return { error: ErrorMessages.UNKNOWN_ERROR };
       }
-
+      console.error(err);
       switch (err.message) {
         case ErrorMessages.INVALID_RECAPTCHA:
           return { error: ErrorMessages.INVALID_RECAPTCHA };
@@ -39,19 +39,13 @@ const authClientBuilder = () => ({
         case ErrorMessages.EMAIL_ALREADY_TAKEN:
           return { error: ErrorMessages.EMAIL_ALREADY_TAKEN };
 
+        case ErrorMessages.PRECONDITION_REQUIRED:
+          return { error: ErrorMessages.PRECONDITION_REQUIRED };
+
         default:
+          console.error(err.message);
           return { error: ErrorMessages.UNKNOWN_ERROR };
       }
-
-      if (err instanceof Error && err.message === 'RECAPTCHA_V2_REQUIRED') {
-        return { error: 'RECAPTCHA_V2_REQUIRED' };
-      }
-
-      if (err instanceof Error && err.message === 'Access Denied') {
-        return { error: 'Access denied: Invalid reCAPTCHA verification.' };
-      }
-
-      return { error: 'Access Denied. Please try again.' };
     }
   },
 
